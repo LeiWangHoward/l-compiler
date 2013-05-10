@@ -1,0 +1,8 @@
+((
+(eax <- -5) ;; -3
+(eax >>= 1)
+;; encode eax to print
+(eax *= 2)
+(eax += 1)
+(eax <- (print eax))
+))

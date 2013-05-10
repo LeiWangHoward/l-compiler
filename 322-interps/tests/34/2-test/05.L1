@@ -1,0 +1,18 @@
+(((call :exp_2))
+ (:exp_2
+  (eax <- 3)
+  (ebx <- 11)
+  (eax -= 1)
+  (eax >>= 1)
+  (ebx -= 1)
+  (ebx >>= 1)
+  :compare
+  (cjump eax < ebx :shift :done)
+  :shift
+  (eax <<= 1)
+  (goto :compare)
+  :done
+  (eax <<= 1)
+  (eax += 1)
+  (eax <- (print eax))
+  (return)))

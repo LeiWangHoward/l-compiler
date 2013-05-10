@@ -1,0 +1,11 @@
+(((eax <- 7)
+  (ebx <- 9)
+  (cjump eax <= ebx :tr :fa)
+  :tr
+  (eax <- 11)
+  (eax <- (print eax))
+  (goto :end)
+  :fa
+  (eax <- 13)
+  (eax <- (print eax))
+  :end))

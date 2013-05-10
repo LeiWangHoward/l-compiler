@@ -1,0 +1,9 @@
+(   (eaxa <- 5)
+    (ebx2 <- 2)
+    (eaxa <<= ecx)
+    (ebx <- 1)
+    (ebx2 >>= 4)
+    (ebx += 2)
+    (eax <- eaxa)
+    (return))
+

@@ -1,0 +1,5 @@
+(((eax <- 1)
+  (thisvar <- eax)
+  (thisvar <<= 1)
+  (thisvar += 1)
+  (eax <- (print thisvar))))

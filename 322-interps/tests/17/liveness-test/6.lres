@@ -1,0 +1,16 @@
+((in
+  (ecx edx)
+  (eax ecx edx)
+  (eax ecx edx)
+  (eax)
+  (allocat)
+  (allocat)
+  (allocat))
+ (out
+  (eax ecx edx)
+  (eax ecx edx)
+  (eax)
+  (allocat)
+  (allocat)
+  (allocat)
+  ()))

@@ -1,0 +1,3 @@
+(   (x <- :fun_name)
+    (eax &= 4)
+    (tail-call x))

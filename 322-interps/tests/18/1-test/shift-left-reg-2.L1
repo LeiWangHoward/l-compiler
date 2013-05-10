@@ -1,0 +1,60 @@
+(
+    (
+        (esp -= 8)
+        (ecx <- 21)         ; array size
+        (eax <- ecx)
+        ((mem esp 4) <- ecx) 
+        (call :count_up_array)
+        ((mem esp 0) <- eax) ; address of just-initialized array
+        (ebx <- eax)
+        (eax <- (mem esp 4))
+        
+        (ecx <- 2)
+       
+        :loop
+        (ebx += 4)
+        (edx <- (mem ebx 0))
+        (edx -= 1)
+        (edx <<= ecx)
+        (edx += 1)
+        ((mem ebx 0) <- edx)
+
+        (eax -= 2)
+        (cjump eax <= 1 :end :loop)
+
+        :end
+        (eax <- (mem esp 0))
+        (eax <- (print eax))
+        (esp += 8)
+    )
+
+    (   :count_up_array
+        (ebp <- esp)
+        (esp -= 12)
+        ((mem esp 8) <- esi)
+        ((mem esp 4) <- edi)
+        ((mem esp 0) <- eax)
+        (eax <- (allocate eax 1))
+        (edx <- (mem esp 0))
+        (esi <- eax)
+        (ebx <- 1) ; this will be the counter; starts at 0
+
+        :count_up_loop
+        (edi <- esi)
+        (ecx <- ebx)
+        (ecx -= 1)
+        (ecx *= 2)
+        (edi += ecx)
+        ((mem edi 4) <- ebx)
+        (ebx += 2) ; add an encoded 1
+
+        (cjump ebx < edx :count_up_loop :count_up_end)
+
+        :count_up_end
+
+        (esi <- (mem esp 8))
+        (edi <- (mem esp 4))
+        (esp <- ebp)
+        (return) ; eax has array memory address
+    )
+)

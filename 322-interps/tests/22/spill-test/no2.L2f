@@ -1,0 +1,3 @@
+((eax <- 5)(x <- 4)(ebx <- y)
+(eax <- (allocate x y))
+(eax <- (print x))) var1 -20 var2

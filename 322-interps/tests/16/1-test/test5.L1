@@ -1,0 +1,20 @@
+(((eax <- 4)
+  (ebx <- 5)
+  (call :return3)
+  (eax <- (print eax))
+  (call :return1)
+  (eax <- (print eax))
+  (eax <- (print ebx))
+  (cjump eax < ebx :true :false)
+  :true
+  (call :return3)
+  (eax <- (print eax))
+  :false
+  (call :return1)
+  (eax <- (print eax)))
+  (:return3
+   (eax <- 3)
+   (return))
+  (:return1
+  (eax <- 1)
+  (return)))

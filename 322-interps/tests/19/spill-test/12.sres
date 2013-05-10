@@ -1,0 +1,5 @@
+(((mem ebp -8) <- 5)
+ (s_0 <- (mem ebp -8))
+ (cjump s_0 < 3 :thn :els)
+ :thn
+ :els)

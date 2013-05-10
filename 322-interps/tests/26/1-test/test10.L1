@@ -1,0 +1,10 @@
+(((eax <- 25)
+  (ebx <- 21)
+  (cjump ebx <= eax :true :false)
+  :true 
+  (goto :done)
+  :false
+  (eax += ebx)
+  (eax -= 1)
+  :done
+  (eax <- (print eax))))

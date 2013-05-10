@@ -1,0 +1,40 @@
+(:fib
+
+;;(n <- eax)
+((mem ebp -4) <- eax)
+
+;;(cjump n <= 1 :ZERO_OR_ONE :OTHERS)
+( t_0 <- (mem ebp -4))
+(cjump t_0 <= 1 :ZERO_OR_ONE :OTHERS)
+
+:ZERO_OR_ONE
+
+;;( eax <- n )
+( eax <- (mem ebp -4))
+
+(return)
+:OTHERS
+
+;;( n -= 1 )
+( t_1 <- (mem ebp -4))
+( t_1 -= 1 )
+( (mem ebp -4 ) <- t_1)
+
+;;( eax <- n )
+( eax <- (mem ebp -4) )
+
+( call :fib )
+( f <- eax )
+
+;;( n -= 1)
+( t_2 <- (mem ebp -4) )
+( t_2 -= 1 )
+( (mem ebp -4) <- t_2)
+
+;;(eax <- n)
+( eax <- (mem ebp -4) )
+
+( call :fib )
+( eax += f )
+(return)
+)

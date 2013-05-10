@@ -1,0 +1,7 @@
+(((esi <- 5)
+(ebx <- 4 < esi)
+(eax <- (print ebx))
+
+(ebx <- esi < 4)
+(ebx += 1)
+(eax <- (print ebx))))

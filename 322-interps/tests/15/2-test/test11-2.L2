@@ -1,0 +1,9 @@
+(((a <- 127)
+  :loop
+  (cjump a < 2 :done :keep_going)
+  :keep_going
+  (eax <- (print a))
+  (a >>= 1)
+  (goto :loop)
+  :done
+  (eax <- (print a))))

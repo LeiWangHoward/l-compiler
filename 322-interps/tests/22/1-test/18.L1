@@ -1,0 +1,10 @@
+;;;print 3-10, end with 0
+(((ebx <- 1)
+:start
+(cjump ebx < 21 :continue :end)
+:continue
+(ebx += 2)
+(eax <- (print ebx))
+(goto :start)
+:end
+(eax <- (print 1))))

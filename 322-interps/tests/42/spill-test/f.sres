@@ -1,0 +1,5 @@
+((a <- 4) 
+((mem ebp -8) <- 5) 
+(c <- eax)
+(ecx <- (mem ebp -8)) 
+(d <- ecx < 10))

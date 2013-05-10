@@ -1,0 +1,8 @@
+(((esi <- 5)
+  (goto :FINISH)
+  :START
+  (eax <- (print esi))
+  (goto :END)
+  :FINISH
+  (goto :START)
+  :END))

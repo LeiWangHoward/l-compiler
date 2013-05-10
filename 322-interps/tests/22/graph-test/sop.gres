@@ -1,0 +1,11 @@
+;((in(x y z)(x y z)(x y z)(y z))(out(x y z)(x y z)(y z)()))
+((eax ebx ecx edi edx esi x y z)
+ (ebx eax ecx edi edx esi x y z)
+ (ecx eax ebx edi edx esi) 
+ (edi eax ebx ecx edx esi x y z) 
+ (edx eax ebx ecx edi esi x y z) 
+ (esi eax ebx ecx edi edx x y z) 
+ (x eax ebx edi edx esi y z) 
+ (y eax ebx edi edx esi x z) 
+ (z eax ebx edi edx esi x y))
+#f

@@ -1,0 +1,9 @@
+((
+  (x <- 3 = 3)
+  (x += x)
+  (x += 1)
+  (cjump x = 1 :f :t)
+  :f
+  (eax <- (print 0))
+  :t
+  (eax <- (print x))))

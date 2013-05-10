@@ -1,0 +1,21 @@
+((
+	(esi <- 11)
+	(eax <- (allocate esi 3))
+	(edi <- eax)
+	(ebx <- 5)
+	(cjump ebx < esi :label1 :label3)
+	:label1
+	(call :funfun)
+	:label3
+	(eax <- (print ebx))
+)
+(:funfun
+	(edx <- ebx)
+	(edx -= 4)   ;; - decrement by 2. 
+	(edx -= 1)   ;; - convert a 2a+1 number into 
+	(edx *= 2)   ;;     4a for the index calculation
+	(edx += edi) ;; - add in the base pointer
+	(edx += 4)   ;; - skip past the size word
+	((mem edx 0) <- edx)
+	(return)
+))

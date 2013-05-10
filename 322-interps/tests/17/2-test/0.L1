@@ -1,0 +1,8 @@
+(((edx <- 99)
+  (ecx <- 5)
+  (eax <- 0)
+  (eax += edx)
+  (eax *= edx)
+  (eax <<= ecx)
+  (eax += 1)
+  (eax <- (print eax))))

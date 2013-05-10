@@ -1,0 +1,8 @@
+(((call :f1)
+ (goto :callsite0)
+ (eax <- (print 3))
+ :callsite0
+ (eax <- (print 5)))
+(:f1 
+(eax <- (print 1))
+(return)))

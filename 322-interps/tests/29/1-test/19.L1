@@ -1,0 +1,6 @@
+(((call :f))
+ (:update
+  (eax <- (print 5))
+  (return))
+ (:f
+  (tail-call :update)))

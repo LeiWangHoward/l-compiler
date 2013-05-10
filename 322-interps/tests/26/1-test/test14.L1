@@ -1,0 +1,7 @@
+(((eax <- 3)
+  :loop
+  (eax <<= 3)
+  (eax -= 3)
+  (cjump 35 <= eax :done :loop)
+  :done
+  (eax <- (print eax))))

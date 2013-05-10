@@ -1,0 +1,16 @@
+(((ebx <- 1)
+  (myvar <- 3)
+  (ebx <- myvar)
+  (eax <- (print myvar))
+(call :myfun1))
+
+(:myfun1
+(eax += 4) 
+(eax <- (print eax))
+(call :myfun2)
+(return))
+
+(:myfun2 
+(eax += 2)
+(eax <- (print ebx))
+(return)))

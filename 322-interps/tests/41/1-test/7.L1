@@ -1,0 +1,5 @@
+(((cjump 0 < 1 :then :else)
+  :then
+  (eax <- (print 15))
+  :else
+  ))

@@ -1,0 +1,14 @@
+(((ebx <- -2147483648)
+ (ebx += 1)
+ (esi <- 0)
+ (esi <- ebx)
+ (eax <- (print ebx))
+ (ebx -= 2)
+ (eax <- (print ebx))
+ (cjump esi < ebx :l :g)
+ :l
+ (eax <- (print 3))
+ (goto :done)
+ :g
+ (eax <- (print 1))
+ :done))

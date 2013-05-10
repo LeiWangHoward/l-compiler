@@ -1,0 +1,27 @@
+(((eax <- 3)
+  (call :fun1)
+  (eax += eax)
+  (eax += 1)
+  (eax <- (print eax)))
+ (:fun1
+  (x <- 7)
+  (y <- 9)
+  (call :fun2)
+  (eax += 2)
+  (call :fun3)
+  (x <- eax)
+  (ebx <- x)
+  (ecx <- y)
+  (eax <- ebx)
+  (eax += ecx)
+  (return))
+ (:fun2
+  (eax += eax)
+  (eax += 1)
+  (return))
+ (:fun3
+  (eax += eax)
+  (eax += 3)
+  (return))
+ (:fun4
+  (return)))

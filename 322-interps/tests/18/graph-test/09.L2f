@@ -1,0 +1,5 @@
+((x <- 2)
+ (eax <- 1)
+ (b <- :label)
+ (x *= b)
+ (tail-call b))

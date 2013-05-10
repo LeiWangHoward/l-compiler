@@ -1,0 +1,5 @@
+((
+    (ebx <- 3)
+    (ebx *= 3)
+    (eax <- (print ebx))
+))

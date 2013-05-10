@@ -1,0 +1,48 @@
+;;find the max number of an array
+((
+;;data init, suppose that the length is 10(21)
+(edi <- 21) ;; length 10
+(eax <- (allocate edi 0))
+(ebx <- eax)
+;; 9 8 7 ... 0
+(esi <- edi)
+(esi -= 2) ;; i=9
+:loop0
+(cjump 0 <= esi :begin :end)
+:begin
+(edx <- esi)
+(edx -= 1)
+(edx *= 2)
+(edx += ebx)
+(edx += 4)
+((mem edx 0) <- esi)
+(esi -= 2)
+(goto :loop0)
+:end
+
+;; a[5] = 100
+((mem ebx 24) <- 201)
+
+;;max
+(ecx <- (mem ebx 0)) ;; min = a[0]
+(esi <- 1) ;; i = 0
+:loop1
+(cjump esi < edi :begin1 :end1)
+:begin1
+(edx <- esi)
+(edx -= 1)
+(edx *= 2)
+(edx += ebx)
+(edx += 4)
+(eax <- (mem edx 0))
+(cjump ecx < eax :less :great)
+:less
+(ecx <- eax)
+:great
+(esi += 2)
+(goto :loop1)
+:end1
+
+(eax <- (print ecx))
+
+))

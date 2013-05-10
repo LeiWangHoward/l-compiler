@@ -1,0 +1,8 @@
+((y <- 5)
+ (esi <- 99)
+ (ecx <- 3)
+ (esi >>= y)
+ (tail-call esi)
+ (y <<= ecx)
+ (goto :meh)
+ :meh) y 12 z 

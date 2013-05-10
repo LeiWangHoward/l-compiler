@@ -1,0 +1,28 @@
+(
+    (
+        (eax <- 9)
+        (edx <- 1)
+        (call :factorial) ; 4! = 24
+        (eax <- (print eax))
+
+        (eax <- 21)
+        (edx <- 1)
+        (call :factorial) ; 10! = 3628800
+        (eax <- (print eax))
+    )
+    ( :factorial
+
+        (n <- eax)
+        (n >>= 1)
+        (edx *= n)
+        (eax -= 2)
+        (cjump eax = 1 :fac_end :fac_rec)
+      :fac_rec
+        (tail-call :factorial)
+      :fac_end
+        (eax <- edx)
+        (eax *= 2)
+        (eax += 1)
+        (return)
+    )
+)

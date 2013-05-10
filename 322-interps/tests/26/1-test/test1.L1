@@ -1,0 +1,2 @@
+(((eax <- 23)
+  (eax <- (print eax))))

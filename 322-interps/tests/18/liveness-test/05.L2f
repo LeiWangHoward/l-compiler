@@ -1,0 +1,4 @@
+(   (eax <- 1)
+    (edx <- 3)
+    (ecx <- 5)
+    (call :otr_fun))

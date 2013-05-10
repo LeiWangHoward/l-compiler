@@ -1,0 +1,15 @@
+(((eax <- 5)
+(call :function)
+(esi <- 11)
+(eax <- (print esi)))
+
+
+(:function
+(ecx <- eax)
+(eax <- (print ecx))
+(tail-call :tail))
+
+(:tail
+(ecx <- 7)
+(eax <- (print ecx))
+(return)))

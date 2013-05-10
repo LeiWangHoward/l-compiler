@@ -1,0 +1,13 @@
+(((a <- :loop)
+  (call a))
+ (:loop
+  (ebx <- 21)
+  :loop2
+  (cjump ebx < 2 :done :keep_going)
+  :keep_going
+  (eax <- (print ebx))
+  (ebx -= 2)
+  (goto :loop2)
+  :done
+  (eax <- (print ebx))
+  (return)))

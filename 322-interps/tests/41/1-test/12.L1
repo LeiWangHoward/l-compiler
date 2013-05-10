@@ -1,0 +1,9 @@
+(((esi <- 5)
+  (eax <- (allocate esi 12))
+  (edi <- eax) ;; save array
+  (esi <- (mem edi 4))
+  (ecx <- (mem edi 8))
+  (ecx += esi)
+  (ecx += 1)
+  (eax <- (print ecx))
+  ))

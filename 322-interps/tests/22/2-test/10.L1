@@ -1,0 +1,2 @@
+(((call :f ) ) (:f (eax <- 5 ) (ebx <- 7 ) (cjump eax <= ebx :l1 :l2 ) :l1 (eax <- (print eax ) ) (return ) :l2 (eax <- (print ebx ) ) (return ) ) )
+

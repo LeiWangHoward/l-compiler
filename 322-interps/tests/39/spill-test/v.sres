@@ -1,0 +1,11 @@
+(:f
+ (a <- eax)
+ (b <- eax)
+ (c <- eax)
+ ((mem ebp -4) <- eax)
+ (eax <- a)
+ (eax += b)
+ (eax += c)
+ (d_0 <- (mem ebp -4))
+ (eax += d_0)
+ (return))

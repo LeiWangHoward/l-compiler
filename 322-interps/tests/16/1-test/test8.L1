@@ -1,0 +1,14 @@
+(((eax <- 3)
+(call :myfunc)
+(eax <- (print 3)))
+(:myfunc
+(ecx <- 3)
+(eax <- (print ecx))
+(eax <- (allocate 15 eax))
+(tail-call :myfunc2))
+(:myfunc2
+(eax <- (print 5))
+(tail-call :myfunc3))
+(:myfunc3
+(eax <- (print 7))
+(return)))

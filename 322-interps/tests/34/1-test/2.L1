@@ -1,0 +1,4 @@
+(((eax <- 2014) 
+  (eax += eax)
+  (eax += -1)
+  (eax <- (print eax))))

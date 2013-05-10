@@ -1,0 +1,7 @@
+((eax <- 0)
+ (esi <- 1)
+ (edi <- 2)
+ (tail-call x0)
+ (eax += 0)
+ (esi += 1)
+ (edi += 2))

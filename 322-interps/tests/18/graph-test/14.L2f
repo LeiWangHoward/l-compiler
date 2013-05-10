@@ -1,0 +1,7 @@
+((eax <- (allocate 21 1))
+ (var <- eax)
+ ((mem var 4) <- 3)
+ (ecx <- (mem var 12))
+ ((mem var 8) <- ecx)
+ (eax <- (print var))
+)

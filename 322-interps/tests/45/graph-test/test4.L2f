@@ -1,0 +1,15 @@
+((cjump 2 < eax :true :false)
+:true
+(eax <- 3)
+(x += eax)
+(y <- 0)
+(goto :end)
+:false
+(eax <- 8)
+(y += eax)
+(x <- 0)
+:end
+(edx <- x)
+(x += y)
+(eax <- (print edx))
+(return))

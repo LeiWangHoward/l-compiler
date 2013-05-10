@@ -1,0 +1,4 @@
+(   (a <- eax)
+    ((mem a 0) <- edx)
+    (b <- (mem a 0))
+)

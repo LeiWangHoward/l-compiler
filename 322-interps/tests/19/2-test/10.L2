@@ -1,0 +1,9 @@
+(((x <- 1)
+  (goto :countup)
+  (eax <- (print x))
+  :countup
+  (x += 2)
+  (eax <- (print x)))
+ (:bogus
+  (eax <- (print x))
+  (return)))

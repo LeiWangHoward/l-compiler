@@ -1,0 +1,16 @@
+((result <- 0)
+ (count <- eax)
+ (index <- 0)
+
+ :test
+ (cjump index < count :do :done)
+
+ :do
+ (index += 1)
+ (result += 10)
+ (goto :test)
+
+ :done
+ (eax <- result)
+ (return)) result -4 s
+

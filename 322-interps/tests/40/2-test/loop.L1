@@ -1,0 +1,15 @@
+(
+(
+(ebx <- 1)
+:loop
+(cjump ebx < 10 :begin :end)
+:begin
+(eax <- ebx)
+(eax <<= 2)
+(eax += 1)
+(eax <- (print eax))
+(ebx += 1)
+(goto :loop)
+:end
+)
+)

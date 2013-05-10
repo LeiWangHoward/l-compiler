@@ -1,0 +1,4 @@
+((x <- edx)
+ (x *= x)
+ ((mem ebp -4) <- x)
+ (return))

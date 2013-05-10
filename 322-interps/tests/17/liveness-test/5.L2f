@@ -1,0 +1,12 @@
+
+((x <- ebx)
+ (cjump x = 0 :first :second)
+ :first
+ (y <- ecx)
+ (eax += y)
+ (goto :finish)
+ :second
+ (eax += x)
+ (goto :finish)
+ :finish
+ (eax <- (print eax)))

@@ -1,0 +1,14 @@
+(((call :fun1))
+
+(:fun1
+(eax <- 3)
+(edx <- 7)
+(ecx <- -7)
+(tail-call :fun2))
+
+(:fun2
+(ebx <- eax)
+(ebx -= edx)
+(ebx -= ecx)
+(eax <- (print ebx))
+(return)))

@@ -1,0 +1,18 @@
+(((edi <- 11)
+  :compare
+  (cjump edi <= 21 :add_up :done)
+  :add_up
+  (eax <- edi)
+  (call :sum)
+  (eax <<= 1)
+  (eax += 1)
+  (eax <- (print eax))
+  (edi += 1)
+  (goto :compare)
+  :done)
+ (:sum
+  (ebx <- eax)
+  (eax += 1)
+  (eax *= ebx)
+  (eax >>= 1)
+  (return)))

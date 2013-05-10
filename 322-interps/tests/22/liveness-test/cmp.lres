@@ -1,0 +1,1 @@
+((in(a x y z)(a x z)(a x))(out(a x z)(a x)()))

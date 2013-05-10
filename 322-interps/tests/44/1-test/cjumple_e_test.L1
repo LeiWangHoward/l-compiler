@@ -1,0 +1,12 @@
+(((cjump 4 <= 4 :true :false)
+
+:true
+(edi <- 3)
+(goto :print)
+
+:false
+(edi <- 11)
+(goto :print)
+
+:print
+(eax <- (print edi))))

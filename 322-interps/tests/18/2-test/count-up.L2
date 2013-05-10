@@ -1,0 +1,19 @@
+(
+    (
+        (eax <- (allocate 21 1))
+        (esi <- eax)
+        (i <- 1) ; this will be the counter; starts at 0
+
+        (edi <- esi)
+        :loop
+        (eax <- (print i))
+        ((mem edi 4) <- i)
+        (edi += 4)
+        (i += 2) ; add an encoded 1
+
+        (cjump i < 21 :loop :end)
+
+        :end
+        (eax <- (print esi))
+    )
+)

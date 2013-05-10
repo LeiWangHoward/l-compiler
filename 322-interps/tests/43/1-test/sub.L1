@@ -1,0 +1,5 @@
+((
+    (ebx <- 7)
+    (ebx -= 10)
+    (eax <- (print ebx))
+))

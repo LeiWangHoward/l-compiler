@@ -1,0 +1,8 @@
+((eax <- 1)
+(myvar <- 5)
+(ebx += myvar)
+(ecx += myvar)
+(edx += myvar)
+(esi += myvar)
+(edi += myvar)
+(eax += myvar))

@@ -1,0 +1,2 @@
+(((eax <- 1 ) (ebx <- 3 ) (ecx <- 5 ) (ecx <- 7 ) (edi <- 9 ) (edx <- 11 ) (esi <- 13 ) (esi += eax ) (esi += ebx ) (esi += ecx ) (esi += edi ) (esi += edx ) (esi += esi ) (esi *= 2 ) (esi += 1 ) (eax <- (print esi ) ) ) )
+

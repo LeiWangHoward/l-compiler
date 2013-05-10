@@ -1,0 +1,10 @@
+(((call :bool_check))
+ (:bool_check
+  (ebx <- 1)
+  (ecx <- 3)
+  (goto :work)
+  :not
+  (eax <- (print ebx))
+  :work
+  (eax <- (print ecx))
+  (return)))

@@ -1,0 +1,9 @@
+(
+( (mem ebp -4) <- 1)
+
+( t_0 <- (mem ebp -4))
+
+( t_0 += 1)
+( (mem ebp -4) <- t_0)
+( eax <- (mem ebp -4))
+)

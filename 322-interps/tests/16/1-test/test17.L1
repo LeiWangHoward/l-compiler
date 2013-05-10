@@ -1,0 +1,15 @@
+(((eax <- (print 3))
+ (eax <- 1)
+ (edx <- 1)
+ (ecx <- 20)
+ (call :fib)
+ (eax <- (print eax)))
+(:fib
+ (eax += edx)
+ (edx += eax)
+ (ecx -= 1)
+ (cjump ecx = 0 :done :continue)
+ :continue
+ (tail-call :fib)
+ :done
+ (return)))

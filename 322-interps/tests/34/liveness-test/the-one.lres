@@ -1,0 +1,10 @@
+((in
+  (king)
+  (king)
+  (king)
+  (king))
+ (out 
+  (king)
+  (king)
+  (king)
+  ()))

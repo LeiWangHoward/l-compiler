@@ -1,0 +1,1 @@
+((in (ecx) (a ecx) (a ecx) (ecx)) (out (a ecx) (a ecx) (ecx) ()))

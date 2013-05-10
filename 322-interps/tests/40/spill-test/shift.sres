@@ -1,0 +1,5 @@
+(
+((mem ebp -4) <- eax)
+(t_0 <- (mem ebp -4))
+(ebx <<= t_0)
+)

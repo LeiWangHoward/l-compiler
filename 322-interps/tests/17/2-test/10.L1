@@ -1,0 +1,26 @@
+((:f
+  (ebx <- 9)
+  (ecx <- 7)
+  (edi <- -1)
+  (esi <- -67)
+
+  (ecx += ebx)
+  (ecx -= 1)
+  (edi += ebx)
+  (edi += ecx)
+  (esi += ebx)
+  (esi *= ecx)
+  (esi -= edi)
+  (eax <- (print ecx))
+  (eax <- (print edi))
+  (eax <- (print esi))
+  (goto :chunk)
+
+  (edi += esi)
+  (eax <- (print 77))
+  (return)
+
+  :chunk
+  (eax <- (allocate 9 1))
+  (edi <- eax)
+  (eax <- (print edi))))

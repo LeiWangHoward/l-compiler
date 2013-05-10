@@ -1,0 +1,10 @@
+(((eax <- 151)
+  (call :foo)
+  (eax <- (print eax)))
+ (:foo
+  (esp -= 8)
+  (ecx <- 2023)
+  (edx <- ecx)
+  (ecx <- ecx)
+  (ecx += edx)
+  (return)))

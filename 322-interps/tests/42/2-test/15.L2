@@ -1,0 +1,8 @@
+(((var <- 51)
+  (var <<= 1)
+  (var += 1)
+  (ecx <- 51)
+  (ecx *= 2)
+  (ecx += 1)
+  (ebx <- var = ecx)
+  (eax <- (print ebx))))

@@ -1,0 +1,4 @@
+(((eax <- (allocate 9 5))
+(x <- eax)
+(y <- 4)
+(eax <- (array-error x y))))

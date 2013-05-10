@@ -1,0 +1,17 @@
+;;the sum of 1-10, call another function
+(((call :sum)
+(eax <- (print ebx)))
+(:sum
+(ebx <- 1)
+(ecx <- 0)
+:start
+(cjump ebx < 10 :continue :end)
+:continue
+(ecx += ebx)
+(ebx += 1)
+(goto :start)
+:end
+(ecx *= 2)
+(ecx += 1)
+(ebx <- ecx)
+(return)))

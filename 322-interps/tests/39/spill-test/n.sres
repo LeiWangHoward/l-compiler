@@ -1,0 +1,6 @@
+(:f
+ ((mem ebp -32) <- 10)
+ (call :g)
+ (s_0 <- (mem ebp -32))
+ (eax += s_0)
+ (return))

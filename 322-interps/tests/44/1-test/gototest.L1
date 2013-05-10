@@ -1,0 +1,5 @@
+(((esi <- 5)
+(goto :skip)
+(esi += 2)
+:skip
+(eax <- (print esi))))

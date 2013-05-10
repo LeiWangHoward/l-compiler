@@ -1,0 +1,18 @@
+((eax <- (allocate 7 3))
+  (ecx <- eax)
+  (ebx <- 3)
+  (myvar <- 5)
+
+  :loop
+  (cjump ebx = 0 :done :continue)
+
+  :continue 
+  ((mem eax 4) <- myvar)
+  
+  (eax += 4)
+  (ebx -= 1)
+  (goto :loop)
+
+  :done
+  (eax <- (print ecx)))
+myvar -4 s

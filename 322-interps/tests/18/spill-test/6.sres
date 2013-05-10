@@ -1,0 +1,5 @@
+(   (_res_0 <- (mem ecx 0))
+    ((mem ebp -12) <- _res_0)
+    (_res_1 <- (mem ebp -12))
+    (edx -= _res_1))
+

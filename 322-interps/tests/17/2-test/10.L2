@@ -1,0 +1,26 @@
+((:f
+  (x0 <- 9)
+  (x1 <- 7)
+  (x2 <- -1)
+  (x3 <- -67)
+
+  (x1 += x0)
+  (x1 -= 1)
+  (x2 += x0)
+  (x2 += x1)
+  (x3 += x0)
+  (x3 *= x1)
+  (x3 -= x2)
+  (eax <- (print x1))
+  (eax <- (print x2))
+  (eax <- (print x3))
+  (goto :chunk)
+
+  (x2 += x3)
+  (eax <- (print 77))
+  (return)
+
+  :chunk
+  (eax <- (allocate 9 1))
+  (a <- eax)
+  (eax <- (print a))))

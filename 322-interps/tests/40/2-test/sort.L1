@@ -1,0 +1,27 @@
+(
+(
+(eax <- (allocate 21 1))
+(edi <- eax)
+(eax <- 1)
+:loop
+(cjump eax < 21 :begin :end)
+:begin
+(ebx <- eax)
+(ebx -= 1)
+(ebx <<= 1)
+(ebx += 4)
+(ebx += edi)
+((mem ebx 0) <- eax)
+(eax += 4)
+(goto :loop)
+:end
+(eax <- (print edi))
+(eax <- edi)
+(edx <- 21)
+(call :sort)
+(eax <- (print edi))
+)
+
+( :sort (esp += -24) ( ( mem ebp -4 ) <- edi ) ( ( mem ebp -8 ) <- esi ) ( ebx <- eax ) ( ( mem ebp -24 ) <- edx ) ( ( mem ebp -12 ) <- 1 ) :loop1 ( ecx <- ( mem ebp -12 ) ) ( edi <- ( mem ebp -24 ) ) ( cjump ecx < edi :begin1 :end1 ) :begin1 ( ecx <- ( mem ebp -12 ) ) ( ( mem ebp -16 ) <- ecx ) ( ecx <- ( mem ebp -12 ) ) ( ( mem ebp -20 ) <- ecx ) :loop2 ( ecx <- ( mem ebp -20 ) ) ( edi <- ( mem ebp -24 ) ) ( cjump ecx < edi :begin2 :end2 ) :begin2 ( ecx <- ( mem ebp -20 ) ) ( ecx -= 1 ) ( ecx <<= 1 ) ( ecx += 4 ) ( ecx += ebx ) ( ecx <- ( mem ecx 0 ) ) ( edi <- ( mem ebp -16 ) ) ( edi -= 1 ) ( edi <<= 1 ) ( edi += 4 ) ( edi += ebx ) ( edx <- ( mem edi 0 ) ) ( cjump edx < ecx :newmax :keep ) :newmax ( ecx <- ( mem ebp -20 ) ) ( ( mem ebp -16 ) <- ecx ) :keep ( ecx <- ( mem ebp -20 ) ) ( ecx += 2 ) ( ( mem ebp -20 ) <- ecx ) ( goto :loop2 ) :end2 ( ecx <- ( mem ebp -12 ) ) ( ecx -= 1 ) ( ecx <<= 1 ) ( ecx += 4 ) ( ecx += ebx ) ( esi <- ( mem ecx 0 ) ) ( edi <- ( mem ebp -16 ) ) ( edi -= 1 ) ( edi <<= 1 ) ( edi += 4 ) ( edi += ebx ) ( edx <- ( mem edi 0 ) ) ( ( mem ecx 0 ) <- edx ) ( ( mem edi 0 ) <- esi ) ( ecx <- ( mem ebp -12 ) ) ( ecx += 2 ) ( ( mem ebp -12 ) <- ecx ) ( goto :loop1 ) :end1 ( edi <- ( mem ebp -4 ) ) ( esi <- ( mem ebp -8 ) ) ( return ) ) 
+
+)

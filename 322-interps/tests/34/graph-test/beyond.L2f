@@ -1,0 +1,4 @@
+((me <- eax)
+ (me += ebx) (me += ecx) (me += edx)
+ (me += edi) (me += esi) (me += eax)
+ (me += 6))

@@ -1,0 +1,8 @@
+(((cjump 7 < 9 :true :false)
+ :true
+ (eax <- 83)
+ (goto :end)
+ :false 
+ (eax <- 57)
+ :end
+ (eax <- (print eax))))

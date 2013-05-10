@@ -1,0 +1,17 @@
+(((mem ebp -4) <- 0)
+ (count <- eax)
+ (index <- 0)
+
+ :test
+ (cjump index < count :do :done)
+
+ :do
+ (index += 1)
+ (s0 <- (mem ebp -4))
+ (s0 += 10)
+ ((mem ebp -4) <- s0)
+ (goto :test)
+ 
+ :done
+ (eax <- (mem ebp -4))
+ (return)) 

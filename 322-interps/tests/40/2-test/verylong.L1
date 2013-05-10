@@ -1,0 +1,35 @@
+((
+(eax <- 1)
+(ebx <- 2)
+(edi <- 3)
+(esi <- 4)
+
+(ecx <- 5)
+
+((mem ebp -4) <- 0)
+(edx <- (mem ebp -4))
+(edx += ecx)
+((mem ebp -4) <- edx)
+
+(edx <- 6)
+(ecx <- (mem ebp -4))
+(ecx += esi)
+(ecx += edi)
+(ecx += edx)
+((mem ebp -4) <- ecx)
+
+(ecx <- 7)
+(edi <- (mem ebp -4))
+(edi += ebx)
+((mem ebp -4) <- edi)
+(ebx <- (mem ebp -4))
+(ebx += eax)
+((mem ebp -4) <- ebx)
+(eax <- (mem ebp -4))
+(eax += ecx)
+((mem ebp -4) <- eax)
+
+(eax <<= 1)
+(eax += 1)
+(eax <- (print eax))
+))

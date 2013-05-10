@@ -1,0 +1,8 @@
+(
+ (f <- :f)
+ (g <- :g)
+ (h <- 1)
+ (x += h)
+ (eax <- (print x))
+ (tail-call f)
+)

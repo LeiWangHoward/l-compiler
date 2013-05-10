@@ -1,0 +1,20 @@
+(
+(
+
+(esi <- 1)
+(edi <- 0)
+:loop
+(cjump edi < 15 :begin :end)
+:begin
+(ecx <- edi)
+(esi <- 1)
+(esi <<= ecx)
+(esi <<= 2)
+(esi += 1)
+(eax <- (print esi))
+(edi += 1)
+(goto :loop)
+:end
+
+)
+)

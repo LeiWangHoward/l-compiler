@@ -1,0 +1,3 @@
+((eax <- 1)
+(myvar <- 5)
+(eax += myvar))

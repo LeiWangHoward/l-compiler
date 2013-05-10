@@ -1,0 +1,27 @@
+;; Testing labels and comments and whitespace
+( ;;
+ (;;
+
+
+
+
+  :_ABSSDFSDFSDFsdfsdfsd098098
+
+  :_99999999000000______
+
+  :________
+
+  ;;
+
+  :a9sdfsd
+
+  :sdfsdASDFSDFSDFSDFBMAS
+
+  (goto :__9___);; ;; ;;
+
+  :__9___) ;;
+
+
+
+;;
+)

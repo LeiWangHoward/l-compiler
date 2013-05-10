@@ -1,0 +1,4 @@
+(((esi <- 11)
+  (eax <- (allocate esi 3))
+  (edx <- eax)
+  (eax <- (print edx))))

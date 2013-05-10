@@ -1,0 +1,24 @@
+(   (
+        (esi <- 1)
+        (call :fun_1)
+        (eax <- (print esi))
+    )
+    (:fun_1
+        (save_edi <- edi)
+
+        (edi <- 3)
+        (call :fun_2)
+        (eax <- (print edi))
+    
+        (edi <- save_edi)
+    
+        (return)
+    )
+    (:fun_2
+        (eax <- (print 5))
+    
+        (return)
+    )    
+)
+
+    

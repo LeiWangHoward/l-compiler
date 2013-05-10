@@ -1,0 +1,9 @@
+((
+	(eax <- (allocate 101 101))
+	(eax <- (allocate 103 103))
+	(eax <- (print eax))
+)
+(:funfun
+	(ebx += 3)
+	(return)
+))

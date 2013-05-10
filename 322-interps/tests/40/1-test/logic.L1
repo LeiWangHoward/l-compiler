@@ -1,0 +1,59 @@
+((
+;; &=
+(edi <- 2)
+(edi &= 2)
+(edi *= 2)
+(edi += 1)
+(eax <- (print edi))
+
+(esi <- 1)
+(edi &= esi)
+(eax <- (print edi))
+
+;; <<
+(edi <- 1)
+(edi <<= 1)
+(edi *= 2)
+(edi += 1)
+(eax <- (print edi))
+
+(edi <- 1)
+(ecx <- 2)
+(edi <<= ecx)
+(edi *= 2)
+(edi += 1)
+(eax <- (print edi))
+
+;; >>
+(edi <- 3)
+(edi >>= 1)
+(edi *= 2)
+(edi += 1)
+(eax <- (print edi))
+
+(edi <- 3)
+(ecx <- 1)
+(edi >>= ecx)
+(edi *= 2)
+(edi += 1)
+(eax <- (print edi))
+
+;; =
+(edx <- 1 = 1)
+(edx *= 2)
+(edx += 1)
+(eax <- (print edx))
+
+;; <=
+(ebx <- 2)
+(edx <- ebx <= 1)
+(edx *= 2)
+(edx += 1)
+(eax <- (print edx))
+
+;; <
+(edx <- 2 < ebx)
+(edx *= 2)
+(edx += 1)
+(eax <- (print edx))
+))

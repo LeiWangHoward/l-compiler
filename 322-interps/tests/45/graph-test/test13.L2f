@@ -1,0 +1,6 @@
+((x <- ebp)
+(esp -= 30)
+((mem esp 0) <- 30)
+(esp += 30)
+(eax <- (print x))
+(return))

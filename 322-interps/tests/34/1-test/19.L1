@@ -1,0 +1,3 @@
+(((eax <- 9)
+  (eax &= 9)
+  (eax <- (print eax))))

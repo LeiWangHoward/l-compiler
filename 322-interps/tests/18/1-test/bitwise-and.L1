@@ -1,0 +1,22 @@
+(
+    (
+        (edx <- 31) ;; 15, or 0b1111
+        (edx &= 2) ;; 0b0010
+
+        (edx *= 2)
+        (edx += 1)
+        (eax <- (print edx))
+
+        (edx <- 31)
+        (ebx <- 9) ;; 0b0100 (4)
+        (edx &= ebx)
+
+        (eax <- (print edx))
+
+        (ecx <- 21) ;; 0b1010
+        (eax <- 11) ;; 0b0101
+        (ecx &= eax)
+
+        (eax <- (print ecx))
+    )
+)

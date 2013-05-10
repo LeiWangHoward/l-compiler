@@ -1,0 +1,3 @@
+((prin <- eax)
+ (eax <- (print prin))
+ (eax *= eax))

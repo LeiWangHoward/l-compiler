@@ -1,0 +1,4 @@
+(((call :f)(b <- 5)(eax <- (print b)))
+(:f(tail-call :g))
+(:g (a <- 3)
+(eax <- (print a))(return)))

@@ -1,0 +1,4 @@
+(((eax <- 3)
+  (ecx <- eax = 3)
+  (ecx += 26)
+  (eax <- (print ecx))))

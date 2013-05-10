@@ -1,0 +1,9 @@
+;; f(x,y) = x+y
+(
+( x <- eax )
+( y <- ebx )
+( x += y)
+(eax <- x)
+(return)
+)
+x -4 s_

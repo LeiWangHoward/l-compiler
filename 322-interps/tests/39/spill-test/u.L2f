@@ -1,0 +1,1 @@
+(:f (a <- eax) (b <- eax) (c <- eax) (d <- eax) (eax <- a) (eax += b) (eax += c) (eax += d) (return)) c -4 c_

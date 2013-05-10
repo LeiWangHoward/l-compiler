@@ -1,0 +1,5 @@
+(((esi <- 3) ;; 1
+  (edi <- 7) ;; 3
+  (esi += edi) 
+  (esi -= 1)
+  (eax <- (print esi))))

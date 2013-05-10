@@ -1,0 +1,16 @@
+(((eax <- 5)
+  (ebx <- eax)
+  (esi <- eax)
+  (ebx <<= 1)
+  (ebx -= 1)
+  (esi *= 2)
+  (esi -= 1)
+  (cjump esi = ebx :true :false)
+  :true
+  (eax <- (print esi))
+  (goto :done)
+  :false 
+  (eax <- 85)
+  (eax <- (print eax))
+  :done
+  ))

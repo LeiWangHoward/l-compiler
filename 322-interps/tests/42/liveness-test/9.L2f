@@ -1,0 +1,7 @@
+((eax += 1)
+(x <- eax)
+(y <- x)
+(x += 1)
+(cjump y < x :a :b)
+:a
+:b)

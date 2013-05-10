@@ -1,0 +1,15 @@
+(((eax <- (print 1))
+  (ebx <- 1)
+  (call :stuff))
+ (:stuff
+  (ebx += 2)
+  (tail-call :stuff2))
+ (:stuff2
+  (eax <- (print ebx))
+  (cjump ebx <= 13 :true :false)
+  :true
+  (tail-call :stuff)
+  :false
+  (goto :end)
+  :end
+  (return)))

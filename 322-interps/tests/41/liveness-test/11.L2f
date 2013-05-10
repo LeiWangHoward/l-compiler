@@ -1,0 +1,4 @@
+(:loop
+ (eax <- s)
+ (s += eax)
+ (goto :loop))

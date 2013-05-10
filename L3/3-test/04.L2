@@ -1,0 +1,4 @@
+(((temp <- 7) ;;size 3
+  (eax <- (allocate temp 7))
+  (v <- eax)
+  (eax <- (print v))))

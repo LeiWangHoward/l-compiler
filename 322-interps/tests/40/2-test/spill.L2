@@ -1,0 +1,20 @@
+(
+(
+(eax <- 1)
+(call :f)
+(eax <<= 1)
+(eax += 1)
+(eax <- (print eax))
+)
+(:f
+(a <- eax)
+(b <- eax)
+(c <- eax)
+(d <- eax)
+(eax <- a)
+(eax += b)
+(eax += c)
+(eax += d)
+(return)
+)
+)

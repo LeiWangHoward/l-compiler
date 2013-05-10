@@ -1,0 +1,6 @@
+((eax <- 1)
+(ebx <- 3)
+(ecx <- 7)
+(ebx *= ecx)
+(eax <- eax)
+(ebx <<= ecx))

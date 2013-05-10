@@ -1,0 +1,12 @@
+((eax <- 1)
+ (ebx <- 1)
+ (ecx <- 1)
+ (edx <- 1)
+ (x <- 1)
+ (eax += eax)
+ (ebx += ebx)
+ (ecx += ecx)
+ (edx += edx)
+ (x += x)
+ (return))
+x -4 y

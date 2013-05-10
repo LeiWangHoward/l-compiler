@@ -1,0 +1,27 @@
+(((eax <- 17)
+  (ecx <- 45)
+  (eax <- eax)
+  (ecx <- ecx)
+  (call :f)
+  (eax <- (print eax)))
+ 
+ (:f
+
+  (ebx <- eax)
+  (ebx -= 1)
+  (ebx >>= 1)
+  (edx <- ebx)
+  (edx *= ebx)
+  (edx *= ebx)
+  (edx *= 5)
+  (edx <<= 1)
+  (edx += 1)
+
+  (ecx <- ecx)
+  (ecx *= 2)
+  (ecx -= 1)
+
+  (eax <- edx)
+  (eax += ecx)
+  (eax -= 1)
+  (return)))

@@ -1,0 +1,5 @@
+(((call :fun)
+  (edx <- ecx)
+  (eax <- (print edx)))
+  (:fun (ecx <- 3)
+  	    (return)))

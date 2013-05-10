@@ -1,0 +1,9 @@
+(
+(
+(eax <- 1)
+(edx <- 1)
+(ebx <- eax)
+(ecx <- edx)
+(eax <- (print ecx))
+)
+)

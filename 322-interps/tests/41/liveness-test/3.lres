@@ -1,0 +1,13 @@
+((in (ebx edi esi wat)
+     (eax ebx edi esi)
+     (eax ebx ecx edi edx esi)
+     (eax ebx edi esi)
+     (eax ebx edi esi)
+     (eax edi esi))
+ 
+ (out (eax ebx edi esi)
+      (eax ebx edi esi)
+      (eax ebx edi esi)
+      (eax ebx edi esi)
+      (eax edi esi)
+      ()))

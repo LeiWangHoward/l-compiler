@@ -1,0 +1,2 @@
+((non0 <- (mem ebp 0))
+ (call non0))

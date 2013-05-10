@@ -1,0 +1,46 @@
+(   (
+        (esi <- 1)
+        (call :fun_1)
+        (eax <- (print esi))
+    )
+    (:fun_1
+        (esp -= 4)
+        ((mem esp 0) <- ebp)
+        (ebp <- esp)
+        (esp -= 8)
+        ((mem ebp -4) <- esi)
+        ((mem ebp -8) <- edi)
+
+        (edi <- 3)
+        (call :fun_2)
+        (eax <- (print edi))
+    
+        (esi <- (mem ebp -4))
+        (edi <- (mem ebp -8))
+    
+        (esp += 8)
+        (ebp <- (mem esp 0))
+        (esp += 4)
+        (return)
+    )
+    (:fun_2
+        (esp -= 4)
+        ((mem esp 0) <- ebp)
+        (ebp <- esp)
+        (esp -= 8)
+        ((mem ebp -4) <- esi)
+        ((mem ebp -8) <- edi)
+
+        (eax <- (print 5))
+    
+        (esi <- (mem ebp -4))
+        (edi <- (mem ebp -8))
+    
+        (esp += 8)
+        (ebp <- (mem esp 0))
+        (esp += 4)
+        (return)
+    )    
+)
+
+    

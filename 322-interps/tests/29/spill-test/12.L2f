@@ -1,0 +1,6 @@
+((a <- eax)
+ (b <- ebx)
+ (a *= a)
+ (b += a)
+ (eax <- b)
+ (return)) a -4 s

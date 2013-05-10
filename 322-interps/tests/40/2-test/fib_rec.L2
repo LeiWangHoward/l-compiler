@@ -1,0 +1,28 @@
+(
+
+(
+(eax <- 3)
+(call :fib)
+(eax <<= 1)
+(eax += 1)
+(eax <- (print eax))
+)
+
+(:fib
+(n <- eax)
+(cjump n <= 1 :ZERO_OR_ONE :OTHERS)
+:ZERO_OR_ONE
+( eax <- n )
+(return)
+:OTHERS
+( n -= 1 )
+( eax <- n)
+(call :fib)
+( f <- eax )
+( n -= 1)
+( eax <- n)
+( call :fib )
+( eax += f )
+( return )
+)
+)

@@ -1,0 +1,8 @@
+(((eax <- 3)
+  (esp -= 4)
+  ((mem ebp -4) <- 11)
+  (ecx <- (mem ebp -4))
+  (eax += 5)
+  (ecx += eax)
+  (eax <- (print ecx))
+  (esp += 4)))

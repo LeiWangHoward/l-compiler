@@ -1,0 +1,4 @@
+(((edi <- 1)
+(edi <<= 2)
+(edi += 1)
+(eax <- (print edi))))

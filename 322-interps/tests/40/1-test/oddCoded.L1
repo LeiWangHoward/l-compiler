@@ -1,0 +1,11 @@
+((
+(edx <- 5) ;; 2
+(edx &= 2) ;; edx & 00__010
+(cjump edx = 0 :even :odd)
+:even
+(eax <- (print 1))
+(goto :end)
+:odd
+(eax <- (print 3))
+:end
+))

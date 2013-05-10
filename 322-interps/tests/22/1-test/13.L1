@@ -1,0 +1,11 @@
+(((cjump 1 = 1 :yes :no)
+  :yes
+  (goto :print1)
+  :no
+  (goto :print2)
+  :print1
+  (eax <- (print 5))
+  (goto :end)
+  :print2
+  (eax <- (print 3))
+  :end))

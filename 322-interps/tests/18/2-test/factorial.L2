@@ -1,0 +1,29 @@
+(
+    (
+        (eax <- 9)
+        (call :factorial) ; 4! = 24
+        (eax <- (print eax))
+        (eax <- 21)
+        (call :factorial) ; 10! = 3628800
+        (eax <- (print eax))
+    )
+    ( :factorial
+        (save_esi <- esi)
+        (save_edi <- edi)
+
+        (result <- 1)
+      :fac_loop
+        (ecx <- eax)
+        (ecx >>= 1)
+        (result *= ecx)
+        (eax -= 2)
+        (cjump eax = 1 :fac_end :fac_loop)
+      :fac_end
+        (eax <- result)
+        (eax *= 2)
+        (eax += 1)
+        (esi <- save_esi)
+        (edi <- save_edi)
+        (return)
+    )
+)

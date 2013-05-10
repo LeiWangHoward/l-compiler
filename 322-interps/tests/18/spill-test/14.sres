@@ -1,0 +1,13 @@
+(   ((mem ebp -4) <- 20)
+    (__0 <- (mem ebp -4))
+    (cjump __0 < 40 :yes :no)
+    :yes
+    (__1 <- (mem ebp -4))
+    (call __1)
+    (goto :done)
+    :no
+    (__2 <- (mem ebp -4))
+    (__2 += 2)
+    ((mem ebp -4) <- __2)
+    :done)
+

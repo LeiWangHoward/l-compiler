@@ -1,0 +1,10 @@
+(:countup
+  (x <- ecx)
+  (cjump x < 11 :cont :done)
+  :cont
+  (x += 2)
+  (ecx <- x)
+  (eax <- (print x))
+  (call :countup)
+  :done
+  (return))

@@ -1,0 +1,1 @@
+((a <- eax) (b <- ecx) (c <- edi) (d <- esi) (e <- ebx) (f <- edx))

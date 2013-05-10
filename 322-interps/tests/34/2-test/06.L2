@@ -1,0 +1,28 @@
+(((a <- 12)
+  (eax <- a)
+  (call :fib)
+  (res <- eax)
+  (res <<= 1)
+  (res += 1)
+  (eax <- (print res)))
+
+(:fib
+(x <- eax)
+(cjump x = 1 :result :c1)
+:c1
+(cjump x = 0 :result :c2)
+:c2
+(x -= 1)
+(eax <- x)
+(call :fib)
+(r1 <- eax)
+(x -= 1)
+(eax <- x)
+(call :fib)
+(r2 <- eax)
+(eax <- r1)
+(eax += r2)
+(return)
+:result
+(eax <- x)
+(return)))

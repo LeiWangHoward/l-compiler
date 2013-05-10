@@ -1,0 +1,6 @@
+((eax <- (allocate 15 3))
+(x <- 3)
+(y <- 1)
+((mem eax 0) <- x)
+((mem eax 4) <- y)
+(return))

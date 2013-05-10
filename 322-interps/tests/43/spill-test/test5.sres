@@ -1,0 +1,11 @@
+(
+(a <- 3)
+(b <- 3)
+((mem ebp -8) <- 3)
+(d <- 3)
+(a += 3)
+(b += 3)
+(tempc0 <- (mem ebp -8))
+(tempc0 += 3)
+((mem ebp -8) <- tempc0)
+(d += 3))

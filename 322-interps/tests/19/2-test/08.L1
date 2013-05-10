@@ -1,0 +1,7 @@
+(((eax <- 89)
+  (goto :jumphere)
+  (eax <- 3)
+  :jumphere
+  (ebx <- eax)
+  (ebx += 3)
+  (eax <- (print eax))))

@@ -1,0 +1,9 @@
+(((x <- 3)
+  (x2 <- x)
+  (call :now_value)
+  (x2 += 2)
+  (eax <- (print x2)))
+
+ (:now_value
+  (eax <- (print 3))
+  (return)))

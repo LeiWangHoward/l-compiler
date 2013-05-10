@@ -1,0 +1,2 @@
+((eax <- (allocate x y)) 
+ (x <- (mem eax 4)))

@@ -1,0 +1,8 @@
+(((esi <- :mylabel)
+  (ebx <- 5)
+  (eax <- (print ebx))
+  (call esi)
+  (ebx -= 4))
+  (:mylabel
+  (eax <- (print eax))
+  (return)))

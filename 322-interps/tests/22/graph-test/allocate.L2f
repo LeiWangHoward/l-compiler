@@ -1,0 +1,2 @@
+;;in(x y)(x y) out(x y)() kill(eax)(eax)
+((eax <- (allocate 2 2))(eax <- (allocate x y)))

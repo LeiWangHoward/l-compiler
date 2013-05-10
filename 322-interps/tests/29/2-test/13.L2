@@ -1,0 +1,12 @@
+(((eax <- 10)
+  (call :f)
+  (eax += eax)
+  (eax += 1)
+  (eax <- (print eax)))
+ (:f
+  (temp <- 1)
+  (call :g)
+  (eax += temp)
+  (return))
+ (:g
+  (return)))

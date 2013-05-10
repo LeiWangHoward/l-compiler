@@ -1,0 +1,6 @@
+(((call :testfunc)
+ (eax <- (print eax)))
+ (:testfunc (eax <- 4 < 5)
+ (eax <- (print eax))
+ (eax <- (print eax))
+ (return)))

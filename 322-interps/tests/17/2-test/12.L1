@@ -1,0 +1,5 @@
+(((ebx <- 99)
+  (eax <- (allocate ebx 5))
+  (ecx <- eax)
+  (edx <- 101)
+  (eax <- (array-error ecx edx))))

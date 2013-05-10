@@ -1,0 +1,12 @@
+((myvar <- 5)
+ (eax <- 1)
+ :keep_looping
+ (cjump myvar = 0 :done :continue)
+ :continue
+ (eax *= 2)
+ (myvar -= 1)
+ (goto :keep_looping)
+ :done
+ (eax += 1)
+ (eax <- (print eax)))
+myvar -4 s

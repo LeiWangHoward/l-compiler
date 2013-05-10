@@ -1,0 +1,21 @@
+(((ebx <- 1)
+  (call :countup))
+ (:countup
+  ((mem ebp -4) <- ebx)
+  (ecx <- (mem ebp -4))
+  (cjump ecx < 11 :cont :done)
+  :cont
+  (ecx <- (mem ebp -4))
+  (ecx += 2)
+  ((mem ebp -4) <- ecx)
+  (ecx <- 0)
+  (edx <- 0)
+  (ebx += ecx)
+  (ebx += edx)
+  (ebx <- (mem ebp -4))
+  (ecx <- (mem ebp -4))
+  (eax <- (print ecx))
+  (call :countup)
+  :done
+  (return)))
+

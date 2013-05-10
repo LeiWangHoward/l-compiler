@@ -1,0 +1,2 @@
+((mewtoo0 <- (mem ebp -16))
+ (eax <- (print mewtoo0)))

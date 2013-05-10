@@ -1,0 +1,1 @@
+((eax <- (allocate 2 2))(eax <- (allocate x y)))

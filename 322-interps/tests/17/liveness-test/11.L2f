@@ -1,0 +1,10 @@
+(
+ (eax <- (allocate 9 3))
+ (arr <- eax)
+ (v <- (mem arr 4))
+ (v *= 12)
+ (v >>= 1)
+ (v += 1)
+ ((mem arr 16) <- v)
+ (eax <- (print arr))
+)

@@ -1,0 +1,12 @@
+(((esi <- -2147483648)
+  (ebx <- esi <= 2147483647)
+  (eax <- (print ebx))
+  (ebx <- esi < 2147483647)
+  (eax <- (print ebx))
+  (cjump esi = 2147483647 :wrong :right)
+  :wrong
+  (eax <- (print 3))
+  (goto :done)
+  :right
+  (eax <- (print 1))
+  :done))

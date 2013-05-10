@@ -1,0 +1,12 @@
+(
+ :main
+ (ebp -= 4)
+ ((mem ebp -4) <- 9)
+ (esp += 4)
+ (x <- 4)
+ (ebp += x)
+ (esp -= x)
+ (eax += 1)
+ (eax <- (print eax))
+ (return)
+)

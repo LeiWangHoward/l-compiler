@@ -1,0 +1,9 @@
+((cjump eax < esi :then :else)
+ :then
+ (x <- y)
+ (goto :done)
+ :else
+ (x <- z)
+ :done
+ (eax <- (print x)))
+;; hmm

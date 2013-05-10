@@ -1,0 +1,3 @@
+(((edi <- 5)
+(edi -= 2)
+(eax <- (print edi))))

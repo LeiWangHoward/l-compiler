@@ -1,0 +1,9 @@
+((in (s)
+     (s)
+     (eax s)
+     (s))
+
+ (out (s)
+      (eax s)
+      (s)
+      (s)))

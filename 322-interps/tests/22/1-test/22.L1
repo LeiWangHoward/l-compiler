@@ -1,0 +1,6 @@
+;;over shift
+(((eax <- 10000)
+(eax <<= 31)
+(eax *= 2)
+(eax += 3)
+(eax <- (print eax))))

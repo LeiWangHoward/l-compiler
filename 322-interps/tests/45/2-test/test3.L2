@@ -1,0 +1,15 @@
+(((x <- 3)
+(y <- 4)
+(z <- 8)
+(call :fun)
+(eax += x)
+(eax += y)
+(eax += z)
+(eax <- (print eax)))
+
+(:fun 
+(x <- 7)
+(y <- 13)
+(eax <- x)
+(eax += y)
+(return)))

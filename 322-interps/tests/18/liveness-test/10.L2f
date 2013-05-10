@@ -1,0 +1,4 @@
+(   (eax += 2)
+    (x <- eax)
+    (eax *= 4)
+    (eax <- (array-error x eax)))

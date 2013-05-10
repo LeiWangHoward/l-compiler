@@ -1,0 +1,7 @@
+((x <- eax)
+ (x += ebx)
+ (x += ecx)
+ (x += edx)
+ (x += esi)
+ (x += edi)
+ (x += eax))

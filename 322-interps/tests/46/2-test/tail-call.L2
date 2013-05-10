@@ -1,0 +1,15 @@
+(((myvar <- 4)
+(myvar2 <- 3)
+(ebx <- myvar2)
+(eax <- 7)
+(myvar2 <- :func1)
+(call myvar2))
+
+(:func1 
+(func2 <- :func2)
+(tail-call func2)
+(return))
+(:func2 
+(eax <- (print 5))
+(return)))
+

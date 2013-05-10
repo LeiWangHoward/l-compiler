@@ -1,0 +1,4 @@
+((x <- 5)
+ (cjump x < 3 :thn :els)
+ :thn
+ :els) x -8 s_

@@ -1,0 +1,9 @@
+(((esi <- 200)
+  (edi <- 200)
+  (cjump esi = edi :yes :no)
+  :yes
+  (eax <- (print 99))
+  (goto :END)
+  :no
+  (eax <- (print 49))
+  :END))

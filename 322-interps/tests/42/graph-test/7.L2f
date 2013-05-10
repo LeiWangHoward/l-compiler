@@ -1,0 +1,5 @@
+((x <- eax)
+(x += eax)
+(eax <- (array-error 5 11))
+(y <- 4)
+(y *= 2))

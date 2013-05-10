@@ -1,0 +1,3 @@
+((goto :label)
+:label
+(eax <- 5))

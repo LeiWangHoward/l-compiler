@@ -1,0 +1,2 @@
+((in () (myvar) (eax myvar) (eax myvar) (eax myvar) (eax myvar) (eax myvar) (eax myvar) (eax) (eax) (eax))
+(out (myvar) (eax myvar) (eax myvar) (eax myvar) (eax myvar) (eax myvar) (eax myvar) (eax myvar) (eax) (eax) ()))

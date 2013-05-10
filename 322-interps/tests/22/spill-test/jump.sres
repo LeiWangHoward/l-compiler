@@ -1,0 +1,7 @@
+(((mem ebp -4) <- 2)
+(y0 <- (mem ebp -4))
+(cjump y0 < 3 :smaller :bigger)
+:smaller
+:bigger
+(y1 <- (mem ebp -4))
+(eax <- (print y1)))

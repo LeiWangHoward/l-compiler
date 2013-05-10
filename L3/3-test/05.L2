@@ -1,0 +1,11 @@
+(((temp <- 7) ;;size 3
+  (eax <- (allocate temp 7))
+  (v <- eax)
+  (x <- v)
+  ;(x <<= 2)
+  ;(x += 1)
+  (x &= 1)
+  (x *= -2)
+  (x += 3)
+  (eax <- (print x))))
+

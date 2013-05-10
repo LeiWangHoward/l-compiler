@@ -1,0 +1,8 @@
+((eax <- 1)
+(ebx <- 3)
+(ebx <- myvar)
+(eax += myvar)
+(eax += ecx)
+(eax += edx)
+(eax += esi)
+(eax += edi))

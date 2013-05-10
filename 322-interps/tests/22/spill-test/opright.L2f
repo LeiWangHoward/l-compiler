@@ -1,0 +1,6 @@
+((eax <- 5)
+(eax -= x)
+(eax &= x)
+(eax *= x)
+(eax += x)
+(eax <- (print eax))) x -8 y

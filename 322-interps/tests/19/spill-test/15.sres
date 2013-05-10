@@ -1,0 +1,11 @@
+((z <- 5)
+ ((mem ebp -4) <- 6)
+ (s_0 <- (mem ebp -4))
+ (cjump z < s_0 :thn :els)
+ :thn
+ (eax <- (print z))
+ (goto :done)
+ :els
+ (s_1 <- (mem ebp -4))
+ (eax <- (print s_1))
+ :done)

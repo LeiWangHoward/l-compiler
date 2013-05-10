@@ -1,0 +1,10 @@
+(((x <- 4 <= 3)
+  (x <<= 1)
+  (x += 1)
+  (wrong <- 1);encoded 0
+  (right <- 3);encoded 1
+  (cjump x = 1 :false :true)
+  :true
+  (eax <- (print right))
+  :false
+  (eax <- (print wrong))))

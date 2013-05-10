@@ -1,0 +1,4 @@
+(((call :nine)
+  (eax <- (print eax))) 
+ (:nine (eax <- 19)
+	(return)))

@@ -1,0 +1,18 @@
+(((eax <- 3)
+  (call :L1)
+  (eax <- (print eax)))
+ (:L1
+  (tail-call :L2))
+ (:L3
+  (tail-call :L4)
+  (eax <- 5))
+ (:L5
+  (eax <- (print eax))
+  (eax <- 33)
+  (return))
+ (:L2
+  (call :L3)
+  (return))
+ (:L4
+  (call :L5)
+  (return)))

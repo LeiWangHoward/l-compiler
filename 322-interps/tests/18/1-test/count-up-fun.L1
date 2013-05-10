@@ -1,0 +1,40 @@
+(
+    (
+        (eax <- 21)
+        (call :count_up_array)
+        (eax <- 41)
+        (call :count_up_array)
+        (eax <- 3)
+        (call :count_up_array)
+    )
+    (   :count_up_array
+        (ebp <- esp)
+        (esp -= 12)
+        ((mem esp 8) <- esi)
+        ((mem esp 4) <- edi)
+        ((mem esp 0) <- eax)
+        (eax <- (allocate eax 1))
+        (edx <- (mem esp 0))
+        (esi <- eax)
+        (ebx <- 1) ; this will be the counter; starts at 0
+
+        :count_up_loop
+        (edi <- esi)
+        (ecx <- ebx)
+        (ecx -= 1)
+        (ecx *= 2)
+        (edi += ecx)
+        ((mem edi 4) <- ebx)
+        (ebx += 2) ; add an encoded 1
+
+        (cjump ebx < edx :count_up_loop :count_up_end)
+
+        :count_up_end
+        (eax <- (print esi))
+
+        (esi <- (mem esp 8))
+        (edi <- (mem esp 4))
+        (esp <- ebp)
+        (return)
+    )
+)

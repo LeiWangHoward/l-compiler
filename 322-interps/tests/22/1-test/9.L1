@@ -1,0 +1,6 @@
+(((eax <- 5)
+(cjump eax < 3 :big :small)
+:big
+(eax <- (print 5))
+:small
+(eax <- (print 3))))

@@ -1,0 +1,18 @@
+(((esp -= 4)
+(edi <- 3)
+(esi <- 4)
+((mem ebp -4) <- 8)
+(call :fun)
+(eax += edi)
+(eax += esi)
+(ebx <- (mem ebp -4))
+(eax += ebx)
+(eax <- (print eax))
+(esp <- ebp))
+
+(:fun
+(ebx <- 7)
+(ecx <- 13)
+(eax <- ebx)
+(eax += ecx)
+(return)))

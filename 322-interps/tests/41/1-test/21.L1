@@ -1,0 +1,24 @@
+(((esi <- 43)
+  (eax <- (allocate esi 43))
+  (edi <- eax)
+  (ebx <- 1)
+
+  :loop
+  (cjump ebx < esi :keep_going :done)
+
+  :keep_going
+  (edx <- ebx)
+  (edx -= 1)
+  (edx *= 2)
+  (edx += edi)
+  (edx += 4)
+  (ecx <- (mem edx 0))
+  (ecx -= ebx)
+  (ecx += 1)
+  ((mem edx 0) <- ecx)
+  (edx += 1)
+  (ebx += 2)
+  (goto :loop)
+
+  :done
+  (eax <- (print edi))))

@@ -1,0 +1,6 @@
+((eax <- 1)
+ ((mem ebp -4) <- :label)
+ (goto :label)
+ (eax <- 2)
+ :label
+ (eax <- (print eax)))

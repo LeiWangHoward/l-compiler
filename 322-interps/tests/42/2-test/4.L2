@@ -1,0 +1,11 @@
+(((eax <- 11)
+  (call :fun))
+  (:fun (x <- eax)
+  		(eax <- (print x))
+  		(eax <- x)
+  		(cjump 1 < eax :recur :done)
+  		:recur
+  		(eax -= 2)
+  		(call :fun)
+  		:done
+  		(return)))

@@ -1,0 +1,10 @@
+(
+( (mem ebp -4) <- eax )
+( y <- ebx)
+( s_0 <- (mem ebp -4))
+( s_0 += y)
+( (mem ebp -4) <- s_0)
+( eax <- (mem ebp -4))
+(return)
+) 
+y -8 t_

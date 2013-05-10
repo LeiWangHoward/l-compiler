@@ -1,0 +1,16 @@
+(
+(dx2 eax edi esi tx)
+(eax dx2 ebx ecx edi edx esi tx x2)
+(ebx eax ecx edi edx esi)
+(ecx eax ebx edi edx esi)
+(edi dx2 eax ebx ecx edx esi tx x2)
+(edx eax ebx ecx edi esi)
+(esi dx2 eax ebx ecx edi edx tx x2)
+(tx dx2 eax edi esi)
+(x2 eax edi esi)
+)
+(
+(dx2 ebx)
+(tx ecx)
+(x2 edx)
+)

@@ -1,0 +1,9 @@
+(((ecx <- 21)
+  (edx <- 10)
+  :loop
+  (cjump ecx < edx :true :false)
+  :true
+  (ecx += 4)
+  (goto :loop)
+  :false
+  (eax <- (print ecx))))

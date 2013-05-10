@@ -1,0 +1,4 @@
+(((mem ebp -8) <- 120)
+ (eax <- (mem ebp -8))
+ (poop_0 <- (mem ebp -8))
+ ((mem ebp -4) <- poop_0))

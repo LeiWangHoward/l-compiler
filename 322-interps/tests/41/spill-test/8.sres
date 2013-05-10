@@ -1,0 +1,6 @@
+(((mem ebp 0) <- 5)
+ (yu0 <- (mem ebp 0))
+ (cjump yu0 <= 4 :then :else)
+ :then
+ (eax <- (mem ebp 0))
+ :else)

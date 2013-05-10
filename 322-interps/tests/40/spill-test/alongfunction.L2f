@@ -1,0 +1,10 @@
+;; f(x) = x + x^2
+(
+( x <- eax)
+( x2 <- eax )
+( x2 *= x2 )
+( eax <- x)
+( eax += x2)
+(return)
+)
+x2 -4 t_

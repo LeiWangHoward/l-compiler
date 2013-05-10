@@ -1,0 +1,10 @@
+(((eax <- 4)
+  (ebx <- 4)
+  :loop
+  (eax *= eax)
+  (ebx += 1)
+  (cjump ebx = 7 :finish :loop)
+  :finish
+  (eax *= 2)
+  (eax += 1)
+  (eax <- (print eax))))

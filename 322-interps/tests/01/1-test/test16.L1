@@ -1,0 +1,23 @@
+((
+	(esi <- 5)
+	(edi <- 5)
+	(edx <- esi <= edi)
+	(edi <- 15)
+	(ebx <- 27)
+	(cjump 3 < 5 :label1 :label2)
+	:label1
+	(call :funfun)
+	(goto :label3)
+	:label2
+	(call :funfun2)
+	:label3
+	(eax <- (print ebx))
+)
+(:funfun
+ 	(ebx <- 11)
+ 	(return)
+)
+(:funfun2
+	(ebx += edi)
+	(return)
+))

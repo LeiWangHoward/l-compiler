@@ -1,0 +1,14 @@
+(
+ :f
+ (x_ <- 44)
+ (cjump x < y :first :second)
+ :first
+ (x0 <- 4)
+ (x0 <<= 5)
+ (eax += x0)
+ (return)
+ :second
+ (x1 *= 3)
+ (eax <- x1)
+ (tail-call :g)
+)

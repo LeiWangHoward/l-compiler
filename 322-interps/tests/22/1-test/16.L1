@@ -1,0 +1,10 @@
+(((eax <- 19)
+(ebx <- 0)
+:start
+(cjump 1 < eax :continue :end)
+:continue
+(ebx += eax)
+(eax -= 2)
+(goto :start)
+:end
+(eax <- (print ebx))))

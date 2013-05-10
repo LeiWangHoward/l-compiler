@@ -1,0 +1,5 @@
+(((cjump 1 <= 0 :then :else)
+  :then
+;  (eax <- (array-error eax eax))
+  :else
+  (eax <- (print 17))))

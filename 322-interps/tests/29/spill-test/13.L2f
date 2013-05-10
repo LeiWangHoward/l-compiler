@@ -1,0 +1,2 @@
+((b <- eax)
+ (return)) a -4 s

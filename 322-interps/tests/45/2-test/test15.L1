@@ -1,0 +1,21 @@
+(((eax <- :one)
+(eax <- :two)
+(eax <- :three)
+
+(eax <- 4)
+
+(goto :one)
+
+:one
+(eax += 1)
+(goto :three)
+:two
+(eax += 1)
+(goto :end)
+:three
+(eax += 1)
+(goto :two)
+
+:end
+
+(eax <- (print eax))))

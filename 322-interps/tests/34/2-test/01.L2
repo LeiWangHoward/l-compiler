@@ -1,0 +1,4 @@
+(((call :empty))
+ (:empty
+  (empty <- 1)
+  (return)))

@@ -1,0 +1,16 @@
+(((ebx <- 1)
+  (call :countup))
+ (:countup
+  (x <- ebx)
+  (cjump x < 11 :cont :done)
+  :cont
+  (x += 2)
+  (ecx <- 0)
+  (edx <- 0)
+  (ebx += ecx)
+  (ebx += edx)
+  (ebx <- x)
+  (eax <- (print x))
+  (call :countup)
+  :done
+  (return)))

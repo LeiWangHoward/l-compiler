@@ -1,0 +1,4 @@
+((z <- 3)
+ (goto :yolo)
+ (edx <- z)
+ :yolo) z -8 ya

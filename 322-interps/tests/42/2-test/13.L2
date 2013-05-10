@@ -1,0 +1,8 @@
+(((p <- 15)
+  (cjump p < 11 :true :false)
+  :true
+  (p <- 3)
+  (eax <- (print p))
+  :false
+  (p <- 1)
+  (eax <- (print p))))

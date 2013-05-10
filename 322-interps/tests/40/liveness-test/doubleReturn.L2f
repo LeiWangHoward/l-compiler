@@ -1,0 +1,11 @@
+(
+(x0 <- eax)
+(x1 <- edx)
+(cjump x0 < x1 :first :second)
+:first
+(eax <- x0)
+(return)
+:second
+(eax <- x1)
+(return)
+)

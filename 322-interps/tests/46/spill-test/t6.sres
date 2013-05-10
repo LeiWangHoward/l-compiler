@@ -1,0 +1,8 @@
+((eax <- 1)
+ ((mem ebp -4) <- 1)
+ (s0 <- (mem ebp -4))
+ (cjump s0 = eax :then :done)
+ :then
+ (eax <- 3)
+ :done
+ (eax <- (print eax)))

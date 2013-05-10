@@ -1,0 +1,18 @@
+((in
+    (ecx edi esi)
+    (eaxa ecx edi esi)
+    (eaxa ebx2 ecx edi esi)
+    (eaxa ebx2 edi esi)
+    (eaxa ebx ebx2 edi esi)
+    (eaxa ebx edi esi)
+    (eaxa edi esi)
+    (eax edi esi))
+(out
+    (eaxa ecx edi esi)
+    (eaxa ebx2 ecx edi esi)
+    (eaxa ebx2 edi esi)
+    (eaxa ebx ebx2 edi esi)
+    (eaxa ebx edi esi)
+    (eaxa edi esi)
+    (eax edi esi)
+    ()))

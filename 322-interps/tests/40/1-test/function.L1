@@ -1,0 +1,47 @@
+;;function call, exchange two numbers
+(
+;;main
+(
+(ebp <- esp)
+(esp += -8)
+;; int a = 50, b = 100
+;; the first available address in stack is ebp-8. Attention to the direction of stack
+((mem ebp -4) <- 101)
+((mem ebp -8) <- 201)
+
+;;print
+(edx <- (mem ebp -4))
+(eax <- (print edx))
+(edx <- (mem ebp -8))
+(eax <- (print edx))
+
+;; argument of subroutine
+(eax <- ebp)
+(eax += -4)
+(edx <- ebp)
+(edx += -8)
+
+;; caller will save ebp
+(call :func_exchange)
+
+;; print
+(edx <- (mem ebp -4))
+(eax <- (print edx))
+(edx <- (mem ebp -8))
+(eax <- (print edx))
+
+(esp <- ebp)
+)
+
+;;subroutine
+(
+:func_exchange
+(ebp <- esp)
+(ecx <- (mem eax 0))
+(ebx <- (mem edx 0))
+((mem edx 0) <- ecx)
+((mem eax 0) <- ebx)
+(esp <- ebp)
+(return)
+)
+)

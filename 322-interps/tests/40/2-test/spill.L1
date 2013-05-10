@@ -1,0 +1,20 @@
+(
+(
+(eax <- 1)
+(call :f)
+(eax <<= 1)
+(eax += 1)
+(eax <- (print eax))
+)
+
+( :f 
+( ( mem ebp -4 ) <- eax ) 
+( ebx <- eax ) 
+( ecx <- eax ) 
+( edx <- eax ) 
+( eax <- ( mem ebp -4 ) ) 
+( eax += ebx ) 
+( eax += ecx ) 
+( eax += edx ) 
+( return ) ) 
+)

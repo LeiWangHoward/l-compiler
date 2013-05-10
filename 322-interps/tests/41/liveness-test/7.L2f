@@ -1,0 +1,7 @@
+((y <- z)     ;; gens z, kills y ;; succ: 2, pred: none
+ (goto :next) ;; succ: 5, pred: 1
+ :prev	      ;; succ: 4, pred: 7
+ (return)     ;; gens eax, calee-save: esi, edi ;; succ: none, pred: 3
+ :next	      ;; succ: 6 ;; pred: 2
+ (edi <- y)   ;; gens y, kills edi ;; succ: 7, pred: 5
+ (goto :prev)) ;; succ 3, pred: 6

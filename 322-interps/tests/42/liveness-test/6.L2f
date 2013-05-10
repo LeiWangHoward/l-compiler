@@ -1,0 +1,6 @@
+((x <- eax) 
+(ecx += eax)
+(goto :a)
+(ecx <- x)
+:a
+(edx &= x))

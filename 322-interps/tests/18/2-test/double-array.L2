@@ -1,0 +1,46 @@
+(
+    (
+        (eax <- (allocate 11 1))
+        (arr1 <- eax)
+
+        ((mem arr1 4) <- 9)
+        ((mem arr1 8) <- 21)
+        ((mem arr1 12) <- 11)
+        ((mem arr1 16) <- 19)
+        ((mem arr1 20) <- 31)
+        ; array = {4, 10, 5, 9, 15}
+
+        (call :double)
+
+        (eax <- (allocate 11 1))
+        (arr2 <- eax)
+
+        ((mem arr2 4) <- 7)
+        ((mem arr2 8) <- 21)
+        ((mem arr2 12) <- 13)
+        ((mem arr2 16) <- 17)
+        ((mem arr2 20) <- 23)
+        ; array = {3, 10, 6, 8, 11}
+
+        (call :double)
+
+        (eax <- (print arr1))
+        (eax <- (print arr2))
+    )
+    ( :double
+        (addr <- eax)
+        (size <- (mem addr 0))
+        (i <- 1)
+    :double_loop
+        (addr += 4)
+        (edx <- (mem addr 0))
+        (edx -= 1)
+        (edx *= 2)
+        (edx += 1)
+        ((mem addr 0) <- edx)
+        (i += 1)
+        (cjump i <= size :double_loop :double_end)
+    :double_end
+        (return)
+    )
+)

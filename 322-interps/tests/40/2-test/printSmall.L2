@@ -1,0 +1,31 @@
+(
+
+(
+(eax <- 3)
+(edx <- 2)
+(call :print_small)
+)
+
+(
+:print_small
+(num0 <- eax)
+(num1 <- edx)
+(cjump num0 < num1 :label0 :label1)
+:label0
+(eax <- num0)
+(tail-call :print_uncoded)
+:label1
+(eax <- num1)
+(tail-call :print_uncoded)
+)
+
+(
+:print_uncoded
+(val <- eax)
+(val <<= 1)
+(val += 1)
+(eax <- (print val))
+(return)
+)
+
+)

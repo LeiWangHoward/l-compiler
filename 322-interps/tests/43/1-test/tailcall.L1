@@ -1,0 +1,13 @@
+((
+    (ebx <- 3)
+    (call :func)
+    (ebx <- 5)
+    (eax <- (print ebx))
+)(:func
+    (eax <- (print ebx))
+    (tail-call :func2)
+)(:func2
+    (ebx <- 7)
+    (eax <- (print ebx))
+    (return)
+))

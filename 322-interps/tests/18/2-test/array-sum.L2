@@ -1,0 +1,52 @@
+(
+    (
+        (eax <- (allocate 11 1))
+        (addr <- eax)
+
+        ((mem addr 4) <- 9)
+        ((mem addr 8) <- 21)
+        ((mem addr 12) <- 11)
+        ((mem addr 16) <- 19)
+        ((mem addr 20) <- 31)
+        ; array = {4, 10, 5, 9, 15}
+
+        (eax <- (print addr))
+        (eax <- addr)
+        (call :sum)
+        (eax <- (print eax))
+
+        (eax <- (allocate 11 1))
+        (addr2 <- eax)
+
+        ((mem addr2 4) <- 7)
+        ((mem addr2 8) <- 13)
+        ((mem addr2 12) <- 17)
+        ((mem addr2 16) <- 21)
+        ((mem addr2 20) <- 23)
+        ; array = {3, 6, 8, 10, 11}
+        
+        (eax <- (print addr2))
+        (eax <- addr2)
+        (call :sum)
+        (eax <- (print eax))
+    )
+    ( :sum
+        (sum <- 0)
+        (ecx <- (mem eax 0))
+        (ecx *= 2)
+        (ecx += 1)
+        (ebx <- 3)
+    :sum_loop
+        (eax += 4)
+        (edx <- (mem eax 0))
+        (edx >>= 1)
+        (sum += edx)
+        (ebx += 2)
+        (cjump ebx <= ecx :sum_loop :sum_end)
+    :sum_end
+        (eax <- sum)
+        (eax *= 2)
+        (eax += 1)
+        (return)
+    )
+)

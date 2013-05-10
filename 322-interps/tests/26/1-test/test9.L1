@@ -1,0 +1,7 @@
+(((eax <- 21)
+  (ecx <- 19)
+  (cjump eax = ecx :true :false)
+  :true 
+  (eax <- (print eax))
+  :false
+  (eax <- (print ecx))))

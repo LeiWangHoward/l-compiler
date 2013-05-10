@@ -1,0 +1,4 @@
+((eax <- (mem ebp -4))
+ (eax <- y)
+ (eax <- eax)
+ (y <- y))

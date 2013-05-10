@@ -1,0 +1,10 @@
+(((x <- 7)
+  (y <- 9)
+  (cjump x <= y :tr :fa)
+  :tr
+  (z <- 11)
+  (goto :end)
+  :fa
+  (z <- 13)
+  :end
+  (eax <- (print z))))

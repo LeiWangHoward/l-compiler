@@ -1,0 +1,9 @@
+(
+ (eax <- 1)
+ (ebx <- 3)
+ (call :f)
+ (allocat <- eax)
+ (allocat *= 4)
+ (allocat -= 1)
+ (eax <- (print allocat))
+)

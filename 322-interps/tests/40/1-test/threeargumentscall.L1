@@ -1,0 +1,19 @@
+(
+(
+:main
+(eax <- 1)
+(edx <- 3)
+(ecx <- 5)
+(call :sum)
+(eax <- (print eax))
+)
+
+(
+:sum
+(eax += edx)
+(eax -= 1)
+(eax += ecx)
+(eax -= 1)
+(return)
+)
+)

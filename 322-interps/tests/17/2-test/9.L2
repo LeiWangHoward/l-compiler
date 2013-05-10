@@ -1,0 +1,19 @@
+(((call :main))
+ (:main
+  (x <- 99)
+  (y <- 47)
+  (z <- 9)
+  
+  (cjump x < y :first :second)
+  :first
+  (eax <- (print z))
+  :second
+  (z += 4)
+  (eax <- (print z))
+
+  (q <- z = y)
+  (q *= 2)
+  (q += 1)
+  (eax <- (print q))
+
+  (return)))

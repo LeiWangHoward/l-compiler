@@ -1,0 +1,5 @@
+(:g
+ ((mem ebp -32) <- 2)
+ (temp_0 <- (mem ebp -32))
+ (eax += temp_0)
+ (return))

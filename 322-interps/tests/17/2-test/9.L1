@@ -1,0 +1,24 @@
+(((call :main))
+ (:main
+  (esp -= 8)
+  ((mem ebp -4) <- edi)
+  ((mem ebp -8) <- esi)
+  (ebx <- 99)
+  (edi <- 47)
+  (esi <- 9)
+  
+  (cjump ebx < edi :first :second)
+  :first
+  (eax <- (print esi))
+  :second
+  (esi += 4)
+  (eax <- (print esi))
+
+  (ecx <- esi = edi)
+  (ecx *= 2)
+  (ecx += 1)
+  (eax <- (print ecx))
+
+  (edi <- (mem ebp -4))
+  (esi <- (mem ebp -8))
+  (return)))

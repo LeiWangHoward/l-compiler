@@ -1,0 +1,36 @@
+;; arithmetic operation
+
+((
+(ebp <- esp)
+;; x <- s
+(esi <- 3)
+(edi <- esi)
+
+;; print
+(eax <- (print esi))
+(eax <- (print edi))
+
+;; += 
+(edi += 2)
+(eax <- (print edi))
+
+(edi += esi)
+(edi -= 1)
+(eax <- (print edi))
+
+;; -=
+(edi -= 6)
+(eax <- (print edi))
+
+(edi -= esi)
+(edi += 1)
+(eax <- (print edi))
+
+;; *=
+(edi *= 5)
+(eax <- (print edi))
+
+(edi *= esi)
+(eax <- (print edi))
+
+))

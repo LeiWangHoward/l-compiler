@@ -1,0 +1,8 @@
+((in
+  (c eax var x y)
+  (c v x y)
+  (c v))
+ (out
+  (c v x y)
+  (c v)
+  ()))

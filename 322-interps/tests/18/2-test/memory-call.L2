@@ -1,0 +1,10 @@
+(
+    (
+        (fun <- :print_1_fun)
+        (call fun)
+    )
+    ( :print_1_fun
+        (eax <- (print 3))
+        (return)
+    )
+)

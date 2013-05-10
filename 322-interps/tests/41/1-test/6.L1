@@ -1,0 +1,4 @@
+(((goto :skip)
+;  (eax <- (array-error eax eax))
+  :skip
+  (eax <- (print 13))))

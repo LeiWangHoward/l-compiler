@@ -1,0 +1,7 @@
+((eax += eax)
+(eax += eax)
+(eax += eax)
+(eax += eax)
+(eax += eax)
+(eax <- (print eax))
+(tail-call :fun))

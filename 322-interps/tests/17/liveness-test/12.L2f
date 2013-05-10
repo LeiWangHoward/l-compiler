@@ -1,0 +1,19 @@
+(
+ (a <- 7)
+ (b <- 9)
+ (cjump a = b :fst :snd)
+ :cat
+ :turkey
+ :fst
+ (x <- a < b)
+ (eax <- x)
+ (goto :end)
+ :rooster
+ (z <- 99)
+ (z *= 4)
+ (eax += 1)
+ :snd
+ (y <- a <= b)
+ (eax <- y)
+ :end
+)

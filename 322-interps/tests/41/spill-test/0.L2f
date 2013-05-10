@@ -1,0 +1,4 @@
+((var <- 1)
+ (eax <- 0)
+ (eax += var)) var -4 s_
+

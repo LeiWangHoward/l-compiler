@@ -1,0 +1,22 @@
+(((eax <- 4)
+  (call :factorial)
+  (eax += 7)
+  (eax <- (print eax)))
+ (:factorial
+  (cjump eax <= 1 :one :mult)
+  :one
+  (eax <- 1)
+  (return)
+  :mult
+  (ebx <- eax)
+  (eax -= 1)
+  ;; save here
+  (esp -= 4)
+  ((mem esp 0) <- ebx)
+  (call :factorial)
+  ;; restore here
+  (ebx <- (mem esp 0))
+  (ebx *= eax)
+  (eax <- ebx)
+  (return)
+  ))

@@ -1,0 +1,7 @@
+((x <- 0) (x <- 0 = x)
+ ((mem ebp -4) <- 0)
+ (l_0 <- (mem ebp -4))
+ (l_0 += 1)
+ ((mem ebp -4) <- l_0)
+ (x <- :label)
+ (call x))

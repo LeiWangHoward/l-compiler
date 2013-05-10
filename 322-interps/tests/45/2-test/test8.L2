@@ -1,0 +1,17 @@
+(((a <- 1)
+(b <- 2)
+(c <- 3)
+(d <- 4)
+(e <- 6)
+(eax <- 3)
+(call :fun)
+(eax += a)
+(eax += b)
+(eax += c)
+(eax += d)
+(eax += e)
+(eax <- (print eax)))
+
+(:fun
+(eax <- (print eax))
+(return)))

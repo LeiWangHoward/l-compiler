@@ -1,0 +1,13 @@
+(((x <- 3)
+  (y <- 5)
+  (eax <- x)
+  (eax += y)
+  (call :pass)
+  (eax <- (print x))
+  (eax <- (print y)))
+ (:pass
+  (eax += eax)
+  (x <- eax)
+  (x += 1)
+  (eax <- (print x))
+  (return)))

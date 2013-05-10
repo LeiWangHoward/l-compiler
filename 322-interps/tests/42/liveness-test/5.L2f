@@ -1,0 +1,4 @@
+((eax += ebx)
+(ebx += ecx)
+(x <- 3)
+(eax *= ebx))

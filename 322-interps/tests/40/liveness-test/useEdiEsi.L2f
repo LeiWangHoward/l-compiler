@@ -1,0 +1,13 @@
+(
+:f
+(esp -= 8)
+((mem ebp -4) <- edi)
+((mem ebp -8) <- esi)
+(edi <- eax)
+(esi += 1)
+(edi += esi)
+(esi <- (mem ebp -8))
+(edi <- (mem ebp -4))
+(esp += 8)
+(return)
+)

@@ -1,0 +1,3 @@
+((eax <- s)
+ (return)
+ (return))

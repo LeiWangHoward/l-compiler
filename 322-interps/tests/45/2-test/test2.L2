@@ -1,0 +1,13 @@
+(((eax <- 15)
+(call :fun))
+
+(:back
+(x <- 8)
+(x += eax)
+(eax <- (print x))
+(return))
+
+(:fun
+(x <- 7)
+(x += eax)
+(tail-call :back)))

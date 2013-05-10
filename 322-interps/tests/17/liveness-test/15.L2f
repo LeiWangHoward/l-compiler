@@ -1,0 +1,6 @@
+(
+ (eax += 4)
+ (b *= 2)
+ (tail-call :f)
+ (eax <- (print a))
+)

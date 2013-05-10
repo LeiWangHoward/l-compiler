@@ -1,0 +1,7 @@
+(
+:f
+(s <- :g)
+(call s)
+(t <- eax)
+(return)
+)

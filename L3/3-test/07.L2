@@ -1,0 +1,10 @@
+(((call :num_check))
+ (:num_check
+  (eax <- (allocate 19 19))
+  (x <- eax)
+  (y <- x)
+  (y &= 1)
+  (y <<= 1)
+  (y += 1)
+  (eax <- (print y))
+  (return)))

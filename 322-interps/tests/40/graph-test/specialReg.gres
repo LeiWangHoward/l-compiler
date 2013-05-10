@@ -1,0 +1,13 @@
+(
+(eax ebx ecx edi edx esi s)
+(ebx eax ecx edi edx esi s)
+(ecx eax ebx edi edx esi)
+(edi eax ebx ecx edx esi s)
+(edx eax ebx ecx edi esi s)
+(esi eax ebx ecx edi edx s)
+(s eax ebx edi edx esi)
+)
+(
+(s ecx)
+)
+

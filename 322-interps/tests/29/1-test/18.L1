@@ -1,0 +1,6 @@
+(((ebx <- -10)
+  (ebx <<= 3)
+  (ebx += ebx)
+  (ebx *= 2)
+  (ebx += 1)
+  (eax <- (print ebx))))

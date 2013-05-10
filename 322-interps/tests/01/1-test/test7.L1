@@ -1,0 +1,6 @@
+((
+	(esi <- 21)
+	(esi <<= 4)
+	(esi += 1)
+	(eax <- (print esi))
+))

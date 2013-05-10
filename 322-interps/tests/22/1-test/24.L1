@@ -1,0 +1,8 @@
+(((eax <- (allocate 7 5))
+(ebx <- eax)
+(ebx += 4)
+(cjump ebx = eax :true :false)
+:true
+(eax <- (print 3))
+:false
+(eax <- (print 5))))

@@ -1,0 +1,4 @@
+(((eax <- 5)
+ (ebx <- eax)
+ (ebx <- eax = ebx)
+ (eax <- (print ebx))))

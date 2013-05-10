@@ -1,0 +1,16 @@
+((cjump x < 5 :first :second)
+ :first
+ (x <- 5)
+ (goto :done)
+ :second
+ (y <- x)
+ (cjump 1 = 3 :a :b)
+ :a
+ :b
+ (cjump y <= z :c :d)
+ :c
+ :d
+ :done)
+x
+-12
+v_

@@ -1,0 +1,4 @@
+((eax += ebx)
+ (eax -= ecx)
+ (eax *= 5)
+ (eax &= 9))

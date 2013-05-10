@@ -1,0 +1,7 @@
+(((a <- 1)
+(b <- 1)
+(cjump a <= b :true :false)
+:true
+(eax <- (print a))
+:false
+(eax <- (print b))))

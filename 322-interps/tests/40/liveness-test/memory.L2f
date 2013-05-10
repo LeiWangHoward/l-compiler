@@ -1,0 +1,8 @@
+(
+(eax <- (allocate 21 1))
+(ebx <- eax)
+((mem ebx 4) <- 3)
+(ecx <- (mem ebx 12))
+((mem ebx 8) <- ecx)
+(eax <- (print ebx))
+)

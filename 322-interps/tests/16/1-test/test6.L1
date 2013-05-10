@@ -1,0 +1,2 @@
+(((eax <- (allocate 13 5))
+ (eax <- (array-error eax 5))))

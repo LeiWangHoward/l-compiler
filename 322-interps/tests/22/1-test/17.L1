@@ -1,0 +1,13 @@
+;;sum of odd number between 1-10
+(((ebx <- 1)
+(ecx <- 1)
+:start
+(cjump ebx < 9 :continue :end)
+:continue
+(ebx += 2)
+(ecx += ebx)
+(goto :start)
+:end
+(ecx += ecx)
+(ecx += 1)
+(eax <- (print ecx))))

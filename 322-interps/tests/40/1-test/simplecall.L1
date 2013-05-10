@@ -1,0 +1,25 @@
+(
+(:main
+
+(eax <- (print 11))
+(call :f1)
+(call :f2)
+)
+
+(:f1
+(eax <- (print 33))
+(return)
+)
+
+(:f2
+(eax <- (print 55))
+(call :g1)
+(return)
+)
+
+(:g1
+(eax <- (print 77))
+(call :f1)
+(return)
+)
+)

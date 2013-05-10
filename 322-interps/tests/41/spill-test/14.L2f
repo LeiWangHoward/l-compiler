@@ -1,0 +1,2 @@
+((eax <- (array-error yes noooo))
+ (eax <- (array-error noooo yes))) yes 100 mfm_

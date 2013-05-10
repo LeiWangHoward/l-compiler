@@ -1,0 +1,8 @@
+(((mem ebp -4) <- 5)
+(s0 <- (mem ebp -4))
+(cjump s0 <= eax :true :false)
+:true
+(eax += 3)
+:false
+(s1 <- (mem ebp -4))
+(eax += s1))

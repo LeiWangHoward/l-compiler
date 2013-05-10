@@ -1,0 +1,7 @@
+(((eax <- 1)
+ (x <- 1)
+ (cjump x = eax :then :done)
+ :then
+ (eax <- 3)
+ :done
+ (eax <- (print eax))))

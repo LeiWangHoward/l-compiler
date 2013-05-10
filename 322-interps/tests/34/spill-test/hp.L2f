@@ -1,0 +1,1 @@
+((eax <- (array-error hitPoint 0))) hitPoint 0 s

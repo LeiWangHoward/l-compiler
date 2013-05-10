@@ -1,0 +1,9 @@
+(((mem ebp -4) <- 15)
+ (edx <- 5)
+ (ebx <- 2)
+ (ha_0 <- (mem ebp -4))
+ (ha_0 += edx)
+ ((mem ebp -4) <- ha_0)
+ :lol
+ (ha_1 <- (mem ebp -4))
+ (ebx *= ha_1))

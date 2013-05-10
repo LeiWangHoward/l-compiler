@@ -1,0 +1,2 @@
+(   (eax <- (allocate eax edx))
+    (return))

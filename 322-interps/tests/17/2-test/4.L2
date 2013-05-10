@@ -1,0 +1,21 @@
+(((x <- 5)
+  (y <- 11)
+
+  (cjump 9 < 3 :first :second)
+  
+  :first
+  (eax <- (print x))
+  (goto :done)
+
+  :second
+  (eax <- (print y))
+  (goto :done)
+
+  :done
+
+  (y *= 3)
+  (x -= y)
+  (x += y)
+
+  (eax <- (print x))
+  (eax <- (print y))))

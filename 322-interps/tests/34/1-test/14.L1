@@ -1,0 +1,5 @@
+(((eax <- 11)
+  (call :prt))
+ (:prt 
+     (eax <- (print eax))
+     (return)))

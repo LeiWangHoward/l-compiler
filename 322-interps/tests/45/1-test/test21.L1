@@ -1,0 +1,3 @@
+(((esi <- 200)
+  (eax <- esi < 250)
+  (eax <- (print eax))))

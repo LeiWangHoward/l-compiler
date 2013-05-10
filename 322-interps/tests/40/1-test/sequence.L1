@@ -1,0 +1,30 @@
+;; int * a = new int(0)[10]
+((
+(edi <- 21) ;; array.length = 10
+(eax <- (allocate edi 0))
+(ebx <- eax) ;; new a memory with 0
+;;((mem ebx 0) <- edi) ;; record the size <=== here, I'm not sure
+;;(eax <- 0)
+;;((mem eax 0) <- ebx) ;; assign the address to a
+
+;; for(int i=0; i<10; i++) {
+(esi <- 1) ;;  i = 0
+:loop
+(cjump esi < edi :begin :end) ;; i<10
+:begin
+;; a[i] = i
+(edx <- esi)
+(edx -= 1)
+(edx *= 2) ;; real shift is 4i
+(edx += 4) ;; pass the size
+(edx += ebx)
+((mem edx 0) <- esi) ;; assignment
+(esi += 2) ;; i++
+(goto :loop)
+;;}
+:end
+
+;; print a[5]
+(edx <- (mem ebx 24)) ;; 24 = 4*5+4
+(eax <- (print edx))
+))

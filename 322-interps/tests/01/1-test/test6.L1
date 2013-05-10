@@ -1,0 +1,9 @@
+((
+	(esi <- 89)
+	(eax <- (allocate esi 5))
+	(edi <- eax)
+	(ebx <- edi)
+	(ebx += 4)
+	((mem ebx 0) <- 9)
+	(eax <- (print edi))
+))

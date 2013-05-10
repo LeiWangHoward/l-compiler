@@ -1,0 +1,6 @@
+((ebx <- 1)
+  (myvar <- 3)
+  (ebx <<= myvar)
+  (ebx += 1)
+  (eax <- (print ebx)))
+myvar -4 k

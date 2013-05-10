@@ -1,0 +1,6 @@
+((x <- 1)
+(y <- 34)
+(eax += x)
+(eax += y)
+(ebx += eax)
+(return))

@@ -1,0 +1,12 @@
+(((ebx <- 11)
+  (call :countdown)
+  (eax <- 3))
+ (:countdown
+  (cjump ebx <= 1 :done :rec)
+  :done
+  (return)
+  :rec
+  (ebx -= 2)
+  (eax <- (print ebx))
+  (call :countdown)
+  (return)))

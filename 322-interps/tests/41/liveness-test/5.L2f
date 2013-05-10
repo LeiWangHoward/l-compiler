@@ -1,0 +1,3 @@
+((edx <- ebx)
+ (tail-call edx) ;; gen edx, edi, esi
+ )

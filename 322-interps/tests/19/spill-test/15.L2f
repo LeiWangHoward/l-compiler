@@ -1,0 +1,12 @@
+((z <- 5)
+ (y <- 6)
+ (cjump z < y :thn :els)
+ :thn
+ (eax <- (print z))
+ (goto :done)
+ :els
+ (eax <- (print y))
+ :done)
+y
+-4
+s_

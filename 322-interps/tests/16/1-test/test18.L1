@@ -1,0 +1,7 @@
+(((ebx <- 1)
+(cjump ebx < 6 :correct :wrong)
+:wrong
+(eax <- (print 1))
+(return)
+:correct
+(eax <- (print 3))))

@@ -1,0 +1,24 @@
+(((eax <- 5)
+  (edx <- 7)
+  (call :FUN)
+  (eax += 2)
+  (eax <- (print eax)))
+
+(:FUN
+
+  
+  (call :FUN2)
+  (ebx <- eax)
+
+  (eax <- edx)
+  (call :FUN2)
+  (ecx <- eax)
+
+  (ebx += ecx)
+  (ebx -= 1)
+  (eax <- ebx)
+  (return))
+
+(:FUN2
+  (eax += 2)
+  (return)))

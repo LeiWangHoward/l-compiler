@@ -1,0 +1,18 @@
+(
+    (
+        (eax <- :print_1_fun)
+
+        (esp -= 4)
+        ((mem esp 0) <- eax)
+
+        (ebx <- (mem esp 0))
+
+        (call ebx)
+
+        (esp += 4)
+    )
+    ( :print_1_fun
+        (eax <- (print 3))
+        (return)
+    )
+)

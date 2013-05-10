@@ -1,0 +1,1 @@
+(:g (temp <- 2) (eax += temp) (return)) temp -32 temp_

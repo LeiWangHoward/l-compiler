@@ -1,0 +1,19 @@
+((
+	(esi <- 5)
+	(edi <- 5)
+	(ebx <- esi <= edi)
+	(call :funfun)
+	(call :funfun2)
+	(eax <- (print ebx))
+)
+(:funfun
+	(ebx <- edi)
+ 	(edi <- 11)
+ 	(edi <- ebx)
+ 	(return)
+)
+(:funfun2
+	(ecx <- edi < 13)
+	(eax <- (print ecx))
+	(return)
+))

@@ -1,0 +1,8 @@
+(((call :nothing))
+ (:nothing
+  (a <- 3)
+  (b <- 3)
+  (a <<= b)
+  (a -= 1)
+  (eax <- (print a))
+  (return)))

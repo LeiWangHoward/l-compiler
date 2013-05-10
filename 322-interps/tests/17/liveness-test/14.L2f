@@ -1,0 +1,14 @@
+(
+ (x <- 1)
+ (y <- 1)
+ (cjump x = y :a :b)
+ :a
+ (g += 4)
+ (goto :end)
+ :b
+ (h += 12)
+ (goto :end)
+ :skip
+ :end
+ (q &= q)
+)

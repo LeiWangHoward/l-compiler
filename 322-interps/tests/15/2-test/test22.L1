@@ -1,0 +1,8 @@
+(((eax <- (print 3))
+  (call :stuff))
+ (:stuff
+  (eax <- (print 5))
+  (tail-call :stuff2))
+ (:stuff2
+  (eax <- (print 7))
+  (return)))

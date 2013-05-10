@@ -1,0 +1,1 @@
+((x <- 1) ((mem ebp -8) <- x) (y <- (mem ebp -8)) (x <- 2) (y += x) (x -= 1) ((mem ebp -8) <- y) (x <- (mem ebp -8)) (eax <- (print x))) y -4 v_

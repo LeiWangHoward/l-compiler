@@ -1,0 +1,7 @@
+(   (fun-to-call <- edx)
+    (goto :skip_over)
+    :never_runs
+    (eax <- 2)
+    (eax += 2)
+    :skip_over
+    (call fun-to-call))

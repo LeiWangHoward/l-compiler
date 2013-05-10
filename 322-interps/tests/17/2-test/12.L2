@@ -1,0 +1,5 @@
+(((size <- 99)
+  (eax <- (allocate size 5))
+  (arr <- eax)
+  (idx <- 101)
+  (eax <- (array-error arr idx))))

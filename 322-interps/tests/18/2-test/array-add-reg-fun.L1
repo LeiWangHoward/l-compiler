@@ -1,0 +1,70 @@
+(
+    (
+        (esp -= 8)
+        (eax <- (allocate 11 1))
+        ((mem esp 4) <- eax)
+
+        ((mem eax 4) <- 9)
+        ((mem eax 8) <- 21)
+        ((mem eax 12) <- 11)
+        ((mem eax 16) <- 19)
+        ((mem eax 20) <- 31)
+        ; array = {4, 10, 5, 9, 15}
+
+        (eax <- (print eax))
+
+        (eax <- (allocate 11 1))
+        ((mem esp 0) <- eax)
+
+        ((mem eax 4) <- 9)
+        ((mem eax 8) <- 13)
+        ((mem eax 12) <- 17)
+        ((mem eax 16) <- 21)
+        ((mem eax 20) <- 23)
+        ; array = {4, 6, 8, 10, 11}
+        
+        (eax <- (print eax))
+        (eax <- (mem esp 0))
+        (edx <- (mem esp 4))
+        (call :array_add)
+        (eax <- (mem esp 0))
+        (eax <- (print eax))
+
+
+        (esp += 8)
+    )
+    ( :array_add
+        (esp -= 4)
+        ((mem esp 0) <- ebp)
+        (ebp <- esp)
+        (esp -= 12)
+        ((mem ebp -4) <- esi)
+        ((mem ebp -8) <- edi)
+
+        (ecx <- (mem eax 0))
+        (ecx *= 2)
+        (ecx += 1)
+        (ebx <- 3)
+    :add_loop
+        (eax += 4)
+        (edx += 4)
+        (esi <- (mem eax 0))
+        (edi <- (mem edx 0))
+        (esi >>= 1)
+        (edi >>= 1)
+        (esi += edi)
+        (esi *= 2)
+        (esi += 1)
+        ((mem eax 0) <- esi)
+
+        (ebx += 2)
+        (cjump ebx <= ecx :add_loop :add_end)
+    :add_end
+        (esi <- (mem ebp -4))
+        (edi <- (mem ebp -8))
+        (esp <- ebp)
+        (ebp <- (mem esp 0))
+        (esp += 4)
+        (return)
+    )
+)

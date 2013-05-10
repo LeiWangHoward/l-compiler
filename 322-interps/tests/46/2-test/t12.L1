@@ -1,0 +1,11 @@
+(((ebx <- 5)
+ (eax <- 1)
+ :keep_looping
+ (cjump ebx = 0 :done :continue)
+ :continue
+ (eax *= 2)
+ (ebx -= 1)
+ (goto :keep_looping)
+ :done
+ (eax += 1)
+ (eax <- (print eax))))

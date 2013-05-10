@@ -1,0 +1,9 @@
+(   (x <- 20)
+    (cjump x < 40 :yes :no)
+    :yes
+    (call x)
+    (goto :done)
+    :no
+    (x += 2)
+    :done
+    ) x -4 __

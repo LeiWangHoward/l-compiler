@@ -1,0 +1,35 @@
+(
+
+(
+(eax <- 3)
+(call :fib)
+(eax <<= 1)
+(eax += 1)
+(eax <- (print eax))
+)
+
+( :fib 
+(esp += -8)
+( ( mem ebp -4 ) <- eax ) 
+( eax <- ( mem ebp -4 ) ) 
+( cjump eax <= 1 :ZERO_OR_ONE :OTHERS ) 
+:ZERO_OR_ONE 
+( eax <- ( mem ebp -4 ) ) 
+( return ) 
+:OTHERS 
+( eax <- ( mem ebp -4 ) ) 
+( eax -= 1 ) 
+( ( mem ebp -4 ) <- eax ) 
+( eax <- ( mem ebp -4 ) ) 
+( call :fib ) 
+( ( mem ebp -8 ) <- eax ) 
+( eax <- ( mem ebp -4 ) ) 
+( eax -= 1 ) 
+( ( mem ebp -4 ) <- eax ) 
+( eax <- ( mem ebp -4 ) ) 
+( call :fib ) 
+( ebx <- ( mem ebp -8 ) ) 
+( eax += ebx ) 
+( return ) 
+) 
+)

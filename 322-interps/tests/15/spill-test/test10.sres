@@ -1,0 +1,8 @@
+(((mem ebp -4) <- 0) 
+ (z <- 1)
+ (v_0 <- (mem ebp -4))
+ (v_0 *= z)
+ ((mem ebp -4) <- v_0)
+ (z <- z)
+ (y <- :stuff)
+ (eax <- (mem ebp -4)))

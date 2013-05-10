@@ -1,0 +1,7 @@
+(((eax <- 3)
+(ebx <- 5)
+(ebx <- ebx < eax)
+(eax <- ebx = eax)
+(ebx += eax)
+(ebx += 3)
+(eax <- (print ebx))))

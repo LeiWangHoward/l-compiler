@@ -1,0 +1,40 @@
+(((size <- 45)
+  (eax <- (allocate size 3))
+  (arr <- eax)
+
+  (eax <- (print arr))
+  (eax <- arr)
+  (ecx <- 9)
+  (call :assign)
+
+  (eax <- (print arr))
+  (eax <- arr)
+  (ecx <- 13)
+  (call :assign)
+
+  (eax <- (print arr))
+  (eax <- arr)
+  (ecx <- 17)
+  (call :assign)
+
+  (eax <- (print arr)))
+
+ (:assign
+
+  (i <- 1)
+  (arr_size <- (mem eax 0))
+
+  :loop
+  (cjump i <= arr_size :keep_going :done)
+
+  :keep_going
+  (offset <- i)
+  (offset *= 4)
+  (offset += eax)
+  ((mem offset 0) <- ecx)
+
+  (i += 1)
+  (goto :loop)
+
+  :done
+  (return)))

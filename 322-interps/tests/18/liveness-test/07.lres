@@ -1,0 +1,18 @@
+(   (in
+    (eax ecx edx)
+    (eax ecx edx fun-to-call)
+    (ecx edx fun-to-call)
+    (ecx edx fun-to-call)
+    (eax ecx edx fun-to-call)
+    (eax ecx edx fun-to-call)
+    (eax ecx edx fun-to-call)
+    )
+    (out
+    (eax ecx edx fun-to-call)
+    (eax ecx edx fun-to-call)
+    (ecx edx fun-to-call)
+    (eax ecx edx fun-to-call)
+    (eax ecx edx fun-to-call)
+    (eax ecx edx fun-to-call)
+    ()
+    ))

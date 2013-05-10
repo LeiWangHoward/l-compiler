@@ -1,0 +1,9 @@
+(((x <- 21)
+  (cjump x = 10 :lost :win)
+  :lost
+  (x -= 20)
+  (eax <- (print x))
+  :win
+  (x += x)
+  (x -= 1)
+  (eax <- (print x))))

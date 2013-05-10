@@ -1,0 +1,16 @@
+(((mem ebp 4) <- 123)
+ (edi <- 23)
+ (mhm_0 <- (mem ebp 4))
+ (eax <- mhm_0 <= edi)
+ :one
+ (mhm_1 <- (mem ebp 4))
+ (edx <- 1 < mhm_1)
+ :two
+ (mhm_2 <- (mem ebp 4))
+ (ebx <- mhm_2 = 3)
+ :three
+ (mhm_3 <- (mem ebp 4))
+ (ebx <- eax < mhm_3)
+ :four
+ (mhm_4 <- ebx < 5)
+ ((mem ebp 4) <- mhm_4))

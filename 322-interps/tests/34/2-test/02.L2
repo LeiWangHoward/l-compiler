@@ -1,0 +1,7 @@
+(((call :wrong)
+  (eax <- (print 1)))
+ (:wrong
+ (a <- 9)
+ (ecx <- a)
+ (eax <- (allocate a 3))
+ (return)))

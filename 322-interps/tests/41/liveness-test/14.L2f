@@ -1,0 +1,6 @@
+((a <- eax)
+ (b <- ebx)
+ (c <- ecx)
+ (eax <- (print c))
+ (eax <- (print b))
+ (eax <- (print a)))

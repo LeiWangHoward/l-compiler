@@ -1,0 +1,52 @@
+(
+    (
+        (eax <- (allocate 11 1))
+        (arr1 <- eax)
+
+        ((mem arr1 4) <- 9)
+        ((mem arr1 8) <- 21)
+        ((mem arr1 12) <- 11)
+        ((mem arr1 16) <- 19)
+        ((mem arr1 20) <- 31)
+        ; array = {4, 10, 5, 9, 15}
+
+        (eax <- (print arr1))
+        (eax <- arr1)
+        (call :sorted)
+        (eax <- (print eax))
+
+        (eax <- (allocate 11 1))
+        (arr2 <- eax)
+
+        ((mem arr2 4) <- 7)
+        ((mem arr2 8) <- 13)
+        ((mem arr2 12) <- 17)
+        ((mem arr2 16) <- 21)
+        ((mem arr2 20) <- 23)
+        ; array = {3, 6, 8, 10, 11}
+        
+        (eax <- (print arr2))
+        (eax <- arr2)
+        (call :sorted)
+        (eax <- (print eax))
+    )
+    ( :sorted
+        (addr <- eax)
+        (size <- (mem addr 0))
+        (i <- 1)
+    :sorted_loop
+        (addr += 4)
+        (curr <- (mem addr 0))
+        (next <- (mem addr 4))
+        (cjump curr <= next :sorted_continue :unsorted_end)
+    :sorted_continue
+        (i += 1)
+        (cjump i < size :sorted_loop :sorted_end)
+    :sorted_end
+        (eax <- 3)
+        (return)
+    :unsorted_end
+        (eax <- 1)
+        (return)
+    )
+)

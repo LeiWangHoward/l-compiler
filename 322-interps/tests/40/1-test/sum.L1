@@ -1,0 +1,23 @@
+((
+(eax <- (allocate 21 5))
+(ebx <- eax)
+(edi <- 1)
+(esi <- 1)
+
+:loop
+(cjump esi < 21 :begin :end)
+:begin
+(edx <- esi)
+(edx -= 1)
+(edx *= 2)
+(edx += 4)
+(edx += ebx)
+(edx <- (mem edx 0))
+(edi += edx)
+(edi -= 1)
+(esi += 2)
+(goto :loop)
+:end
+
+(eax <- (print edi))
+))

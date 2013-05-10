@@ -1,0 +1,35 @@
+;; Testing extra spaces in grammar (not just one)
+(((eax    <-  (print   9)  )
+
+  (eax   <-   (allocate   9  1  ) )
+  (esi  <-  eax )
+
+  (ebx         <-      3   )
+
+  ((mem  esi  4) <- 7)
+
+  (edx    <-   (mem esi 8))
+
+  (eax  <-   (print    edx))
+
+  (cjump   0   <    1    :first   :second   )
+
+  :first
+  (goto     :second)
+  :second
+
+  (eax     +=     9)
+  (eax     -=     9)
+  (eax     *=     9)
+  (eax     &=     9)
+  
+  (call    :g  )
+  (eax   <-   (array-error   esi  99  )   )
+  )
+
+ (:f
+  (eax  <-  (print  7) )
+  (return   ))
+
+ (:g
+  (tail-call     :f  )))

@@ -1,0 +1,9 @@
+(((ebx <- 127)
+  :loop
+  (cjump ebx < 2 :done :keep_going)
+  :keep_going
+  (eax <- (print ebx))
+  (ebx >>= 1)
+  (goto :loop)
+  :done
+  (eax <- (print ebx))))

@@ -1,0 +1,6 @@
+(((x <- 4027)
+  (cjump x = 4027 :t :f)
+  :f
+  (eax <- (print 1))
+  :t
+  (eax <- (print x))))

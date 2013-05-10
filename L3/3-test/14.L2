@@ -1,0 +1,28 @@
+(((call :set_arr))
+ (:set_arr
+  (eax <- (allocate 7 0))
+  ((mem eax 4) <- 3)
+  ((mem eax 8) <- 5)
+  ((mem eax 12) <- 7)
+  (arr <- eax)
+  (x_posi <- 9)
+  (bnd_arr <- (mem arr 0))
+  (bnd_arr <<= 1)
+  (bnd_arr += 1)
+  ;;boundry check, reference shall within the boundry
+  (cjump x_posi < bnd_arr :ok_1 :die)
+  :ok_1
+  ;check if the reference is > 0
+  (cjump 0 <= x_posi :ok_2 :die)
+  :die
+  (eax <- (array-error arr x_posi))
+  :ok_2
+  (x_posi >>= 1)
+  (x_posi *= 4)
+  (x_posi += arr)
+  ((mem x_posi 4) <- 7)
+  (x_posi <- 0)
+  (x <- 1)
+  (eax <- (print arr))
+  (eax <- eax)
+  (return)))

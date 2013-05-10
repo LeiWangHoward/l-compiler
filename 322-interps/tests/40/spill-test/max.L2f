@@ -1,0 +1,13 @@
+(
+(first <- eax)
+(second <- ebx)
+(cjump first < second :FIR :SEC)
+:FIR
+(eax <- first)
+(goto :END)
+:SEC
+(eax <- second)
+:END
+(return)
+)
+first -4 t_

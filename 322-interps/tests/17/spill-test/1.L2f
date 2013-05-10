@@ -1,0 +1,11 @@
+(:label
+ :_label
+ :blah
+ (eax <- (print 9))
+ (eax <- (allocate 7 7))
+ (x1 <- 1)
+ (x1 <<= 3)
+ (y <- x1))
+y
+-4
+_v_

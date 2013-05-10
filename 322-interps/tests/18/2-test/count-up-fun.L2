@@ -1,0 +1,29 @@
+(
+    (
+        (eax <- 21)
+        (call :count_up_array)
+        (eax <- 41)
+        (call :count_up_array)
+        (eax <- 3)
+        (call :count_up_array)
+    )
+    (   :count_up_array
+        (count_to <- eax)
+        (eax <- (allocate count_to 1))
+        (array_base <- eax)
+        (i <- 1) ; this will be the counter; starts at 0
+
+        (dest <- array_base)
+        :count_up_loop
+        ((mem dest 4) <- i)
+        (dest += 4)
+        (i += 2) ; add an encoded 1
+
+        (cjump i < count_to :count_up_loop :count_up_end)
+
+        :count_up_end
+        (eax <- (print array_base))
+
+        (return)
+    )
+)

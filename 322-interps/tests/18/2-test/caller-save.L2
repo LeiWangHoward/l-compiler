@@ -1,0 +1,28 @@
+(
+    (
+        (eax <- 3)
+        (ebx <- 5)
+        (ecx <- 7)
+        (edx <- 9)
+
+        (var1 <- eax)
+        (var2 <- ebx)
+        (var3 <- ecx)
+        (var4 <- edx)
+
+        (call :overwrite_regs)
+
+        (eax <- (print var1))
+        (eax <- (print var2))
+        (eax <- (print var3))
+        (eax <- (print var4))
+    )
+    ( :overwrite_regs
+        (eax <- -1)
+        (ebx <- -1)
+        (ecx <- -1)
+        (edx <- -1)
+
+        (return)
+    )
+)

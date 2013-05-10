@@ -1,0 +1,13 @@
+(((ebx <- 1)
+(eax <- 4)
+(ecx <- 5)
+(eax += ecx)
+(ecx <- eax)
+(eax <- (print ebx))
+(call :myfun))
+
+(:myfun
+(ebx += 2)
+(edx <- eax)
+(eax <- (print ebx))
+(return)))

@@ -1,0 +1,8 @@
+( 
+ (eax <- (allocate y x))
+ (a2 <- eax)
+ (eax <- (array-error a2 x))
+)
+a2
+-4
+m_

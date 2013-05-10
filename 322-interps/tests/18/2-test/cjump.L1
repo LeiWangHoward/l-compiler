@@ -1,0 +1,35 @@
+( 
+    (
+        (goto :start)
+
+        :nogo
+        (eax <- (print -1))
+
+        :label_4
+        (eax <- (print 9))
+        (goto :end)
+
+        :label_3
+        (eax <- (print 7))
+        (esi <- 81) ; dec(81) = 40
+        (cjump 83 <= esi :nogo :label_4)
+
+        :label_2
+        (eax <- (print 5))
+        (eax <- 21)
+        (ebx <- 21)
+        (cjump eax <= ebx :label_3 :nogo)
+        
+        :label_1
+        (eax <- (print 3)) 
+        (eax <- 41) ; dec(41) = 20
+        (cjump eax < 43 :label_2 :nogo)
+
+        :start
+        (cjump 0 = 1 :nogo :label_1)
+
+        :end
+    )
+)
+
+        

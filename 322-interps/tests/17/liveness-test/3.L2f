@@ -1,0 +1,9 @@
+((x <- eax)
+ (y <- x)
+ (z <- eax)
+ (w <- y)
+ (x *= w)
+ :lol
+ :sd
+ :dsfsd
+ (eax <- (print y)))

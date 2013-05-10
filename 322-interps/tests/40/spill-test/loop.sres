@@ -1,0 +1,14 @@
+(
+( (mem ebp -4) <- 1)
+:loop
+( t_0 <- (mem ebp -4))
+(cjump t_0 < 20 :begin :end)
+:begin
+( t_1 <- (mem ebp -4))
+( eax <- (print t_1))
+( t_2 <- (mem ebp -4))
+(t_2 += 1)
+((mem ebp -4) <- t_2)
+(goto :loop)
+:end
+)

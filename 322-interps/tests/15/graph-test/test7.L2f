@@ -1,0 +1,2 @@
+((a <- 2)(goto :label)
+(eax <- 1):label(a += a))

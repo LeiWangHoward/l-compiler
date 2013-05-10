@@ -1,0 +1,6 @@
+(((myvar <- 4)
+(myvar2 <- 5)
+(myvar <- myvar2)
+(eax <- myvar < myvar2)
+(eax += 1)
+(eax <- (print eax))))

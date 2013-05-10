@@ -1,0 +1,6 @@
+(
+ :f
+ (eax <- x1)
+ (ebx <- eax)
+ (ecx <- ebx)
+)

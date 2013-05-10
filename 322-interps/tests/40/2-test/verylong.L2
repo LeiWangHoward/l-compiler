@@ -1,0 +1,28 @@
+(
+(
+(eax <- 1)
+(ebx <- 2)
+
+(edi <- 3)
+(esi <- 4)
+
+(ecx <- 5)
+
+(x <- 0)
+(x += ecx)
+
+(edx <- 6)
+(x += esi)
+(x += edi)
+(x += edx)
+
+(ecx <- 7)
+(x += ebx)
+(x += eax)
+(x += ecx)
+
+(x <<= 1)
+(x += 1)
+(eax <- (print x))
+)
+)

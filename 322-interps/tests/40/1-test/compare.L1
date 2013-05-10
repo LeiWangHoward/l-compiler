@@ -1,0 +1,8 @@
+(
+(
+(ebx <- 7 < 8)
+(eax <- (print ebx))
+(ebx <- 5)
+(ecx <- ebx < 9)
+(eax <- (print ecx))
+))

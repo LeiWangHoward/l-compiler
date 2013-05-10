@@ -1,0 +1,6 @@
+;;over shift
+(((eax <- 5)
+(eax >>= 20)
+(eax += eax)
+(eax += 1)
+(eax <- (print eax))))

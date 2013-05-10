@@ -1,0 +1,19 @@
+((
+:label0
+(eax <- (print 1))
+(goto :label2)
+
+:label1
+(eax <- (print 3))
+(goto :label3)
+
+:label2
+(eax <- (print 5))
+(goto :end)
+
+:label3
+(eax <- (print 7))
+(goto :end)
+
+:end
+))

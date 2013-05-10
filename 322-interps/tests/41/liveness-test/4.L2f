@@ -1,0 +1,6 @@
+(;; call
+ (eax <- y) 
+ (call f) ;; gens f, args: eax, edx, ecx
+          ;; kills eax, caller-save: ebx, ecx, edx
+ (return) ;; gens eax, calee-save: esi, edi 
+ )

@@ -1,0 +1,4 @@
+(((call :f) 
+(eax <- (print eax))) 
+(:f(eax <- 3)
+(return)))

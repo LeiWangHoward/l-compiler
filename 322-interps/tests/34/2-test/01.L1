@@ -1,0 +1,4 @@
+(((call :empty))
+ (:empty
+  (eax <- 1)
+  (return)))

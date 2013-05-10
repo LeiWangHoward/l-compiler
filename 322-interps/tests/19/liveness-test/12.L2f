@@ -1,0 +1,9 @@
+((x <- 5)
+ (z <- (mem ebp -4))
+ (cjump x < 3 :thn :els)
+ :thn
+ (x += 3)
+ (goto :done)
+ :els
+ (z += 3)
+ :done)

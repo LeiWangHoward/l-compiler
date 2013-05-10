@@ -1,0 +1,13 @@
+(((ebx <- 1)
+  (cjump 1 <= 1 :true :false)
+  :loop
+  (cjump 128 < ebx :done :keep_going)
+  :true
+  :keep_going
+  (eax <- (print ebx))
+  (ebx <<= 1)
+  (ebx += 1)
+  (goto :loop)
+  :false
+  :done
+  (eax <- (print ebx))))

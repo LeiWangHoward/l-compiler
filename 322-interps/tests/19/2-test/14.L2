@@ -1,0 +1,14 @@
+(((eax <- 11)
+  (call :fun)   
+  (eax += 2)
+  (eax <- (print eax)))
+ (:fun
+  (eax += 44)
+  (goto :case)
+  (return)
+  :case
+  (x <- 7 < 13)
+  (x *= 2)
+  (x += 1)
+  (eax <- x)
+  (return)))

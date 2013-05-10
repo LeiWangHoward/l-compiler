@@ -1,0 +1,6 @@
+((
+	(esi <- 89)
+	(eax <- (allocate esi 5))
+	(edi <- eax)
+	(eax <- (print edi))
+))

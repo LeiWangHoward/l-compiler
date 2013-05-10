@@ -1,0 +1,8 @@
+(   (cjump eax < 5 :less :gtoreq)
+    :less
+    (eax <- 1)
+    (goto :end)
+    :gtoreq
+    (eax <- 3)
+    :end
+    (return))

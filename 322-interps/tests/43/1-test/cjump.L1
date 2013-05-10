@@ -1,0 +1,10 @@
+((
+    (ebx <- 5)
+    (cjump 7 < ebx :labela :labelb)
+    (ebx <- 9)
+    :labela
+    (ebx *= 3)
+    :labelb
+    (ebx *= 5)
+    (eax <- (print ebx))
+))

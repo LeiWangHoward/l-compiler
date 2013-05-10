@@ -1,0 +1,58 @@
+(
+    (
+        ; expected output: 0 1 1 0 0 1 0
+        (eax <- -1)
+        (edx <- 5)
+        (call :same_sign)
+        (eax <- (print eax))
+
+        (eax <- 11)
+        (edx <- 5)
+        (call :same_sign)
+        (eax <- (print eax))
+
+        (eax <- -1)
+        (edx <- -5)
+        (call :same_sign)
+        (eax <- (print eax))
+
+        (eax <- -1)
+        (edx <- 5)
+        (call :same_sign)
+        (eax <- (print eax))
+
+        (eax <- 1)
+        (edx <- 5)
+        (call :same_sign)
+        (eax <- (print eax))
+
+        (eax <- 1)
+        (edx <- 1)
+        (call :same_sign)
+        (eax <- (print eax))
+
+        (eax <- -1)
+        (edx <- 1)
+        (call :same_sign)
+        (eax <- (print eax))
+    )
+    ( :same_sign
+        (cjump eax = 1 :zero1 :nonzero1)
+    :zero1
+        (cjump edx = 1 :same :diff)
+    :nonzero1
+        (cjump edx = 1 :diff :nonzero2)
+    :nonzero2
+        (cjump eax < 1 :neg1 :pos1)
+    :neg1
+        (cjump edx < 1 :same :diff)
+    :pos1
+        (cjump edx < 1 :diff :same)
+    :same
+        (eax <- 3)
+        (return)
+    :diff
+        (eax <- 1)
+        (return)
+    )
+)

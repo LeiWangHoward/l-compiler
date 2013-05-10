@@ -1,0 +1,8 @@
+(((eax <- -5)
+  (cjump eax < 0 :less :greater)
+  :less
+  (eax <- 9)
+  (eax <- (print eax))
+  :greater
+  (eax <- 19)
+  (eax <- (print eax))))

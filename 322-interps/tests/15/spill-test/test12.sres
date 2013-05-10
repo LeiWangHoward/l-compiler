@@ -1,0 +1,4 @@
+(((mem ebp -4) <- 1) 
+ (v_0 <- (mem ebp -4))
+ ((mem ebp -8) <- v_0)
+ (y <- (mem ebp -8)))

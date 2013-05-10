@@ -1,0 +1,2 @@
+(((call :f ) ) (:f (esp -= 8 ) ((mem ebp -8 ) <- esi ) ((mem ebp -4 ) <- edi ) (eax <- 5 ) (ebx <- 7 ) (cjump eax <= ebx :l1 :l2 ) :l1 (ebx <- 5 ) (ecx <- 7 ) (edi <- 9 ) (edx <- 11 ) (esi <- 13 ) (eax += ebx ) (eax += ecx ) (eax += edi ) (eax += edx ) (eax += esi ) (eax *= 2 ) (eax -= 1 ) (eax <- (print eax ) ) (edi <- (mem ebp -4 ) ) (esi <- (mem ebp -8 ) ) (return ) :l2 (eax <- (print ebx ) ) (edi <- (mem ebp -4 ) ) (esi <- (mem ebp -8 ) ) (return ) ) )
+

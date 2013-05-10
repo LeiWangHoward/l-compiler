@@ -1,0 +1,50 @@
+(
+    (
+        (eax <- (allocate 11 1))
+        (arr <- eax)
+
+        ((mem arr 4) <- 9)
+        ((mem arr 8) <- 21)
+        ((mem arr 12) <- 11)
+        ((mem arr 16) <- 19)
+        ((mem arr 20) <- 31)
+        ; array = {4, 10, 5, 9, 15}
+
+        (call :even)
+
+        (eax <- (allocate 11 1))
+        (arr2 <- eax)
+
+        ((mem arr2 4) <- 7)
+        ((mem arr2 8) <- 21)
+        ((mem arr2 12) <- 13)
+        ((mem arr2 16) <- 17)
+        ((mem arr2 20) <- 23)
+        ; array = {3, 10, 6, 8, 11}
+
+        (call :even)
+
+        (eax <- (print arr))
+        (eax <- (print arr2))
+    )
+    ( :even
+        (size <- (mem eax 0))
+        (i <- 1)
+    :even_loop
+        (eax += 4)
+        (val <- (mem eax 0))
+        (val &= 2)
+        (val += 1)
+        (cjump val = 3 :odd_num :even_num)
+        :even_num
+            ((mem eax 0) <- 3)
+            (goto :loop_end)
+        :odd_num
+            ((mem eax 0) <- 1)
+        :loop_end
+        (i += 1)
+        (cjump i <= size :even_loop :even_end)
+    :even_end
+        (return)
+    )
+)

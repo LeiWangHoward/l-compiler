@@ -1,0 +1,67 @@
+(
+    (
+        (eax <- (allocate 11 1))
+        (arr1 <- eax)
+
+        ((mem arr1 4) <- 9)
+        ((mem arr1 8) <- 21)
+        ((mem arr1 12) <- 11)
+        ((mem arr1 16) <- 19)
+        ((mem arr1 20) <- 31)
+        ; array = {4, 10, 5, 9, 15}
+
+        (eax <- (print arr1))
+
+        (eax <- (allocate 11 1))
+        (arr2 <- eax)
+
+        ((mem arr2 4) <- 9)
+        ((mem arr2 8) <- 13)
+        ((mem arr2 12) <- 17)
+        ((mem arr2 16) <- 21)
+        ((mem arr2 20) <- 23)
+        ; array = {4, 6, 8, 10, 11}
+        
+        (eax <- (print arr2))
+        (eax <- arr1)
+        (edx <- arr2)
+        (call :same_array)
+        (eax <- (print eax))
+
+        ((mem arr2 8) <- 21)
+        ((mem arr2 12) <- 11)
+        ((mem arr2 16) <- 19)
+        ((mem arr2 20) <- 31)
+
+        (eax <- (print arr2))
+        (eax <- (print arr1))
+        (eax <- arr1)
+        (edx <- arr2)
+        (call :same_array)
+        (eax <- (print eax))
+    )
+    ( :same_array
+        (arr1 <- eax)
+        (arr2 <- edx)
+
+        (ecx <- (mem arr1 0))
+        (ecx *= 2)
+        (ecx += 1)
+        (i <- 1)
+    :same_loop
+        (el1 <- (mem arr1 0))
+        (el2 <- (mem arr2 0))
+        (cjump el1 = el2 :same_continue :unsame_end)
+    :same_continue
+        (arr1 += 4)
+        (arr2 += 4)
+        (i += 2)
+        (cjump i <= ecx :same_loop :same_end)
+    :same_end
+        (eax <- 3)
+        (return)
+    :unsame_end
+        (eax <- 1)
+        (return)
+    )
+)

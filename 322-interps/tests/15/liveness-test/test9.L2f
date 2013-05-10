@@ -1,0 +1,5 @@
+(:b
+(a <- :label)(call a)
+(a <- 2)
+(eax <- 1)(a += a)
+(return))

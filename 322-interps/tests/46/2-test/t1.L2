@@ -1,0 +1,4 @@
+(((eax <- 1)
+ (myvar <- 1)
+ (myvar *= eax)
+ (eax <- (print myvar))))

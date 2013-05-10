@@ -1,0 +1,6 @@
+(((esi <- 89)
+  (goto :jumphere)
+  (esi <- 3)
+  :jumphere
+  (eax <- esi)
+  (eax <- (print eax))))

@@ -1,0 +1,10 @@
+((
+(eax <- (allocate 21 0))
+(ebx <- eax)
+;;the size of the memory is recorded at the beginning of the array
+(edx <- (mem ebx 0))
+;; the length is decoded
+(edx *= 2)
+(edx += 1)
+(eax <- (print edx))
+))

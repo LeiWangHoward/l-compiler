@@ -1,0 +1,12 @@
+(((eax <- 19)
+  (edi <- eax)
+  (ebx <- 3)
+  :loop
+  (cjump ebx < edi :true :false)
+  :true
+  (ebx *= 2)
+  (ebx -= 1)
+  (eax <- (print ebx))
+  (goto :loop)
+  :false
+  ))

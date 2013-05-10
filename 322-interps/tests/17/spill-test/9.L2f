@@ -1,0 +1,7 @@
+((eax <- eax1)
+ (eax1 <- 9)
+ (ecx_ <- ecx)
+ (eax1 <- eax1))
+eax1
+-8
+s

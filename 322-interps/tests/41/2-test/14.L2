@@ -1,0 +1,20 @@
+(((eax <- 5)
+  (call :fac)
+  (eax += 1)
+  (eax <- (print eax)))
+ (:fac
+  (ebx <- 1)
+  (tail-call :facacc))
+ (:facacc
+  (n <- eax)
+  (acc <- ebx)
+  (cjump n <= 1 :done :cont)
+  :done
+  (eax <- acc)
+  (return)
+  :cont
+  (acc *= n)
+  (n -= 1)
+  (ebx <- acc)
+  (eax <- n)
+  (tail-call :facacc)))

@@ -1,0 +1,14 @@
+(((esi <- 1)
+  (edi <- 1)
+  :START
+  (cjump esi = 9 :first :last)
+  :first
+  (edi *= 2)
+  (edi += 1)
+  (eax <- (print edi))
+  (goto :FINISH)
+  :last
+  (esi += 1)
+  (edi *= esi)
+  (goto :START)
+  :FINISH))

@@ -1,0 +1,6 @@
+( 
+ (eax <- (allocate y x))
+ ((mem ebp -4) <- eax)
+ (m_0 <- (mem ebp -4))
+ (eax <- (array-error m_0 x))
+)

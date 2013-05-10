@@ -1,0 +1,12 @@
+(((esi <- :label1)
+ (edi <- :label2)
+ (eax <- 5)
+ (ebx <- 3)
+ (goto :label1)
+ (ebx <- 7)
+ :label1
+ (eax <- (print ebx))
+ (goto :label2)
+ (ebx <- 11)
+ :label2
+ (eax <- (print ebx))))

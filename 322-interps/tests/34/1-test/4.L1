@@ -1,0 +1,4 @@
+(((eax <- (allocate 7 7))
+  (eax += 4)
+  (eax <- (mem eax 8))
+  (eax <- (print eax))))

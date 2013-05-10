@@ -1,0 +1,14 @@
+(((call :my_arith))
+ (:my_arith
+  (a <- 29);14
+  (b <- 11) ;5
+  (a -= 1)
+  (a >>= 1)
+  (b -= 1)
+  (b >>= 1)
+  (a &= b)
+  (a <<= 1)
+  (a += 1)
+  (eax <- (print a))
+  (eax <- (print b))
+  (return)))

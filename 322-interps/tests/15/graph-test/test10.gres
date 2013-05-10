@@ -1,0 +1,3 @@
+((b eax ecx edi edx esi)
+ (eax b ebx ecx edi edx esi) (ebx eax ecx edi edx esi) (ecx b eax ebx edi edx esi) (edi b eax ebx ecx edx esi) (edx b eax ebx ecx edi esi) (esi b eax ebx ecx edi edx))
+((b ebx))

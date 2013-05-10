@@ -1,0 +1,13 @@
+(
+((mem ebp -4) <- eax)
+(second <- ebx)
+(t_0 <- (mem ebp -4))
+(cjump t_0 < second :FIR :SEC)
+:FIR
+(eax <- (mem ebp -4))
+(goto :END)
+:SEC
+(eax <- second)
+:END
+(return)
+)

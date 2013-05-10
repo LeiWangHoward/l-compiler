@@ -1,0 +1,9 @@
+(((eax <- 3)
+  (eax <- (allocate 41 41))
+  (eax <- (mem eax 8))
+  (call :fun)
+  (eax <- (print eax)))
+ (:fun
+  (eax *= 2)
+  (eax += 1)
+  (return)))

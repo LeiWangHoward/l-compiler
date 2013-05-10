@@ -1,0 +1,51 @@
+;; recursive verion of fib
+(
+(
+:main
+
+(ebp <- esp)
+
+;; fib(15)
+(eax <- 15)
+(call :func_fib)
+(ecx *= 2)
+(ecx += 1)
+(eax <- (print ecx))
+
+(ebp <- esp)
+)
+
+(
+:func_fib
+(ebp <- esp)
+(esp -= 8)
+((mem ebp -4) <- eax)
+;; if ( k <= 1)
+(cjump eax <= 1 :return_0_1 :call_fib)
+;;{
+:return_0_1
+(ecx <- eax)
+(esp <- ebp)
+(return)
+;;} else {
+:call_fib
+;; fib(k-1)
+(eax <- (mem ebp -4))
+(eax -= 1)
+(call :func_fib)
+((mem ebp -8) <- ecx)
+
+;; fib(k-2)
+(eax <- (mem ebp -4))
+(eax -= 2)
+(call :func_fib)
+
+;; fib(k-1) + fib(k-2)
+(edx <- (mem ebp -8))
+(ecx += edx)
+
+(esp <- ebp)
+
+(return)
+)
+)

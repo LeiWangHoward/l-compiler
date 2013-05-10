@@ -1,0 +1,32 @@
+(((eax <- 11)
+  (call :fac)
+  (eax <- (print eax)))
+ (:fac
+  (esp -= 4)
+  ((mem ebp -4) <- eax)
+  (eax <- (mem ebp -4))
+  (cjump eax <= 3 :done :notdone)
+  :done
+  (eax <- 3)
+  (return)
+  :notdone
+  (eax <- (mem ebp -4))
+  (eax -= 2)
+  (eax <- eax)
+  (call :fac)
+  (ecx <- eax)
+  (ecx >>= 1)
+  (edx <- (mem ebp -4))
+  (edx >>= 1)
+  (ecx *= edx)
+  (ecx <<= 1)
+  (ecx += 1)
+  (eax <- ecx)
+  (return)))
+
+
+
+((m ecx)
+ (n edx)
+ (next eax)
+ (x0 eax))

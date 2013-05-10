@@ -1,0 +1,3 @@
+(((eax <- 63)
+  (eax &= 39)
+  (eax <- (print eax))))

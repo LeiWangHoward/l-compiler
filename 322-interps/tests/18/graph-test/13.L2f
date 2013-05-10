@@ -1,0 +1,12 @@
+((foo <- eax)
+ (bar <- edx)
+ (baz <- ecx)
+ (cjump foo < bar :first :second)
+ :first
+ (eax <- foo)
+ (eax += baz)
+ (return)
+ :second
+ (eax <- bar)
+ (eax -= baz)
+ (return))

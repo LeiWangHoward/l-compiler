@@ -1,0 +1,6 @@
+(((call :ten)
+  (eax <- (print eax)))
+ (:ten (eax <- 10)
+       (tail-call :plus11))
+ (:plus11 (eax += 11)
+	  (return)))

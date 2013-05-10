@@ -1,0 +1,6 @@
+((x += y)
+ (y >>= x)
+ (eax <- x)
+ (z <- y)
+ (ebx <- y)
+ (return))

@@ -1,0 +1,9 @@
+((y <- 5)
+(cjump y <= eax :true :false)
+:true
+(eax += 3)
+:false
+(eax += y))
+y
+-4
+s

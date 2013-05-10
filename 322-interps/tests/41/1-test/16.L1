@@ -1,0 +1,6 @@
+(((edx <- 19)
+  (cjump edx < 20 :then :else)
+  :else
+  (eax <- (print 101010101))
+  :then
+  (eax <- (print 33))))

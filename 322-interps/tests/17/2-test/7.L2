@@ -1,0 +1,16 @@
+(((call :fun)
+  (eax += 2)
+  (eax <- (print eax)))
+ 
+ (:fun
+  (f <- :f)
+  (g <- :g)
+  (x <- 99)
+  (h <- 2)
+  (x += h)
+  (eax <- (print x))
+  (tail-call f))
+ 
+ (:f
+  (eax <- (print 9))
+  (return)))

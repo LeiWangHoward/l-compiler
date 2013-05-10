@@ -1,0 +1,2 @@
+((let ([label 3])
+	(print label)))

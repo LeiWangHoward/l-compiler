@@ -1,0 +1,3 @@
+(((ebx <- 9)
+(ebx &= 9)
+(eax <- (print ebx))))

@@ -1,0 +1,5 @@
+(((eax <- (print 3)))
+ (:stuff
+  (eax <- (print 5)))
+ (:stuff2
+  (eax <- (print 7))))

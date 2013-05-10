@@ -1,0 +1,6 @@
+((x <- 5)
+(x += x)
+(eax <- (print x))
+(y <- 5)
+(y += y)
+(eax <- (print y)))

@@ -1,0 +1,6 @@
+(((esi <- 1)
+  (cjump esi < 2 :first :last)
+  :first
+  (eax <- (print 3))
+  :last
+  (eax <- (print 1))))

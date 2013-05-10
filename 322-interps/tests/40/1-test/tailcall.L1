@@ -1,0 +1,41 @@
+(
+
+(
+:main
+(ebp <- esp)
+(esp -= 8)
+((mem ebp -4) <- 14)
+((mem ebp -8) <- 13)
+(eax <- (mem ebp -4))
+(edx <- (mem ebp -8))
+(edi <- :func_print_smaller)
+(call edi)
+(esp <- ebp)
+)
+
+;;print the smaller number
+(
+:func_print_smaller
+(ebp <- esp)
+(cjump eax < edx :first :second)
+:first
+(goto :endif)
+:second
+(eax <- edx)
+:endif
+(tail-call :func_print_uncoded)
+)
+
+;;print the uncoded number
+(
+:func_print_uncoded
+(ebp <- esp)
+(edx <- eax)
+(edx *= 2)
+(edx += 1)
+(eax <- (print edx))
+(esp <- ebp)
+(return)
+)
+
+)

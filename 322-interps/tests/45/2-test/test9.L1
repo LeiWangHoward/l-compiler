@@ -1,0 +1,7 @@
+(((ebx <- 1)
+(edi <- 1)
+(cjump ebx <= edi :true :false)
+:true
+(eax <- (print ebx))
+:false
+(eax <- (print edi))))

@@ -1,0 +1,16 @@
+(((eax <- 21)
+(call :recursecount))
+
+(:recursecount
+(ebx <- eax)
+
+(cjump ebx <= 0 :done :loop)
+
+:loop
+(eax <- (print ebx))
+(ebx -= 2)
+(eax <- ebx)
+(tail-call :recursecount)
+
+:done
+(return)))

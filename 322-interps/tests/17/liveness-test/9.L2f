@@ -1,0 +1,9 @@
+(
+ :fun
+ (array-erro <- 99)
+ (prin <- 101)
+ (eax <- (allocate array-erro 1))
+ (allocat <- eax)
+ (eax <- (print allocat))
+ (eax <- (array-error allocat prin))
+)

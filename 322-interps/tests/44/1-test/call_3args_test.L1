@@ -1,0 +1,11 @@
+(((eax <- 5)
+(edx <- 9)
+(ecx <- 13)
+(call :sum))
+
+(:sum
+(ebx <- eax)
+(ebx += edx)
+(ebx += ecx)
+(eax <- (print ebx))
+(return)))

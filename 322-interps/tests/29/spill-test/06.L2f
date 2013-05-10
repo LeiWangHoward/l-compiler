@@ -1,0 +1,7 @@
+((a <- 100)
+ (a <<= 1)
+ (eax <- a)
+ (eax *= 2)
+ (eax += 1)
+ (eax <- (print eax))
+ (return)) a -4 s

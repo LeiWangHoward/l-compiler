@@ -1,0 +1,4 @@
+((x <- 3)
+(y <- ebx)
+(eax <- (allocate x y))
+(z <- eax))

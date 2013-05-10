@@ -1,0 +1,5 @@
+(((mem ebp -8) <- x)
+ (y <- x)
+ (a <- x)
+ (a += y)
+ (return))

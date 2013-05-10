@@ -1,0 +1,10 @@
+(((ebx <- 7)
+(cjump 11 < ebx :true :false)
+:true
+(edx <- 3)
+(goto :print)
+:false
+(edx <- 5)
+(goto :print)
+:print
+(eax <- (print edx))))

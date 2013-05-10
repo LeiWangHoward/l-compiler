@@ -1,0 +1,10 @@
+((eax <- (allocate 5 3))
+  ((mem ebp -4) <- eax)
+  (s0 <- (mem ebp -4))
+  ((mem s0 4) <- 5)
+
+  (s1 <- (mem ebp -4))
+  ((mem s1 8) <- 7)
+
+  (s2 <- (mem ebp -4))
+  (eax <- (print s2)))

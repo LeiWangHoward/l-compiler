@@ -1,0 +1,11 @@
+(((esi <- 6)
+  :START
+  (esi *= 2)
+  (cjump esi <= 16 :first :last)
+  :first
+  (eax <- (print 3))
+  (goto :FINISH)
+  :last
+  (esi -= 2)
+  (goto :START)
+  :FINISH))

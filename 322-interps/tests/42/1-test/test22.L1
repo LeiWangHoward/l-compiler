@@ -1,0 +1,3 @@
+(((edx <- 51)
+  (edx >>= 1)
+  (eax <- (print edx))))

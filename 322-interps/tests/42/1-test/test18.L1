@@ -1,0 +1,4 @@
+(((edx <- 15)
+  (ecx <- 9)
+  (ebx <- edx < ecx)
+  (eax <- (print 5))))

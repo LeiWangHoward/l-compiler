@@ -1,0 +1,13 @@
+(
+(eax ebx ecx edi edx esi f)
+(ebx eax ecx edi edx esi f)
+(ecx eax ebx edi edx esi f t_0 t_1 t_2)
+(edi eax ebx ecx edx esi f t_0 t_1 t_2)
+(edx eax ebx ecx edi esi f t_0 t_1 t_2)
+(esi eax ebx ecx edi edx f t_0 t_1 t_2)
+(f eax ebx ecx edi edx esi t_2)
+(t_0 ecx edi edx esi)
+(t_1 ecx edi edx esi)
+(t_2 ecx edi edx esi f)
+)
+#f

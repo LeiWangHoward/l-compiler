@@ -1,0 +1,6 @@
+((eax <- 1)
+ (myvar <- :label)
+ (goto :label)
+ (eax <- 2)
+ :label
+ (eax <- (print eax)))

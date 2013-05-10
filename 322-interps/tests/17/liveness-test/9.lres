@@ -1,0 +1,16 @@
+((in
+  ()
+  ()
+  (array-erro)
+  (array-erro prin)
+  (eax prin)
+  (allocat prin)
+  (allocat prin))
+ (out
+  ()
+  (array-erro)
+  (array-erro prin)
+  (eax prin)
+  (allocat prin)
+  (allocat prin)
+  ()))

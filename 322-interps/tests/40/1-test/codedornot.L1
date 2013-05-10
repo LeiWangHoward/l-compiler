@@ -1,0 +1,19 @@
+((
+(eax <- 0) ;; uncoded version
+(call :func_codedornot)
+(eax <- 1) ;; coded version
+(call :func_codedornot)
+)
+(
+:func_codedornot
+(eax &= 1)
+(cjump eax = 0 :even :odd)
+:even
+(eax <- (print 1))
+(return)
+:odd
+(eax <- (print 3))
+(return)
+)
+)
+

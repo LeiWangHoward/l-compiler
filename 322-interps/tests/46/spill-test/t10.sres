@@ -1,0 +1,6 @@
+((ebx <- 1)
+ ((mem ebp -4) <- 3)
+ (k0 <- (mem ebp -4))
+ (ebx <<= k0)
+ (ebx += 1)
+ (eax <- (print ebx)))

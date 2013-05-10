@@ -1,0 +1,23 @@
+(((eax <- 11)
+  (call :fac)
+  (eax <- (print eax)))
+ (:fac
+  (x <- eax)
+  (cjump x <= 3 :done :notdone)
+  :done
+  (eax <- 3)
+  (return)
+  :notdone
+  (next <- x)
+  (next -= 2)
+  (eax <- next)
+  (call :fac)
+  (m <- eax)
+  (m >>= 1)
+  (n <- x)
+  (n >>= 1)
+  (m *= n)
+  (m <<= 1)
+  (m += 1)
+  (eax <- m)
+  (return)))

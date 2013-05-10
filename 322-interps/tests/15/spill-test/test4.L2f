@@ -1,0 +1,1 @@
+((x <- 0) (x <- 0 = x) (x <- :label) (call x)) x -4 l_

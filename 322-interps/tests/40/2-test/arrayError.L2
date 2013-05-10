@@ -1,0 +1,11 @@
+(
+(
+(eax <- (allocate 21 1))
+(base <- eax)
+(eax <- (array-error base 23))
+(x <- 1)
+(x <<= 2)
+(x += 1)
+(eax <- (print x))
+)
+)

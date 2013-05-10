@@ -1,0 +1,10 @@
+((call :f)
+ (call x)
+ (call y)
+ (tail-call :g)
+ (tail-call x)
+ (tail-call y)
+ (return))
+x
+-8
+q

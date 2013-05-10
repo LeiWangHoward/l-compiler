@@ -1,0 +1,5 @@
+((eax <- 3)
+ (var <- 123)
+ ((mem var 4) <- 5)
+ (eax <- (mem var 4))
+ (var <- 111)) var 8 s_

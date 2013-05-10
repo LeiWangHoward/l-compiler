@@ -1,0 +1,4 @@
+(((esi <- 21)  ;; loop termination variable; this is 44 in reality
+  (eax <- (allocate esi 3))
+  (edi <- eax) ;; save this register for the array base pointer 
+  (eax <- (array-error edi 23))))

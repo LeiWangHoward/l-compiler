@@ -1,0 +1,6 @@
+(((edx <- 123)
+  (cjump 32 = edx :then :else)
+  :then
+  (eax <- (print 1231324))
+  :else
+  (eax <- (print 35))))

@@ -1,0 +1,4 @@
+(:fun
+ (y <- 31)
+ (eax <- (print y))
+ (return))

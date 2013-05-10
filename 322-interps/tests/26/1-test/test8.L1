@@ -1,0 +1,6 @@
+(((eax <- 31)
+  (eax >>= 1)
+  (goto :loc)
+ (eax >>= 1)
+  :loc
+  (eax <- (print eax))))

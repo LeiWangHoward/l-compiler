@@ -1,0 +1,11 @@
+((q <- 123)
+ (edi <- 23)
+ (eax <- q <= edi)
+ :one
+ (edx <- 1 < q)
+ :two
+ (ebx <- q = 3)
+ :three
+ (ebx <- eax < q)
+ :four
+ (q <- ebx < 5)) q 4 mhm_

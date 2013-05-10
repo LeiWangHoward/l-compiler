@@ -1,0 +1,6 @@
+((x <- 2)
+(cjump x < 3 :smaller :bigger)
+:smaller
+(x <- x)
+:bigger
+(eax <- (print x))) x -4 y

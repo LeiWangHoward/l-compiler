@@ -1,0 +1,10 @@
+((
+(edx <- 5)
+(cjump edx < 4 :if :else)
+:if
+(eax <- (print 3))
+(goto :endif)
+:else
+(eax <- (print 1))
+:endif
+))

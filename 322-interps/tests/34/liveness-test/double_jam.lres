@@ -1,0 +1,16 @@
+((in
+  (jam1 jam2)
+  (eax jam1 jam2)
+  (eax ebx jam1 jam2)
+  (eax ebx ecx jam1 jam2)
+  (eax ebx ecx)
+  (ebx ecx)
+  (ecx))
+ (out
+  (eax jam1 jam2)
+  (eax ebx jam1 jam2)
+  (eax ebx ecx jam1 jam2)
+  (eax ebx ecx)
+  (ebx ecx)
+  (ecx)
+  ()))

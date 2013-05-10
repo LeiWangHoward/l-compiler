@@ -1,0 +1,18 @@
+(((eax <- 3)
+  (edx <- 9)
+  :myfunclabel
+  (eax <- (print edx))
+  (call :myfunc)
+  (eax <- (print eax)))
+(:myfunc
+(ecx <- 11)
+(eax <- (print ecx))
+(eax <- (allocate 15 eax))
+(tail-call :mod_array))
+(:mod_array
+(edx <- esi)
+((mem eax 4) <- 3)
+(esi <- 5)
+((mem eax 8) <- esi) 
+(esi <- edx)
+(return)))

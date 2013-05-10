@@ -1,0 +1,13 @@
+((
+(edx <- 127)
+(ecx <- 4)
+(ebx <- 1)
+(ebx <<= ecx)
+(ebx &= edx)
+(ebx >>= ecx)
+
+(ebx *= 2)
+(ebx += 1)
+
+(eax <- (print ebx))
+))

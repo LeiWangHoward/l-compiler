@@ -1,0 +1,1 @@
+((eax <- (array-error x 2))(x <- eax))

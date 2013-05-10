@@ -1,0 +1,5 @@
+((p <- 5)
+ (cjump p <= 4 :then :else)
+ :then
+ (eax <- p)
+ :else) p 0 yu

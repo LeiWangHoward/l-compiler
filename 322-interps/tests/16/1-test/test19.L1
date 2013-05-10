@@ -1,0 +1,13 @@
+(((eax <- 5)
+  (edi <- 0)
+  (ecx <- 7)
+  (eax <<= 5)
+  (edi <<= ecx)
+  (edi >>= 3)
+  (cjump eax < edi :wrong :right)
+  :wrong
+  (eax <- (print 1))
+  (goto :done)
+  :right
+  (eax <- (print 3))
+  :done))

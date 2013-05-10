@@ -1,0 +1,43 @@
+(((edi <- 45)
+  (eax <- (allocate edi 3))
+  (esi <- eax)
+
+  (eax <- (print esi))
+  (eax <- esi)
+  (ecx <- 9)
+  (call :assign)
+
+  (eax <- (print esi))
+  (eax <- esi)
+  (ecx <- 13)
+  (call :assign)
+
+  (eax <- (print esi))
+  (eax <- esi)
+  (ecx <- 17)
+  (call :assign)
+
+  (eax <- (print esi)))
+
+ (:assign
+  (esp -= 4)
+  ((mem ebp -4) <- edi)
+
+  (edx <- 1)
+  (ebx <- (mem eax 0))
+
+  :loop
+  (cjump edx <= ebx :keep_going :done)
+
+  :keep_going
+  (edi <- edx)
+  (edi *= 4)
+  (edi += eax)
+  ((mem edi 0) <- ecx)
+
+  (edx += 1)
+  (goto :loop)
+
+  :done
+  (edi <- (mem ebp -4))
+  (return)))

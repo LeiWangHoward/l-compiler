@@ -1,0 +1,87 @@
+(
+(
+(eax <- (allocate 21 1))
+(base <- eax)
+(i <- 1)
+:loop
+(cjump i < 21 :begin :end)
+:begin
+(pos <- i)
+(pos -= 1)
+(pos <<= 1)
+(pos += 4)
+(pos += base)
+((mem pos 0) <- i)
+(i += 4)
+(goto :loop)
+:end
+(eax <- (print base))
+(eax <- base)
+(edx <- 21)
+(call :sort)
+(eax <- (print base))
+)
+
+(
+:sort
+(base <- eax)
+(length <- edx)
+
+(i <- 1)
+:loop1
+(cjump i < length :begin1 :end1)
+:begin1
+
+(k <- i)
+
+(j <- i)
+:loop2
+(cjump j < length :begin2 :end2)
+:begin2
+
+(pos_j <- j)
+(pos_j -= 1)
+(pos_j <<= 1)
+(pos_j += 4)
+(pos_j += base)
+(val_j <- (mem pos_j 0))
+
+(pos_k <- k)
+(pos_k -= 1)
+(pos_k <<= 1)
+(pos_k += 4)
+(pos_k += base)
+(val_k <- (mem pos_k 0))
+
+(cjump val_k < val_j :newmax :keep)
+:newmax
+(k <- j)
+:keep
+(j += 2)
+(goto :loop2)
+:end2
+
+(pos_i <- i)
+(pos_i -= 1)
+(pos_i <<= 1)
+(pos_i += 4)
+(pos_i += base)
+(val_i <- (mem pos_i 0))
+
+(pos_k <- k)
+(pos_k -= 1)
+(pos_k <<= 1)
+(pos_k += 4)
+(pos_k += base)
+(val_k <- (mem pos_k 0))
+
+((mem pos_i 0) <- val_k)
+((mem pos_k 0) <- val_i)
+
+(i += 2)
+(goto :loop1)
+:end1
+(return)
+)
+
+)

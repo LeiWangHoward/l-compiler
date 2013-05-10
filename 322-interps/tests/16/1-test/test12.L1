@@ -1,0 +1,8 @@
+(((eax <- 11)
+(call :error_func))
+(:error_func
+(edi <- eax)
+(eax <- (print eax))
+(eax <- (allocate edi 5))
+(eax <- (array-error eax 13))
+(return)))

@@ -1,0 +1,1 @@
+((in () (myvar) (eax myvar)) (out (myvar) (eax myvar) ()))

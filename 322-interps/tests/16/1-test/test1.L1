@@ -1,0 +1,2 @@
+(((eax <- 4 < 5)
+ (eax <- (print eax))))

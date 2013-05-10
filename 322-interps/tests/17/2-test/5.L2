@@ -1,0 +1,17 @@
+(((size <- 33)  ;; Allocate 16 word array
+  (eax <- (allocate size 5))
+  (arr <- eax)
+
+  (eax <- (print arr))   ;; Print out newly initialized array
+
+  ((mem arr 4) <- 1)     ;; Mutate 4 elements in array
+  ((mem arr 8) <- 9)
+  ((mem arr 16) <- 99)
+  ((mem arr 32) <- 17)
+  (eax <- (print arr))   ;; Print modified array
+
+  (a <- (mem arr 16))  ;; Get a[3]
+  (a -= 1)
+  (a *= 9)             ;; Multiply by 9 (with number encoding tricks)
+  (a += 1)
+  (eax <- (print a)))) ;; Print it

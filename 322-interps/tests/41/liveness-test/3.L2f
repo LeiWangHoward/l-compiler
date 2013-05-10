@@ -1,0 +1,6 @@
+((eax <- (print wat))
+ (goto :label)
+ (edx <<= ecx)
+ :label
+ (ebx <<= -118)
+ (return))

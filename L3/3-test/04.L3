@@ -1,0 +1,2 @@
+((let ([v (new-array 3 3)])
+  (print v)))

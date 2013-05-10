@@ -1,0 +1,6 @@
+(:loop
+ (edi <- s)
+ (esi <- q)
+ (cjump edi = esi :loop :done)
+ :done
+ (return))

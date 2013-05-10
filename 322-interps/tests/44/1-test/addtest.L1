@@ -1,0 +1,3 @@
+(((esi <- 3)
+(esi += 4)
+(eax <- (print esi))))
