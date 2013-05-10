@@ -34,10 +34,10 @@
 
 ; init l2_graph and color map with variables. Also, make "all color set" available to each variable
 (define (init-graph-color l2_graph var_lst)
-    (values (sort-single-lst (append l2_graph var_lst))
-            (sort-single-lst (map (λ (l2_var)
-                                    (append l2_var register_lst))
-                                  var_lst))))
+  (values (sort-single-lst (append l2_graph var_lst))
+          (sort-single-lst (map (λ (l2_var)
+                                  (append l2_var register_lst))
+                                var_lst))))
 
 ; function handle edge add 
 (define (edge-add edge_lst interfere_lst)
@@ -47,7 +47,7 @@
     (when (set-member? interfere_set node)
       (set! edge_lst
             (set->list (set-union edge_set interfere_set))))
-        ;keep the node "index name" in front
+    ;keep the node "index name" in front
     (append (list node) (remove node edge_lst))))
 
 ; to check the instruction if kill and out corredpond to (y <- x)
@@ -80,16 +80,12 @@
               l2_graph)]
         [kill_out_lst (list)])
     ;2) we handle the combinations of out list and kill list
-    (do ([out_iter l2_out (cdr out_iter)]
-         [kill_iter l2_kill (cdr kill_iter)]
-         [inst_iter inst_in (cdr inst_iter)])
-        ((equal? inst_iter (list)) new_graph);;end loop
-      (let* ([inst_single (car inst_iter)]
-             [kill_single (car kill_iter)]
-             [out_single (car out_iter)]
-             [kill_out_lst (remove-duplicates (append kill_single out_single))]
-             [l_interfere (list)]
-             [r_interfere (list)])
+    (for ([out_single l2_out]
+          [kill_single l2_kill]
+          [inst_single inst_in])
+      (let* ([l_interfere (list)]
+             [r_interfere (list)]
+             [kill_out_lst (remove-duplicates (append kill_single out_single))])
         (cond [(out-exception? inst_single out_single)
                (begin (set! l_interfere (remove (first inst_single) kill_out_lst))
                       (set! r_interfere (remove (third inst_single) kill_out_lst)))] 
@@ -100,6 +96,7 @@
                (begin (set! l_interfere kill_out_lst)
                       (set! r_interfere (list)))])
         ;(displayln (cons l_interfere r_interfere));test
+        ;now we update the new_graph
         (unless (<= (length l_interfere) 1)
           (set! new_graph (map (λ (node_edges)
                                  (edge-add node_edges l_interfere))
@@ -130,22 +127,22 @@
     (graph-clean new_graph)))
 ; function to update the whole graph
 (define (graph-update graph)
-   (do ([graph_iter graph (cdr graph_iter)])
-     ((equal? graph_iter (list)) graph)
-     (let ([graph_single_iter (car graph_iter)])
-       (set! graph
-             (map (λ (node_edges)
-                  (if (member (first node_edges) graph_single_iter)
-                      (append node_edges (list (first graph_single_iter)))
-                      node_edges));update the original graph
-                  graph)))))
+  (do ([graph_iter graph (cdr graph_iter)])
+    ((equal? graph_iter (list)) graph)
+    (let ([graph_single_iter (car graph_iter)])
+      (set! graph
+            (map (λ (node_edges)
+                   (if (member (first node_edges) graph_single_iter)
+                       (append node_edges (list (first graph_single_iter)))
+                       node_edges));update the original graph
+                 graph)))))
 ;function to finalize a clean graph(no duplicate, sorted)
 (define (graph-clean graph)
-   (map (λ (node_edges)
-          (let* ([head_node (car node_edges)]
-                 [neighbor_node (set->list (set-subtract 
-                                            (list->set node_edges) (set head_node)))])
-            (append (list head_node) ;neighbor_node)))
-                    (sort neighbor_node
-                          (λ (x y) (string<? (symbol->string x) (symbol->string y)))))))
-        graph))
+  (map (λ (node_edges)
+         (let* ([head_node (car node_edges)]
+                [neighbor_node (set->list (set-subtract 
+                                           (list->set node_edges) (set head_node)))])
+           (append (list head_node) ;neighbor_node)))
+                   (sort neighbor_node
+                         (λ (x y) (string<? (symbol->string x) (symbol->string y)))))))
+       graph))
