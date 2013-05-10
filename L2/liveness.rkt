@@ -125,32 +125,27 @@
 
 ;;calculate out based on in and gen(instruction)
 (define (out-cal inst in)
-  (let ([len (length in)]
-        [out_que (make-queue)])
-    (do ([in_iter in (cdr in_iter)]
-         [inst_iter inst (cdr inst_iter)])
-      ((equal? len (queue-length out_que))
-       (queue->list out_que))
-      (match (car inst_iter)
+  (let ([normal_succ (append (cdr in) (list (list)))])
+    (for/list ([in_iter in]
+               [inst_iter inst]
+               [succ normal_succ])
+      (match inst_iter
         [(or (list 'return)
              (list 'eax '<- (list 'array-error _ _))
              (list 'tail-call _))
-         (enqueue! out_que (list))];;no successor
+         (list)];;no successor
         [(list 'goto g)
-         (let* ([tail_len (length (member g inst))]
-                [out_ele (list-ref in (- (length in) tail_len))])
-           (enqueue! out_que out_ele))]
+         (let ([tail_len (length (member g inst))])
+           (list-ref in (- (length in) tail_len)))]
         [(list 'cjump l op r t_jmp f_jmp)
          (let* ([tail_len_1 (length (member t_jmp inst))]
                 [out_ele_1 (list-ref in (- (length in) tail_len_1))]
                 [tail_len_2 (length (member f_jmp inst))]
                 [out_ele_2 (list-ref in (- (length in) tail_len_2))])
-           (enqueue! out_que (set->list (list->set (append out_ele_1 out_ele_2)))))]
-        [else ; normal condition, sucessor is next instruction
-         (if (equal? 1 (length in_iter))
-             (enqueue! out_que (list))
-             (enqueue! out_que (second in_iter)))]))))
-
+           (remove-duplicates (append out_ele_1 out_ele_2)))]
+        [_ ; normal condition, sucessor is next instruction
+         succ]))))
+;(test (out-cal '((eax <- 3) (y <- 4) (eax <- eax)) '(() () (eax))) '(()(eax)()))
 ;;init and then calculate in and out list
 (define (in-out-cal inst gen_lst kill_lst)
   (let* ([in_lst gen_lst];init in_lst as gen lst

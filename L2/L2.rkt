@@ -9,8 +9,8 @@
 (require "graph.rkt")
 (require "coloring.rkt")
 ; file input output
-(define filename (command-line #:args (filename) filename))
-;(define filename "../322-interps/tests/41/2-test/8.L2")
+;(define filename (command-line #:args (filename) filename))
+(define filename "../322-interps/tests/41/2-test/8.L2")
 (define inst_in (call-with-input-file filename read))
 (define L1_inst (make-queue))
 

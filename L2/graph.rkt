@@ -108,16 +108,15 @@
     ;3) we add extra edges for (cx <- s cmp s) and (x sop=sx)
     ; a. (cx <- s cmp s), cx have edges edi esi
     ; b. x sop= sx, ex hage edges to everything except ecx
-    (do ([inst_iter inst_in (cdr inst_iter)])
-      ((equal? inst_iter (list)) new_graph);;end loop
+    (for ([inst_iter inst_in])
       (set! new_graph (map (λ (node_edges)
-                             (match (first inst_iter)
+                             (match inst_iter
                                [(list dst '<- _ cmp _)
                                 (if (equal? dst (first node_edges))
                                     (append node_edges (list 'esi 'edi))
                                     node_edges)]
                                [(or (list _ '<<= _) (list _ '>>= _))
-                                (if (equal? (third (first inst_iter)) (first node_edges))
+                                (if (equal? (third inst_iter) (first node_edges))
                                     (append node_edges (list 'eax 'ebx 'edi 'edx 'esi))
                                     node_edges)]
                                [else node_edges]))
