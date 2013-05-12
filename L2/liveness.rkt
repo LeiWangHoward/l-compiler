@@ -4,6 +4,20 @@
 (require racket/set)
 (require "register.rkt")
 (require "tools.rkt")
+;;define enqueue var and register (except esp ebp)
+(define (enqueue-var-reg que var-lst)
+  (enqueue! que 
+            (for/list ([var var-lst]
+                       #:when (not (or (number? var)
+                                       (equal? var 'esp)
+                                       (equal? var 'ebp)
+                                       (label? var))))
+              var)))
+(module+ test
+  (test (begin (define a (make-queue)) (enqueue-var-reg a '(1 3 5 esp ebp)) (dequeue! a)) '())
+  (test (begin (define a (make-queue)) (enqueue-var-reg a '()) (dequeue! a)) '())
+  )   
+
 ;;define number/symbol check, return list of symbols
 (define (var-lst lhs rhs)
   (cond [(and (number? lhs) (number? rhs))
@@ -19,42 +33,28 @@
   (match sexp
     [(list (list 'mem ptr num) '<- src)
      (begin
-       (if (or (equal? ptr 'ebp) (equal? ptr 'esp))
-           (if (symbol? src);special case, ignore 'ebp 'esp
-               (enqueue! gen (list src))
-               (enqueue! gen (list)))
-           (if (symbol? src)
-               (enqueue! gen (list ptr src))
-               (enqueue! gen (list ptr))))
-       (enqueue! kill (list)))]
+       (enqueue-var-reg gen (list ptr num src))
+       (enqueue! kill '()))]
     
     [(list dst '<- (list 'mem ptr num))
-     (if (or (equal? ptr 'ebp) (equal? ptr 'esp));special case, ignore 'ebp 'esp
-         (begin (enqueue! gen (list))
-                (enqueue! kill (list dst)))
-         (begin (enqueue! gen (list ptr))
-                (enqueue! kill (list dst))))];x86 won't kill ptr, no value assigned
+     (begin
+       (enqueue-var-reg gen (list ptr num))
+       (enqueue-var-reg kill (list dst)))];x86 won't kill ptr, no value assigned
     ;;return
     [(list 'return)
      (begin (enqueue! gen (append l_result callee_save));;gen: result and callee_save
-            (enqueue! kill (list)))]
+            (enqueue! kill '()))]
     ;;call
     [(list 'call s)
-     (begin (if (label? s)
-                (enqueue! gen l_args); no s
-                (enqueue! gen (append l_args (list s))))
+     (begin (enqueue-var-reg gen (append l_args (list s)))
             (enqueue! kill (append caller_save l_result)))];;new version
     ;;tail-call
     [(list 'tail-call s)
-     (begin (if (label? s);label
-                (enqueue! gen (append l_args callee_save)) ; no s
-                (enqueue! gen (append l_args callee_save (list s)))) 
-            (enqueue! kill (list)))]
+     (begin (enqueue-var-reg gen (append l_args callee_save (list s)))) 
+     (enqueue! kill '())]
     ;;print
     [(list 'eax '<- (list 'print s))
-     (begin (if (symbol? s)
-                (enqueue! gen (list s)) 
-                (enqueue! gen (list)))
+     (begin (enqueue-var-reg gen (list s))
             (enqueue! kill x86_caller_save))]
     ;;allocate, x86 caller save kill!
     [(list 'eax '<- (list 'allocate v0 v1))
@@ -78,31 +78,16 @@
        (enqueue! kill (list)))]; kill l
     ;; two basic situations, spill var without further operation
     [(list dst '<- src)
-     (begin (if (or (number? src)
-                    (equal? src 'ebp) 
-                    (equal? src 'esp)
-                    (label? src));label
-                (enqueue! gen (list))
-                (enqueue! gen (list src)))
+     (begin (enqueue-var-reg gen (list src))
             (enqueue! kill (list dst)))]
     ;; operators += -= *= &= >>= <<=
     [(list l op r)
-     (cond [(or (equal? l 'ebp)
-                (equal? l 'esp))
-            (begin (if (symbol? r)
-                       (enqueue! gen (list r))
-                       (enqueue! gen (list)))
-                   (enqueue! kill (list)))]
-           [(and (symbol? l) (number? r))
-            (begin (enqueue! gen (list l))
-                   (enqueue! kill (list l)))] 
-           [else ; both l, r are symbol
-            (begin (enqueue! gen (list l r))
-                   (enqueue! kill (list l)))])]
+     (begin (enqueue-var-reg gen (list l r))
+            (enqueue-var-reg kill (list l)))]
     ;; goto, :label etc
-    [_;else 
-     (begin (enqueue! gen (list))
-            (enqueue! kill (list)))]))
+    [_ 
+     (begin (enqueue! gen '())
+            (enqueue! kill '()))]))
 
 ;;liveness calculation and check
 (define (liveness gen kill out)
