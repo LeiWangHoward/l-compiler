@@ -13,6 +13,9 @@
     (v_num (num) num)
     (v_label (label) label)))
 
+;;biop and a? for L3
+(define-type L3-op
+  (v_biop (biop biop?)))
 ;;arglist for L3
 (define-type L3-arglist
   (var_one (var_1 L3-var?))
@@ -28,22 +31,9 @@
            (L3_arglist L3-arglist?)
            (L3_e L3_e?)))
 
-;;e for L3
-(define-type L3-e
-  (L3_let ;(x_d L3-x-d-assign?)
-   (x v_var?)
-   (d L3-d?)
-   (e L3-e?))
-  (L3_if (v L3-v?)
-         (e_1 L3_e?)
-         (e_2 L3_e?))
-  (L3_d (d L3-d?)))
-
-
 ;;d for L3
 (define-type L3-d
-  ;;
-  (L3_biop (biop biop?) 
+  (L3_biop (biop v_biop?) 
            (v_1 L3-v?)
            (v_2 L3-v?))
   (L3_pred (pred symbol?)
@@ -69,8 +59,19 @@
   (L3_make-closure (label v_label?)
                    (v L3-v?))
   (L3_closure-proc (v L3-v?))
-  (L3_closure-vars (v L3-v?)))
+  (L3_closure-vars (v L3-v?))
+  (L3_v (v L3-v?)))
 
+;;e for L3, combined with d
+(define-type L3-e
+  (L3_let ;(x_d L3-x-d-assign?)
+   (x v_var?)
+   (d L3-d?)
+   (e L3-e?))
+  (L3_if (v L3-v?)
+         (e_1 L3_e?)
+         (e_2 L3_e?))
+  (L3_d (d L3-d?)))
 
 
 ;(define (compile func)
@@ -86,9 +87,3 @@
 ;    (l2_reg (name) (name))))
 ;compile immediate data type(for constant value), add '$' to front   
 
-;;helper functions handle cmp and jmp
-(define (compare_a x1 op x2)
-  (case op
-    [(<) (< x1 x2)]
-    [(<=)(<= x1 x2)]
-    [(=) (= x1 x2)]))
