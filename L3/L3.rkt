@@ -2,10 +2,8 @@
 (require data/queue)
 (require "tools.rkt")
 (require "L3-compile.rkt")
-(define filename "../322-interps/tests/robby/3-test/0.L3")
-;(define filename "../322-interps/tests/coal-soup-push/3-test/02.L3")
-;(define filename "../322-interps/tests/edge-care-push/3-test/double.L3")
-;(define filename (command-line #:args (filename) filename))
+;(define filename "../322-interps/tests/robby/3-test/76.L3")
+(define filename (command-line #:args (filename) filename))
 (define L3-exp (call-with-input-file filename read))
 ;from L3 -> L2, compile p
 (define (compile-p L3_p)
@@ -18,17 +16,6 @@
          (append `(,v)
                  (compile-e e)))]
     [_ (compile-e L3_p)]))
-
-;tests
-#|(module+ test
-  (test (compile-p '(if 5
-                        (print test)
-                        (print 2))) 
-        '((cjump 5 = 1 :_lablei1 :_lablei0) 
-          :_lablei1 (eax <- (print 5)) (eax <- eax) (return) 
-          :_lablei0 (eax <- (print test)) (eax <- eax) (return)))
-  (test (compile-e '(let ((x 3))
-                      (print x))) 'what))|#
 
 ;;compile L3
 (define (compile-L3)

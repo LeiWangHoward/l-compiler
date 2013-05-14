@@ -101,56 +101,20 @@
 ;;define assign register, and register assign
 (define register-lst (list 'ecx 'edx 'eax))
 
-;simple assign-regs
+;simple assign-regs and reg-assign
 (define (assign-regs arg-lst)
-  (let ([len (length arg-lst)])
-    ;;first check the value assign to register is encoded, if so, add to list
-    (cond [(= 1 len)
-           (decode-if-reg 'eax (car arg-lst))]
-          [(= 2 len)
-           (for/list ([reg (cdr register-lst)]
-                      [args arg-lst])
-             `(,reg <- ,args))]
-          [(= 3 len)
-           (append (for/list ([reg register-lst]
-                              [args arg-lst])
-                     `(,reg <- ,args)))])))
-;we have to make sure always use eax last, and this complicated version controls the decode/encode
-#|(define (assign-regs arg-lst)
-  (let ([len (length arg-lst)])
-    ;;first check the value assign to register is encoded, if so, add to list
-    (cond [(= 1 len)
-           (append `((eax <- ,(car arg-lst)))
-                   (decode-if-reg 'eax (car arg-lst)))]
-          [(= 2 len)
-           (append (for/list ([reg (cdr register-lst)]
-                              [args arg-lst])
-                     `(,reg <- ,args))
-                   (decode-if-reg 'edx (first arg-lst))
-                   (decode-if-reg 'eax (second arg-lst)))]
-          [(= 3 len)
-           (append (for/list ([reg register-lst]
-                              [args arg-lst])
-                     `(,reg <- ,args))
-                   (decode-if-reg 'ecx (first arg-lst)) 
-                   (decode-if-reg 'edx (second arg-lst))
-                   (decode-if-reg 'eax (third arg-lst)))])))|#
+  (for/list ([reg register-lst]
+             [args arg-lst])
+    `(,reg <- ,(encode-const args))))
 
 (define (reg-assign arg-lst)
-  (let ([len (length arg-lst)])
-    (cond [(= 1 len)
-           `((,(car arg-lst) <- eax))]
-          [(= 2 len)
-           (for/list ([reg (cdr register-lst)]
-                      [args arg-lst])
-             `(,args <- ,reg))]
-          [(= 3 len) 
-           (for/list ([reg register-lst]
-                      [args arg-lst])
-             `(,args <- ,reg))])))
+  (for/list ([reg register-lst]
+             [args arg-lst])
+    `(,args <- ,reg)))
 
-(module+ test ;(reg-assign (list 'a 'b 'c))
-  (test (assign-regs '(1 's 3)) '((ecx <- 1) (edx <- 's) (eax <- 3))))
+;test
+(module+ test 
+  (test (assign-regs '(1 's 3)) '((ecx <- 3) (edx <- 's) (eax <- 7))))
 
 ;;define memory assign and function var assign
 ;; make-mem-assigns
@@ -161,36 +125,13 @@
       `((mem ,symbol ,(+ (* i 4) 4))
         <- ,(encode-const arg)))))
 
+;add return to function
 (define (add-return-call sexp check)
   (if check
       (append sexp `((return)))
       sexp))
+
+;test
 (module+ test
   (test (add-return-call '((print a)) #t) '((print a) (return)))
   (test (add-return-call '((a <- 4)) #t) '((a <- 4) (return))))
-;; make-fae-assigns : listof v -> listof d
-
-(define (sort-lst lst)
-  (map (lambda (sub_lst)
-         (sort sub_lst
-               (lambda (x y) (string<? (symbol->string x) (symbol->string y)))))
-       lst))
-
-; function to sort a list based on each element's "head" 
-(define (sort-single-lst lst)  
-  (sort lst
-        (lambda (x y) (string<? (symbol->string (car x)) (symbol->string (car y))))))
-
-;; new name replace function e.g x -> s0 
-(define (name-replace sexp tar_var s_var)
-  (cond
-    [(equal? tar_var sexp) s_var]
-    [(pair? sexp) (cons (name-replace (car sexp) tar_var s_var)
-                        (name-replace (cdr sexp) tar_var s_var))]
-    [else sexp]))
-
-;; replace all old_name with new_name
-(define (replace-all inst tar_var s_var)
-  (map (λ (single_inst)
-         (name-replace single_inst tar_var s_var))
-       inst))
