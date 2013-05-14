@@ -1,9 +1,0 @@
-((x <- y)
- (goto :here)
- (z <- x)
- :here
- (z <- eax)
- (eax <- (print z)))
- z
- -4
- s

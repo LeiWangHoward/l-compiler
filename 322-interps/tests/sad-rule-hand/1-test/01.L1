@@ -1,2 +1,0 @@
-(((esi <- 89)
-  (eax <- (print esi))))

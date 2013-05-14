@@ -1,4 +1,0 @@
-((let ([x (print 8)])
-    (let ([y (new-tuple 4 4 4)])
-        (let ([z (new-array 1 y)])
-            (print z)))))

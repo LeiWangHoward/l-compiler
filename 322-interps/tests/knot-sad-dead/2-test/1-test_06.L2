@@ -1,5 +1,0 @@
-(((eax <- :function)
-  (call eax))
- (:function
-  (eax <- (print 3))
-  (return)))

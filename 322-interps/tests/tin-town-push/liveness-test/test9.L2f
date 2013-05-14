@@ -1,5 +1,0 @@
-((cjump eax < ecx :true :false)
- :true
- (call :func)
- :false
- (return))

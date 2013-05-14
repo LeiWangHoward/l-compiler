@@ -1,3 +1,0 @@
-((eax <- (allocate 21 eax))
- (array <- eax)
- ((mem array 4) <- 3))

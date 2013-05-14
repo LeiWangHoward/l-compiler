@@ -1,4 +1,0 @@
-((let ([isNum (number? 1000)])
-      (if isNum
-      	  (print 1)
-	  (print 0))))

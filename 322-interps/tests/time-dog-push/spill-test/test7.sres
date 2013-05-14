@@ -1,3 +1,0 @@
-(((mem ebp -4) <- 4)
- (eax <- (mem ebp -4))
- (eax *= eax))

@@ -1,3 +1,0 @@
-(print (aref
-        (letrec ((f (new-tuple 1 f))) f)
-        0))

@@ -1,6 +1,0 @@
-(((ebx <- :dontlookhererobby)
-  (call ebx))
- (:dontlookhererobby
-  (ecx <- 781445)
-  (eax <- (print ecx))
-  (return)))

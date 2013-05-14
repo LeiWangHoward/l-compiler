@@ -1,3 +1,0 @@
-((let ([arr (new-array 10 10)])
-(let ([x (aset arr 10 2)])
-(print x))))

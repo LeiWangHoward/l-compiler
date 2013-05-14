@@ -1,5 +1,0 @@
-((let ([x 30])
-   (let ([result (:square x)])
-     (print result)))
- (:square (x)
-          (* x x)))

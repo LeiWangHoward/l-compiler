@@ -1,3 +1,0 @@
-((:printfunction 3)
- (:printfunction (x)
-                 (print (+ 1 x))))

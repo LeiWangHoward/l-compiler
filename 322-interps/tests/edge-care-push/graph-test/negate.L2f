@@ -1,3 +1,0 @@
-((temp <- eax)
- (temp *= -1)
- (eax <- temp))

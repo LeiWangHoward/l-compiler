@@ -1,3 +1,0 @@
-(let ((f (lambda (a b c)
-          (aref (new-tuple a b c) 1))))
-  (print (f 1 2 3)))

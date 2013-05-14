@@ -1,3 +1,0 @@
-((let ((x 8))
-  (let ((y (a? x)))
-   (if y (print y) (print 1337)))))

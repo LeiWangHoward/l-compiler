@@ -1,5 +1,0 @@
-((ebx <- eax)
- (ebx <- ecx)
- (ecx += eax)
- ((mem ebp -4) <- ebx)
- (return))

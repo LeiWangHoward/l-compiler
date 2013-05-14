@@ -1,3 +1,0 @@
-((let ([a (new-array 2 1)])
-	(let ([unused (aset a 1 2)])
-		(print a))))

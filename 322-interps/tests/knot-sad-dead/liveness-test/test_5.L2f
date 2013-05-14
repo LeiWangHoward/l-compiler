@@ -1,4 +1,0 @@
-(:loop
- (eax += x)
- (goto :loop)
- (r <- s))

@@ -1,3 +1,0 @@
-((let ([x (new-array 10 10)])
-(let ([y (a? x)])
-(print y))))

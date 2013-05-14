@@ -1,5 +1,0 @@
-((edx <- 123)
- (ebx <- edx)
- (ebx <<= 4)
- (eax <- (allocate ebx 10))
- (eax <- (print eax)))

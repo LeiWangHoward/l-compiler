@@ -1,6 +1,0 @@
-((in (eax)
-     (eax)
-     (array))
- (out (eax)
-      (array)
-      ()))

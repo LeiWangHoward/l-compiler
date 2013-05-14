@@ -1,9 +1,0 @@
-(((eax <- :foo)
-  (ebx <- 10)
-  (call eax)
-  (eax <- (print eax)))
-  (:foo
-   (ebx += ebx)
-   (ebx += 1)
-   (eax <- ebx)
-   (return)))

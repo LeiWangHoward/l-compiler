@@ -1,6 +1,0 @@
-((cjump 3 < 4 :true :false)
- :false
- (x <- 3)
- (eax <- x)
- :true 
- (eax <- 7))

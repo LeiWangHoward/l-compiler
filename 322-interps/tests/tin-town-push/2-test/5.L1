@@ -1,5 +1,0 @@
-(((call :main))
- (:main
-  (eax <- 5)
-  (eax <- (print eax))
-  (return)))

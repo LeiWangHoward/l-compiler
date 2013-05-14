@@ -1,3 +1,0 @@
-((call u)
- (esi += edi)
- (ebx += s))

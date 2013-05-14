@@ -1,8 +1,0 @@
-((length <- eax)
- (height <- ebx)
- (length *= 2)
- (height *= 2)
- (perimeter <- length)
- (perimeter += height)
- (eax <- perimeter)
- (return)) length -4 s

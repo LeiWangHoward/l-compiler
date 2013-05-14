@@ -1,8 +1,0 @@
-((in (eax edi esi)
-     (a edi esi)
-     (a edi esi)
-     (eax edi esi))
- (out (a edi esi)
-      (a edi esi)
-      (eax edi esi)
-      ()))

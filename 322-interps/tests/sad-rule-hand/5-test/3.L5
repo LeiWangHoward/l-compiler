@@ -1,5 +1,0 @@
-(if 1
-    (let ([x 1])
-        (let ([f (lambda (y) (+ x y))])
-            (print (f 1))))
-    (print 0))

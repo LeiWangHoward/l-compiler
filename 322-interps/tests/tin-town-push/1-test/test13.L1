@@ -1,4 +1,0 @@
-(((call :helper))
- (:helper
-  (eax <- (print 5))
-  (return)))

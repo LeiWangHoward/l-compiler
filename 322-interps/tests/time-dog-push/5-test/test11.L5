@@ -1,4 +1,0 @@
-(let ((f (lambda (a c)
-        (aref a c))))
-  (print (f (new-array 10 3)
-            2)))

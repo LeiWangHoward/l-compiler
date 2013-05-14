@@ -1,4 +1,0 @@
-((temp <- eax)
- (temp *= -1)
- (eax <- temp)
- (return)) temp -4 s

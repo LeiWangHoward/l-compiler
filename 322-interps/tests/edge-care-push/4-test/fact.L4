@@ -1,5 +1,0 @@
-((print (:fact 10))
- (:fact (num)
-        (if (= num 0)
-            1
-            (* num (:fact (- num 1))))))

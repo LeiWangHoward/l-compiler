@@ -1,9 +1,0 @@
-(( :f1
-	(edx <- 3)
-	(eax <- (print edx))  ))
-
-((
-	(ebx <- :f1)
-	(call ebx)
-	
-))

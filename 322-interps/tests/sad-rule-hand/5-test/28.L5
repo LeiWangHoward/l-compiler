@@ -1,3 +1,0 @@
-(letrec ((g (lambda (x) (+ x 10))))
-    (let ((f (g 1)))
-        (print f)))

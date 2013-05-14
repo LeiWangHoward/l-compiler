@@ -1,2 +1,0 @@
-(((ecx <- 5)
-  (eax <- (print ecx))))

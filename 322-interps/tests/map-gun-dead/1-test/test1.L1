@@ -1,3 +1,0 @@
-( ( (edx <- 5)
-    (edx *= 3)
-  (eax <- (print edx) ) ) )

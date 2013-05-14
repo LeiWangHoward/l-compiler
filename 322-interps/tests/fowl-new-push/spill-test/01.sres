@@ -1,4 +1,0 @@
-(((mem ebp -4) <- 123)
-(var0 <- (mem ebp -4))
-(eax += var0)
-)

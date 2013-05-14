@@ -1,3 +1,0 @@
-(let ((f (lambda (x)
-            ((lambda (y) (+ y x)) 10))))
-    (print (f 1)))

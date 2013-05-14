@@ -1,1 +1,0 @@
-((spill_0 <- (mem ebp -4)) ((mem spill_0 8) <- eax))

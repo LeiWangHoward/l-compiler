@@ -1,6 +1,0 @@
-(((ebx <- 11)
-  (ebx += 7)
-  (ebx *= 5)
-  (ebx -= 5)
-  (ebx &= 85)
-  (eax <- (print ebx))))

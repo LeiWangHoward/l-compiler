@@ -1,5 +1,0 @@
-(((x <- 3)
-  (tmp <- x)
-  (tmp <<= 1)
-  (tmp += 1)
-  (eax <- (print tmp))))

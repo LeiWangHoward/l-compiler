@@ -1,4 +1,0 @@
-((eax <- (print x)))
-x
--4
-spill_

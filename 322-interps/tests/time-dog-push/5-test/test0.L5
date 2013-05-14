@@ -1,2 +1,0 @@
-(let ([fnoarg (lambda () (print (+ 3 2)))])
-  (fnoarg))

@@ -1,7 +1,0 @@
-((
-    (ebx <- 3)
-    (ebx <<= 5)
-    (ebx *= 2)
-    (ebx += 1)
-    (eax <- (print ebx))
-))

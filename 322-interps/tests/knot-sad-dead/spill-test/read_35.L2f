@@ -1,4 +1,0 @@
-((cjump 4 = x :lbl :lbl))
-x
--4
-spill_

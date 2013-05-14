@@ -1,5 +1,0 @@
-(((eax <- (allocate 7 0))
-  (ebx <- (mem ebp -8))
-  (ebx <<= 1)
-  (ebx += 1)
-  (eax <- (print ebx))))

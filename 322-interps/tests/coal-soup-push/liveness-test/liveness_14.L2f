@@ -1,4 +1,0 @@
-((ecx <- 3)
- (edx <- 4)
- (call :check_equal)
- (eax *= 4))

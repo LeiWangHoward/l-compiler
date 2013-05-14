@@ -1,3 +1,0 @@
-((let ([x 4])
-   (let ([check (number? x)])
-     (print check))))

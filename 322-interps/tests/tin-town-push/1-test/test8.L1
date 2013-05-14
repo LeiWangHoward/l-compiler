@@ -1,4 +1,0 @@
-(((ecx <- 3)
-  (ecx <<= ecx)
-  (ecx += 3)
-  (eax <- (print ecx))))

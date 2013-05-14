@@ -1,7 +1,0 @@
-(((mem eax 4) <- 5)
- ((mem ebp -4) <- 5)
- (s0 <- (mem ebp -4))
- (a <- s0 < 7)
- (eax <- (print a))
- (return))
- 

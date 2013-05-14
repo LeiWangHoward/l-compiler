@@ -1,4 +1,0 @@
-((let ([ret (:area 100 200)])
-  (print ret))
- (:area (x y)
-  (* x y)))

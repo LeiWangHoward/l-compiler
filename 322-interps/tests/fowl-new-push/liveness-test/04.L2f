@@ -1,8 +1,0 @@
-(:begin (x <- y) 
-(x += 43)
-(y <- 1)
-(cjump 1 < 2 :begin :after)
-:after
-(y <- 2)
-(goto :end)
-:end)

@@ -1,9 +1,0 @@
-((
-    (eax <- (allocate 9 3))
-    (edi <- eax)
-    (ebx <- (mem edi 0))
-    (ebx *= 2)
-    (ebx += 1)
-    (eax <- (print edi))
-))
-

@@ -1,3 +1,0 @@
-((b0 <- (mem ebp -4))
- (b0 <- ebx = b0)
- ((mem ebp -4) <- b0))

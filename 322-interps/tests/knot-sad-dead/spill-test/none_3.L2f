@@ -1,4 +1,0 @@
-((eax <- edx))
-x
--4
-spill_

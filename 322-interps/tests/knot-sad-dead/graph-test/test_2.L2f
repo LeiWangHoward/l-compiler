@@ -1,5 +1,0 @@
-((eax <- x)
- (ebx <- y)
- (y += eax)
- (ebx += x)
- (return))

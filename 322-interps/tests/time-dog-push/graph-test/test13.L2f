@@ -1,3 +1,0 @@
-((eax <- 3)
- (call x)
- (eax <- (print eax)))

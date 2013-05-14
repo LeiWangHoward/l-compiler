@@ -1,5 +1,0 @@
-(((goto :good)
-  :bad
-  (eax <- (print 2))
-  :good
-  (eax <- (print 1))))

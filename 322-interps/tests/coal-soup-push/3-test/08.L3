@@ -1,3 +1,0 @@
-((let ([a (new-array 5 3)])
-   (let ([val (aref a 5)])
-     (print val))))

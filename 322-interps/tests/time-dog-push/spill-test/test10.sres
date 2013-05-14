@@ -1,4 +1,0 @@
-((eax <- 3)
- ((mem ebp -4) <- 4)
- (ebx <- (mem ebp -4))
- (res <- eax < ebx))

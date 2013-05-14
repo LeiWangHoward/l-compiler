@@ -1,6 +1,0 @@
-(
-	(x <- eax)
-	(y <- ecx)
-	(eax <- x = y)
-	(return)
-)

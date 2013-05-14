@@ -1,7 +1,0 @@
-(((x <- 3)
-  (y <- 7)
-  (goto :good)
-  :bad
-  (eax <- (print x))
-  :good
-  (eax <- (print y))))

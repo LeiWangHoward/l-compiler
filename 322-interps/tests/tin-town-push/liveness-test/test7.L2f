@@ -1,7 +1,0 @@
-((a <- eax)
- (goto :this)
- (a += ecx)
- (a += edx)
- :this
- (eax <- a)
- (return))

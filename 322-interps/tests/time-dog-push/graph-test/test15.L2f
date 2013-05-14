@@ -1,3 +1,0 @@
-((x <- ecx)
- (eax <- (print x))
- (b <- ebx))

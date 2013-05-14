@@ -1,5 +1,0 @@
-((:fn 4 :callback)
- (:fn (n c)
- 	(c (* n 2)))
- (:callback (x)
- 	(print x)))

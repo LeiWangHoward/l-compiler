@@ -1,1 +1,0 @@
-((print (new-array (let ([x (* 1 2)]) (+ 1 (print (- 10 x)))) (new-tuple 4 4 4))))

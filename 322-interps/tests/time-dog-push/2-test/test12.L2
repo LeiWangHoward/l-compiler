@@ -1,3 +1,0 @@
-((
-  (x <- 3)
-  (eax <- (allocate x x))))

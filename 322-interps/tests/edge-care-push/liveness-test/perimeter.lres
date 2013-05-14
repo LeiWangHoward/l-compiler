@@ -1,2 +1,0 @@
-((in (eax ebx) (ebx length) (height length) (height length) (height length) (height perimeter) (perimeter))
-(out (ebx length) (height length) (height length) (height length) (height perimeter) (perimeter) ()))

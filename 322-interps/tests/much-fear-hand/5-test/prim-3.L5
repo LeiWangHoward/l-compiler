@@ -1,3 +1,0 @@
-(let ([x print])
-(let ([y (lambda (z v) (z v))])
-(y x 5)))

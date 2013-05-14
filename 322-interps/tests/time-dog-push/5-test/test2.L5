@@ -1,4 +1,0 @@
-(let ([a 3])
-  (let ([f (lambda (b) (print (+ a b)))])
-    (let ([a 5])
-      (f a))))

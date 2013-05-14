@@ -1,3 +1,0 @@
-(((eax <- 15)
-  (x <- eax)
-  (eax <- (print x))))

@@ -1,1 +1,0 @@
-((x <- 3) (y <- 5) (y += 3) (x += y) (eax <- x) :uselesslabel (q <- eax) (x <- 41) (n <- 7) (n += 3) (x += n) (x += q) (eax <- x)) x -4 tempx

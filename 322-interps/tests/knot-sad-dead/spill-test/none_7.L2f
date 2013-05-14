@@ -1,4 +1,0 @@
-(((mem z 8) <- :lbl))
-x
--4
-spill_

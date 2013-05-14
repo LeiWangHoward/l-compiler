@@ -1,3 +1,0 @@
-((let ((x (new-array 7 0)))
-  (let ((len (alen x)))
-   (print len))))

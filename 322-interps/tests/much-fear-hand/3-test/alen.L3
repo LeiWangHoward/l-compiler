@@ -1,3 +1,0 @@
-((let ([arr (new-array 10 5)])
-(let ([len (alen arr)])
-(print len))))

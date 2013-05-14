@@ -1,7 +1,0 @@
-((cjump edx = ecx :true :false)
- :true
- (eax <- 1)
- (return)
- :false
- (eax <- 0)
- (return))

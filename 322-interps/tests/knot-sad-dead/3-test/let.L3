@@ -1,6 +1,0 @@
-((let ([x 1])
-   (let ([x (print x)])
-     (let ([x 2])
-       (let ([x (print x)])
-         (let ([y 3])
-           (print y)))))))

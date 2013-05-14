@@ -1,8 +1,0 @@
-((
-    (ebx <- 3)
-    (goto :label)
-    (ebx *= 3)
-    :label
-    (ebx *= 5)
-    (eax <- (print ebx))
-))

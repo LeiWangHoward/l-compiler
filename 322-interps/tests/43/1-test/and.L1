@@ -1,5 +1,0 @@
-((
-    (ebx <- 7)
-    (ebx &= 15)
-    (eax <- (print ebx))
-))

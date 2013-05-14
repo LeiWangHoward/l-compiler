@@ -1,6 +1,0 @@
-((in
-  (eax edi esi)
-  (eax x))
- (out
-  ()
-  ()))
