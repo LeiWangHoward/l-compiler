@@ -64,7 +64,6 @@
         [bounds-pass-label (new-pass)]
         [bounds-pass-label-2 (new-pass)])
     `((,tmp_2 <- ,v2)
-      ;(,x >>= 1)
       (,tmp <- (mem ,v1 0))
       (,tmp <<= 1)
       (,tmp += 1)
@@ -124,7 +123,7 @@
      (add-return-call
       (append `((eax <- (allocate ,(encode-const (length args)) 0)))
               (make-mem-assigns 'eax args)
-              `((,(new-key-if-key var_x) <- eax))) check_tail)];;add keyword check
+              `((,var_x <- eax))) check_tail)];;add keyword check
     [(list 'aref v1 v2)
      (add-return-call
       (compile-aref v1 v2 var_x) check_tail)]
@@ -137,7 +136,6 @@
         (,var_x <<= 1)
         (,var_x += 1)) check_tail)]
     [(list 'print v)
-     ;(if (number? v)
      (add-return-call
       `((eax <- (print ,(encode-const v)))
         (,var_x <- eax)) check_tail)]
@@ -186,8 +184,8 @@
          (append `((,var <- ,(encode-const L3_d))) (compile-e L3_e))]
         [(symbol? L3_d)
          (append ;`((,L3_d *= 2) (,L3_d += 1))
-          `((,(new-key-if-key var) <- ,L3_d)) (compile-e L3_e))]
-        [else (append (compile-d L3_d (new-key-if-key var) #f) (compile-e L3_e))]))
+          `((,var <- ,L3_d)) (compile-e L3_e))]
+        [else (append (compile-d L3_d var #f) (compile-e L3_e))]))
 
 ;compile if in L3-e
 (define (compile-if v e1 e2)

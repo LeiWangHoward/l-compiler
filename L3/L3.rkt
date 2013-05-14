@@ -20,9 +20,10 @@
 (define (compile-L3)
   (let ([L2-exp
          (append `(((call :_main_func)))
-                 (for/list ([L3_func L3-exp]
+                 (for/list ([L3_func (in-list L3-exp)]
                             [x (range (length L3-exp))])
-                   (let ([L2_sub (compile-p L3_func)])
+                   (let* ([L3_func (L2-key-replace L3_func)]
+                          [L2_sub (compile-p L3_func)])
                      (if (equal? x 0) ;main function
                          (append `(:_main_func) L2_sub);(remove* `((return)) L2_sub)
                          L2_sub))))])

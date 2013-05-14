@@ -1,6 +1,6 @@
 #lang plai
 ;; define name check for stupid people
-(define key_lst (list 'mem 'goto 'cjump 'call 'tail-call
+(define L2_key (list 'mem 'goto 'cjump 'call 'tail-call
                       'return 'allocate 'array-error))
 
 ;; new name replace function e.g x -> s0 
@@ -11,21 +11,19 @@
                         (name-replace (cdr sexp) tar_var s_var))]
     [else sexp]))
 ; we will check in two places: new turp and the let's var
-(define (new-key-if-key key)
-  (if (member key key_lst)
-      (string->symbol (string-append
-                       (symbol->string '_anger_)
-                       (number->string key)))
-      key))
+(define (new-key-name key)
+  (string->symbol (string-append
+                   (symbol->string '_new_)
+                   (symbol->string key))))
 ;;key var filter
-(define (keyword_filter let_exp)
-  (for/fold ([let_exp let_exp]) 
-    ([key (in-list key_lst)])
-    (let ([new_name (new-temp)])
-      (name-replace let_exp key new_name))))
+(define (L2-key-replace l_exp)
+  (for/fold ([l_exp l_exp]) 
+    ([key (in-list L2_key)])
+    (let ([new_name (new-key-name key)])
+      (name-replace l_exp key new_name))))
 ;test
 (module+ test
-  (test (keyword_filter '( (let ((goto 1))
+  (test (L2-key-replace '( (let ((goto 1))
                              (let ((cjump 2))
                                (let ((call 3))
                                  (let ((tail-call 4))
@@ -33,7 +31,8 @@
                                      (let ((allocate 6))
                                        (let ((array-error 7))
                                          (let ((arr (new-tuple mem goto cjump call tail-call return allocate array-error))
-                                               ))))))))))) 'what))
+                                               )
+                                           (let ((a (print goto)))))))))))))) 'what))
 
 ;; define temp, label count and name
 (define var_count -1)
@@ -96,29 +95,11 @@
           (equal? a 'a?))
       #f))
 ;;define encode function
-(define encode-lst '())
 
 (define (encode-const var)
   (if (number? var)
-      (+ 1 (* var 2))
+      (add1 (* var 2))
       var))
-;;if var, and not encoded, encode it
-(define (encode-if-var var)
-  (if (L3-var? var)
-      (if (member var encode-lst)
-          '()  
-          (begin 
-            (set! encode-lst (append encode-lst `(,var)))
-            `((,var <<= 1)
-              (,var += 1))))
-      '()))
-;;add to encode list if it is not there
-(define (add-encode var)
-  (unless (member var encode-lst) 
-    (set! encode-lst (append encode-lst `(,var)))))
-
-(define (remove-encode var) 
-  (set! encode-lst (remove var encode-lst)))
 
 (module+ test
   (test (encode-const 'a) 'a)
@@ -131,12 +112,12 @@
 (define (assign-regs arg-lst)
   (for/list ([reg register-lst]
              [args arg-lst])
-    `(,reg <- ,(encode-const (new-key-if-key args)))));;add key check
+    `(,reg <- ,(encode-const args))));;add key check
 
 (define (reg-assign arg-lst)
   (for/list ([reg register-lst]
              [args arg-lst])
-    `(,(new-key-if-key args) <- ,reg)))
+    `(,args <- ,reg)))
 
 ;test
 (module+ test 
