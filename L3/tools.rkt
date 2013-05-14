@@ -1,4 +1,40 @@
 #lang plai
+;; define name check for stupid people
+(define key_lst (list 'mem 'goto 'cjump 'call 'tail-call
+                      'return 'allocate 'array-error))
+
+;; new name replace function e.g x -> s0 
+(define (name-replace sexp tar_var s_var)
+  (cond
+    [(equal? tar_var sexp) s_var]
+    [(pair? sexp) (cons (name-replace (car sexp) tar_var s_var)
+                        (name-replace (cdr sexp) tar_var s_var))]
+    [else sexp]))
+; we will check in two places: new turp and the let's var
+(define (new-key-if-key key)
+  (if (member key key_lst)
+      (string->symbol (string-append
+                       (symbol->string '_anger_)
+                       (number->string key)))
+      key))
+;;key var filter
+(define (keyword_filter let_exp)
+  (for/fold ([let_exp let_exp]) 
+    ([key (in-list key_lst)])
+    (let ([new_name (new-temp)])
+      (name-replace let_exp key new_name))))
+;test
+(module+ test
+  (test (keyword_filter '( (let ((goto 1))
+                             (let ((cjump 2))
+                               (let ((call 3))
+                                 (let ((tail-call 4))
+                                   (let ((return 5))
+                                     (let ((allocate 6))
+                                       (let ((array-error 7))
+                                         (let ((arr (new-tuple mem goto cjump call tail-call return allocate array-error))
+                                               ))))))))))) 'what))
+
 ;; define temp, label count and name
 (define var_count -1)
 
@@ -84,16 +120,6 @@
 (define (remove-encode var) 
   (set! encode-lst (remove var encode-lst)))
 
-(define (decode-if-reg reg var)
-  (if (and (member reg register-lst) 
-           (or (member var encode-lst)
-               (member reg encode-lst)))
-      (begin 
-        (remove-encode reg) 
-        `(;decode var before assign
-          (,reg >>= 1)))
-      '()))
-
 (module+ test
   (test (encode-const 'a) 'a)
   (test (encode-const 5) 11)) 
@@ -105,12 +131,12 @@
 (define (assign-regs arg-lst)
   (for/list ([reg register-lst]
              [args arg-lst])
-    `(,reg <- ,(encode-const args))))
+    `(,reg <- ,(encode-const (new-key-if-key args)))));;add key check
 
 (define (reg-assign arg-lst)
   (for/list ([reg register-lst]
              [args arg-lst])
-    `(,args <- ,reg)))
+    `(,(new-key-if-key args) <- ,reg)))
 
 ;test
 (module+ test 

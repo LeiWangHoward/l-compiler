@@ -2,7 +2,6 @@
 (require data/queue)
 (require "tools.rkt")
 (require "L3-compile.rkt")
-;(define filename "../322-interps/tests/robby/3-test/76.L3")
 (define filename (command-line #:args (filename) filename))
 (define L3-exp (call-with-input-file filename read))
 ;from L3 -> L2, compile p

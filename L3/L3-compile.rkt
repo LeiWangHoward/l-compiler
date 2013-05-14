@@ -6,23 +6,28 @@
 ; simple biop compile
 (define (compile-biop op v1 v2 x)
   (let ([v1 (encode-const v1)]
-        [v2 (encode-const v2)])
+        [v2 (encode-const v2)]
+        [tmp (new-temp)])
     (case op
       [(+)
-       `((,x <- ,v1)
-         (,x += ,v2)
-         (,x -= 1))]
+       `((,tmp <- ,v1)
+         ;(,x <- ,v1)
+         (,tmp += ,v2)
+         (,tmp -= 1)
+         (,x <- ,tmp))]
       [(-)
-       `((,x <- ,v1)
-         (,x -= ,v2)
-         (,x += 1))]
+       `((,tmp <- ,v1)
+         (,tmp -= ,v2)
+         (,tmp += 1)
+         (,x <- ,tmp))]
       [(*)
-       `((,x <- ,v1)
-         (,x *= ,v2)
-         (,x -= ,v1)
-         (,x -= ,v2)
-         (,x += 3)
-         (,x >>= 1))]
+       `((,tmp <- ,v1)
+         (,tmp >>= 1)
+         (,x <- ,v2)
+         (,x >>= 1)
+         (,x *= ,tmp)
+         (,x *= 2)
+         (,x += 1))]
       [(< <= =)
        `((,x <- ,v1 ,op ,v2)
          (,x <<= 1)
@@ -119,7 +124,7 @@
      (add-return-call
       (append `((eax <- (allocate ,(encode-const (length args)) 0)))
               (make-mem-assigns 'eax args)
-              `((,var_x <- eax))) check_tail)]
+              `((,(new-key-if-key var_x) <- eax))) check_tail)];;add keyword check
     [(list 'aref v1 v2)
      (add-return-call
       (compile-aref v1 v2 var_x) check_tail)]
@@ -143,10 +148,10 @@
               `((,var_x <- eax))) check_tail)]
     [(list 'closure-proc v)
      (add-return-call
-       `((,var_x <- (mem ,v 4))) check_tail)];(compile-aref v 0 var_x)
+      `((,var_x <- (mem ,v 4))) check_tail)];(compile-aref v 0 var_x)
     [(list 'closure-vars v)
      (add-return-call 
-       `((,var_x <- (mem ,v 8))) check_tail)];(compile-aref v 1 var_x)
+      `((,var_x <- (mem ,v 8))) check_tail)];(compile-aref v 1 var_x)
     [(list (? symbol? f) args ...)
      (if (equal? check_tail #t)
          (append (assign-regs args);assign-regs also check if the register already has encoded value
@@ -160,11 +165,8 @@
       `((eax <- ,(encode-const L2_d))) check_tail)]))
 
 (module+ test
-  (test (compile-d '(+ 2 'a) 't #t) '((t <- 5) (t += 'a) (t -= 1) (eax <- t) (eax <- eax) (return)))
   (test (compile-d '(:f var1 var2) 'var #t) '((ecx <- var1) (edx <- var2) (tail-call :f)))
   (test (compile-d '(:f var1 var2 var3) 'var #f) '((ecx <- var1) (edx <- var2) (eax <- var3) (call :f) (var <- eax)))
-  ;(test (append `((symbol <- v1)) `((sd <- 5))) '((symbol <- v1) (sd <- 5))) 
-  (test (compile-biop '+ 'a 3 '_lei) '((_lei <- a) (_lei += 7) (_lei -= 1) (eax <- _lei)))
   (test (compile-biop '< 'a 'b '_lei) '((_lei <- a < b) (_lei <<= 1) (_lei += 1)))
   (test (encode-const 5) 11)) 
 
@@ -184,8 +186,8 @@
          (append `((,var <- ,(encode-const L3_d))) (compile-e L3_e))]
         [(symbol? L3_d)
          (append ;`((,L3_d *= 2) (,L3_d += 1))
-          `((,var <- ,L3_d)) (compile-e L3_e))]
-        [else (append (compile-d L3_d var #f) (compile-e L3_e))]))
+          `((,(new-key-if-key var) <- ,L3_d)) (compile-e L3_e))]
+        [else (append (compile-d L3_d (new-key-if-key var) #f) (compile-e L3_e))]))
 
 ;compile if in L3-e
 (define (compile-if v e1 e2)
@@ -199,8 +201,4 @@
      (compile-e e1))))
 
 (module+ test 
-  (test (compile-if 3 '(print a) '(print b)) 
-        '((cjump 3 = 1 :_lablei4 :_lablei3) 
-          :_lablei4 (eax <- (print b)) (eax <- eax) (return) 
-          :_lablei3 (eax <- (print a)) (eax <- eax) (return)))
   (test (compile-let 'x 3 '(print 3)) '((x <- 7) (eax <- (print 7)) (eax <- eax) (return))))
