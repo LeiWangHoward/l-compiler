@@ -26,14 +26,14 @@
 (module+ test
   (test (norm '(let ([a (let ([b (let ([c d]) e)]) f)]) g)) 
         '(let ((c d)) (let ((b e)) (let ((a f)) g))))
-  ;(test (norm '(let ([a (let ([b (let ([c (number? d)]) f)]) g)]) h)) 
-   ;     '(let ((_var_0 d)) (let ((c e)) (let ((b f)) (let ((a g)) h)))))
   (test (norm '(if a (begin a b) (print (+ c d)))) 
         '(if a (let ((_var_0 a)) b) (let ((_var_1 (+ c d))) (print _var_1))))
   (test (norm '(if (if (if x1 x2 x3) x4 x5) x6 x7))
         '(if x1
              (if x2 (if x4 x6 x7) (if x5 x6 x7))
-             (if x3 (if x4 x6 x7) (if x5 x6 x7)))))
+             (if x3 (if x4 x6 x7) (if x5 x6 x7))))
+  (test (norm '(aset a 2 3)) '(aset a 2 3))
+  (test (norm '(new-turple a s d f g h)) '(new-turple a s d f g h)))
 ;;'(let ((c (d e))) (let ((b f)) (let ((a g)) h))))))
 
 ; fill: L3-d context -> L3-e
@@ -56,7 +56,7 @@
      (if (empty? a)
          (maybe-let d
                     (λ (v)
-                      (fill `(,v) k)))
+                      (fill `(,v) k)));`(,v)
          (maybe-let d
                     (λ (v)
                       (find (first a)
@@ -69,7 +69,8 @@
      (if (empty? sub-remain)
          (maybe-let d
                     (λ (v)
-                      (fill `(,f ,(quote-filter sub-norm) ,v) k)))
+                      (fill ;`(,f ,(quote-filter sub-norm) ,v) k)))
+                       (append `(,f) sub-norm (list v)) k)))
          (maybe-let d
                     (λ (v)
                       (find (first sub-remain)

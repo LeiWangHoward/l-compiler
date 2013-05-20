@@ -33,7 +33,7 @@
          `(new-tuple ,(? L4-e?) ...)
          ;(aref e e) (aset e e) (alen e)
          `(aref ,(? L4-e?) ,(? L4-e?))
-         `(aset ,(? L4-e?) ,(? L4-e?))
+         `(aset ,(? L4-e?) ,(? L4-e?) ,(? L4-e?))
          `(alen ,(? L4-e?))
          ;(begin e e)
          `(begin ,(? L4-e?) ,(? L4-e?))
