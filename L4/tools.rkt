@@ -32,7 +32,13 @@
     ([key (in-list L2_key)])
     (let ([new_name (new-key-name key)])
       (name-replace l_exp key new_name))))
-
+;;filter out quote of d
+(define (quote-filter d)
+  (if (list? d)
+      (cond [(empty? d) ""];will be filter out by displayln
+            [(= (length d) 1) (first d)]
+            [else d])
+      d))
 
 ;; define temp, label count and name
 (define var_count -1)
@@ -57,8 +63,8 @@
 (module+ test
   (test (fresh-var) '_var_0)
   (test (new-label) ':_lab_1))
-;; define variable checks:
 
+;; define variable checks:
 (define (label? s)
   (if (symbol? s)
       (equal? (string-ref (symbol->string s) 0) #\:)

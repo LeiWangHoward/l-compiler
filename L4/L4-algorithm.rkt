@@ -17,6 +17,8 @@
     ; (find p (fun-ctxt `(,e1 ,e2) k))]
     ;[`(,(? L4-key? fun-name) ,a ...)
     ; (find fun-name (fun-ctxt a k))]
+    ; pretend operator is a variable: biop, pred, and array/tuple 
+    ; expressions are like applications
     [`(,f ,a ...)
      (find f (fun-ctxt a k))]
     [(? val?);value
@@ -24,9 +26,14 @@
 (module+ test
   (test (norm '(let ([a (let ([b (let ([c d]) e)]) f)]) g)) 
         '(let ((c d)) (let ((b e)) (let ((a f)) g))))
-  (test (norm '(let ([a (let ([b (let ([c (aref d e)]) f)]) g)]) h)) 
-        '(let ((_var_0 d)) (let ((c e)) (let ((b f)) (let ((a g)) h)))))
-  (test (norm '(if a (begin a b) (print (+ c d)))) 'sdsd))
+  ;(test (norm '(let ([a (let ([b (let ([c (number? d)]) f)]) g)]) h)) 
+   ;     '(let ((_var_0 d)) (let ((c e)) (let ((b f)) (let ((a g)) h)))))
+  (test (norm '(if a (begin a b) (print (+ c d)))) 
+        '(if a (let ((_var_0 a)) b) (let ((_var_1 (+ c d))) (print _var_1))))
+  (test (norm '(if (if (if x1 x2 x3) x4 x5) x6 x7))
+        '(if x1
+             (if x2 (if x4 x6 x7) (if x5 x6 x7))
+             (if x3 (if x4 x6 x7) (if x5 x6 x7)))))
 ;;'(let ((c (d e))) (let ((b f)) (let ((a g)) h))))))
 
 ; fill: L3-d context -> L3-e
@@ -46,28 +53,28 @@
                        ,(find e k))))]
     [fun-ctxt
      (a k)
-     ;(if (empty? a)
-     ;    (maybe-let d
-     ;               (λ (v)
-     ;                 (fill `(,v) k)))
-     (maybe-let d
-                (λ (v)
-                  (find (first a)
-                        (arg-ctxt v
-                                  '()
-                                  (rest a)
-                                  k))))]
+     (if (empty? a)
+         (maybe-let d
+                    (λ (v)
+                      (fill `(,v) k)))
+         (maybe-let d
+                    (λ (v)
+                      (find (first a)
+                            (arg-ctxt v
+                                      '()
+                                      (rest a)
+                                      k)))))]
     [arg-ctxt
      (f sub-norm sub-remain k)
      (if (empty? sub-remain)
          (maybe-let d
                     (λ (v)
-                      (fill `(,f ,sub-norm ,v) k)))
+                      (fill `(,f ,(quote-filter sub-norm) ,v) k)))
          (maybe-let d
                     (λ (v)
                       (find (first sub-remain)
                             (arg-ctxt f
-                                      `(,sub-norm ,v)
+                                      (append sub-norm `(,v));should be append!
                                       (rest sub-remain)
                                       k)))))]
     [no-ctxt () d]))
