@@ -3,10 +3,17 @@
 (define L2_key (list 'mem 'goto 'cjump 'call 'tail-call
                       'return 'allocate 'array-error))
 
-(define L4_key (list 'let 'new-array 'new-tuple 'aref
+(define L4_key (list 'let 'if 'new-array 'new-tuple 'aref
                      'aset 'alen 'begin 'print 'make-closure 
                      'closure-proc 'closure-vars))
-                     
+
+(define (L4-key? key)
+  (let [(key_shrink
+         (remove* (list 'let 'if 'begin) L4_key))]
+  (if (symbol? key)
+      (when (member key key_shrink)
+          #t)
+      #f)))
 ;; new name replace function e.g x -> s0 
 (define (name-replace sexp tar_var s_var)
   (cond

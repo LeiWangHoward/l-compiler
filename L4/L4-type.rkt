@@ -8,12 +8,15 @@
   [if-ctxt (t L4-e?)
            (e L4-e?)
            (k context?)]
-  [fun-ctxt (a L4-e?)
+  [fun-ctxt (a (listof L4-e?))
             (k context?)]
   [arg-ctxt (f val?)
+            (sub-norm (listof L4-e?))
+            (sub-remain (listof L4-e?))
             (k context?)]
   [no-ctxt])
 
+;;L4-e
 (define (L4-e? e)
   (match e
     [(or (? number?);num x l
