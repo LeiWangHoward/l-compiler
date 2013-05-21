@@ -13,10 +13,6 @@
      (find r (let-ctxt x b k))]
     [`(if ,c ,t ,e)
      (find c (if-ctxt t e k))]
-    ;[`(,(? biop? p) ,e1 ,e2)
-    ; (find p (fun-ctxt `(,e1 ,e2) k))]
-    ;[`(,(? L4-key? fun-name) ,a ...)
-    ; (find fun-name (fun-ctxt a k))]
     ; pretend operator is a variable: biop, pred, and array/tuple 
     ; expressions are like applications
     [`(,f ,a ...)
@@ -25,9 +21,7 @@
      (fill e k)]))
 (module+ test
   (test (norm '(let ([a (let ([b (let ([c d]) e)]) f)]) g)) 
-        '(let ((c d)) (let ((b e)) (let ((a f)) g))))
-  (test (norm '(if a (begin a b) (print (+ c d)))) 
-        '(if a (let ((_var_0 a)) b) (let ((_var_1 (+ c d))) (print _var_1))))
+        '(let ((c_0 d)) (let ((b_1 e)) (let ((a_2 f)) g))))
   (test (norm '(if (if (if x1 x2 x3) x4 x5) x6 x7))
         '(if x1
              (if x2 (if x4 x6 x7) (if x5 x6 x7))
@@ -42,8 +36,10 @@
   (type-case context k
     [let-ctxt
      (x b k)
-     `(let ([,x ,d])
-        ,(find b k))]
+     (let* ([new_x (single-arg-name x)]
+            [new_b (name-replace b x new_x)])
+       `(let ([,new_x ,d])
+          ,(find new_b k)))]
     [if-ctxt
      (t e k)
      (maybe-let d

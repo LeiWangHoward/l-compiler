@@ -44,6 +44,14 @@
                          (number->string (count-one))))
         arg)))
 
+(define (single-arg-name arg)
+  (if (symbol? arg)
+        (string->symbol (string-append
+                         (symbol->string arg)
+                         "_"
+                         (number->string (count-one))))
+        arg))
+
 (define (var-replace l_exp args new_args)
   (for/fold ([l_exp l_exp]) 
     ([arg (in-list args)]
@@ -51,14 +59,6 @@
     (if (symbol? arg)
         (name-replace l_exp arg new_arg)
         l_exp)))
-
-;;filter out quote of d
-(define (quote-filter d)
-  (if (list? d)
-      (cond [(empty? d) ""];will be filter out by displayln
-            [(= (length d) 1) (first d)]
-            [else d])
-      d))
 
 ;; define temp, label count and name
 (define var_count -1)
@@ -69,7 +69,6 @@
     var_count))
 
 (define var-pre '_var_)
-(define label-pre ':_lab_)
 
 (define (fresh-var)
   (string->symbol (string-append
