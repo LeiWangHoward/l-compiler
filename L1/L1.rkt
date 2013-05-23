@@ -15,7 +15,7 @@
       (let ([x_str (symbol->string x)])
         (if (L1_x? x);else it is a label
             (string-append "%" x_str)
-            (string-append "$" x_str)))))
+            (string-append "$_" (substring x_str 1))))))
 
 (define (jmp-label-name label)
   (string-append "_" (substring (symbol->string label) 1)))
