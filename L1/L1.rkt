@@ -2,9 +2,9 @@
 (require racket/string)
 (require "L1-type.rkt")
 ;read L1 code into the system
-(define filename "../322-interps/tests/17/1-test/17.L1")
-;(define filename "../322-interps/tests/robby/1-test/83.L1")
-;(define filename (command-line #:args (filename) filename))
+;(define filename "../322-interps/tests/40/1-test/tailcall.L1")
+;(define filename "../322-interps/tests/robby/1-test/82.L1")
+(define filename (command-line #:args (filename) filename))
 (define L1_exp (call-with-input-file filename read))
 ;;define data type and operations
 
@@ -124,10 +124,10 @@
                      (format "movl $1, ~a" (add-prefix cx))
                      (format "movl $0, ~a" (add-prefix cx)))]
                 [(and (number? t1) (L1_x? t2))
-                 (format "cmpl ~a, ~a\n~a ~a\nmovzbl ~a ~a" new-r new-l 
+                 (format "cmpl ~a, ~a\n~a ~a\nmovzbl ~a, ~a" new-r new-l 
                          (eval-negop-name op) new-cx-l new-cx-l new-cx)]
                 [else
-                 (format "cmpl ~a, ~a\n~a ~a\nmovzbl ~a ~a" new-l new-r 
+                 (format "cmpl ~a, ~a\n~a ~a\nmovzbl ~a, ~a" new-l new-r 
                          (eval-op-name op) new-cx-l new-cx-l new-cx)])))
     ;handle label goto, cjmp etc
     (L1_label (label) (string-append "_" (substring (symbol->string label) 1) ":"))
