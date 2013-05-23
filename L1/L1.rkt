@@ -1,327 +1,196 @@
 #lang plai
 (require racket/string)
-(require racket/file)
+(require "L1-type.rkt")
 ;read L1 code into the system
-(define filename (command-line #:args (filename) filename))
-(define L1-exp (call-with-input-file filename read))
+(define filename "../322-interps/tests/robby/1-test/0.L1")
+;(define filename (command-line #:args (filename) filename))
+(define L1_exp (call-with-input-file filename read))
 ;;define data type and operations
-(define-type L1
-  ;define basic data types, "a" means assemble-like language(L1)
-  (reg_a (name symbol?))
-  (lab_a (name symbol?))
-  (imm_a (num number?));immediator, we use it to represent number
-  ;define assign, which we call it move 
-  (mov_a (lhs L1?)
-         (rhs L1?))
-  ;define memory operation: access and update
-  (rmem_a (lhs L1?)
-          (rhs L1?)
-          (posi L1?))
-  (wmem_a (lhs L1?)
-          (rhs L1?)
-          (posi L1?))
-  ;define aop(arith operators)
-  (add_a (lhs L1?)
-         (rhs L1?))
-  (sub_a (lhs L1?)
-         (rhs L1?))
-  (and_a (lhs L1?)
-         (rhs L1?))
-  (mul_a (lhs L1?)
-         (rhs L1?))
-  ;define sop(shift operators)
-  (ls_a  (lhs L1?)
-         (rhs L1?))
-  (rs_a  (lhs L1?)
-         (rhs L1?))
-  ;define cmp(compare)
-  (cmp_a (dest L1?)
-         (cond1 L1?)
-         (op symbol?)
-         (cond2 L1?))
-  ;define goto and cjump
-  (goto_a  (label L1?))
-  (cjmp_a  (cond1 L1?)
-           (op symbol?)
-           (cond2 L1?)
-           (label1 L1?)
-           (label2 L1?))
-  ;define call and tail call
-  (call_a  (u L1?))
-  (tcall_a (u L1?))
-  ;define return, print
-  (return_a)
-  (print_a (prt L1?))
-  ;define allocate(init) spsce
-  (alloc_a (x1 L1?)
-           (x2 L1?))
-  ;define array error
-  (aerr_a  (x1 L1?)
-           (x2 L1?)))
 
+(define (add-prefix x)
+  ;handle number first
+  (if (number? x)
+      (string-append "$" (number->string x))
+      (let ([x_str (symbol->string x)])
+        (if (L1_x? x);else it is a label
+            (string-append "%" x_str)
+            (string-append "$" x_str)))))
 
-;; now we add actual "compile" functions 
-(define (compile L1-func)
-  (type-case L1 L1-func
-    ;compile basic data type
-    (reg_a (name) (string-append "%" (symbol->string name)))
-    ;compile immediate data type(for constant value), add '$' to front   
-    (imm_a (num)  (string-append "$" (number->string num)))
-    (lab_a (name) (string-append "_" (substring (symbol->string name) 1)));(lab_a (name) (string-append "$" (substring (symbol->string name) 1)))
-    ;compile assign
-    (mov_a (lhs rhs)
-            (let* ([new-l (compile rhs)]
-                   [new-r (compile lhs)]);switch position
-              (when (equal? #\_ (string-ref new-l 0))
-              (set! new-l (string-append "$" new-l)));add back $, some label needs
-             (string-append "movl " new-l ", " new-r)))
-    ;compile memory access and update
-    (rmem_a (lhs rhs posi); read memory
-            (let* ([new-lhs (compile lhs)]
-                   [new-rhs (compile rhs)]
-                   [new-posi (number->string (imm_a-num posi))])
-              (string-append "movl " new-posi "(" new-lhs ")" ", " new-rhs)))
-    (wmem_a (lhs rhs posi); write memory
-            (let* ([new-lhs (compile lhs)]
-                   [new-rhs (compile rhs)]
-                   [new-posi (number->string (imm_a-num posi))])
-              (when (equal? #\_ (string-ref new-lhs 0))
-                (set! new-lhs (string-append "$" new-lhs)))
-              (string-append "movl " new-lhs ", " new-posi "(" new-rhs ")")))
-    ;compile aop
-    (add_a (lhs rhs)
-            (let* ([l (compile rhs)]
-                   [r (compile lhs)])
-             (string-append "addl " l ", " r)))
-    (sub_a (lhs rhs)
-            (let* ([l (compile rhs)]
-                   [r (compile lhs)])
-             (string-append "subl " l ", " r)))
-    (and_a (lhs rhs)
-            (let* ([l (compile rhs)]
-                   [r (compile lhs)])
-             (string-append "andl " l ", " r)))
-    (mul_a (lhs rhs)
-            (let* ([l (compile rhs)]
-                   [r (compile lhs)])
-             (string-append "imull " l ", " r)))
-    ;compile sop 
-    (ls_a (lhs rhs)
-           (let* ([l (compile rhs)]
-                  [r (compile lhs)])
-              (unless (eq? #\$ (string-ref l 0))
-                 (set! l "%cl"));tricky part, use "small" register
-              (string-append "sall " l ", " r)))
-    (rs_a (lhs rhs)
-           (let* ([l (compile rhs)]
-                  [r (compile lhs)])
-              (unless (eq? #\$ (string-ref l 0))
-                 (set! l "%cl"))
-              (string-append "sarl " l ", " r)))
-    ;compile cmp
-    (cmp_a (dest cond1 op cond2)
-          (let* ([new-cond1 (compile cond2)]
-                 [new-cond2 (compile cond1)]
-                 [new-dest  (compile dest)]
-                 [new-low-dest (lbits (compile dest))])
-            (cond
-              [(and (imm_a? cond1) (imm_a? cond2))
-               (if (compare_a (imm_a-num cond1) op (imm_a-num cond2))
-                   (string-append "mov $1, " new-dest);represent true
-                   (string-append "mov $0, " new-dest))];represent false
-              [(and (imm_a? cond1) (reg_a? cond2))
-               (string-append "cmpl " new-cond2 ", " new-cond1 "\n"
-                              (evaluate-negop op) new-low-dest "\n"
-                              "movzbl " new-low-dest ", " new-dest)]
-              [(or (and (reg_a? cond1) (imm_a? cond2))
-                   (and (reg_a? cond1) (reg_a? cond2)))
-               (string-append "cmpl " new-cond1 ", " new-cond2 "\n"
-                              (evaluate-op op) new-low-dest "\n"
-                              "movzbl " new-low-dest ", " new-dest)])))
-    (goto_a (label)
-           (let ([label1 (compile label)])
-             (string-append "jmp " label1)));"jmp _" (substring label1 1))))
-    (cjmp_a (cond1 op cond2 label1 label2)
-           (cond
-             [(and (imm_a? cond1) (imm_a? cond2));;situation 1, two numbers, jump
-              (if (compare_a (imm_a-num cond1) op (imm_a-num cond2))
-                  (string-append "jmp " (compile label1))
-                  (string-append "jmp " (compile label2)))]
-             [(and (imm_a? cond1) (reg_a? cond2))
-              (let* ([new-l (compile cond1)]
-                     [new-r (compile cond2)])
-                (string-append "cmpl " new-l ", " new-r "\n"
-                               (rev_jmp_a op (compile label1)
-                                          (compile label2))))]
-             [else
-              (let* ([new-l (compile cond2)]
-                     [new-r (compile cond1)])
-                (string-append "cmpl " new-l ", " new-r "\n"
-                               (normal_jmp_a op (compile label1)
-                                             (compile label2))))]))
-    ;compile call and tail-call
-    ;reference lec3.txt
-    (call_a (u) 
-            (let ([label (symbol->string (gensym "_newlab"))])
-                 (string-append "pushl $" label "\n"
-                                "pushl %ebp\n"
-                                "movl %esp, %ebp\n"
-                                "jmp " (compile u) "\n";star??
-                                label ":")))
-    (tcall_a (u) (string-append "movl %ebp, %esp\n"
-                                "jmp " (compile u)));star *??
-    ;compile print
-    (print_a (prt) (string-append "pushl " (compile prt) "\n"
-                                  "call print\n"
-                                  "addl $4, %esp"))
-    ;compile alloc and array error
-    (alloc_a (x1 x2) (string-append "pushl " (compile x2) "\n"
-                                    "pushl " (compile x1) "\n"
-                                    "call allocate\n"
-                                    "addl $8, %esp"))
-    (aerr_a (x1 x2) (string-append  "pushl " (compile x2) "\n"
-                                    "pushl " (compile x1) "\n"
-                                    "call print_error\n"
-                                    "addl $8, %esp"))
-    (return_a () "movl %ebp, %esp\npopl %ebp\nret")))
+(define (jmp-label-name label)
+  (string-append "_" (substring (symbol->string label) 1)))
 
-;;helper functions handle cmp and jmp
-(define (compare_a x1 op x2)
+(define (aop-name op)
+  (case op
+    [(+=) "addl"]
+    [(-=) "subl"]
+    [(*=) "imull"]
+    [(&=) "andl"]))
+
+(define (sop-name op)
+  (case op
+    [(<<=) "sall"]
+    [(>>=) "sarl"]))
+
+(define (jmp-name op)
+  (case op
+    [(<)  "jl"]
+    [(<=) "jle"]
+    [(=) "je"]))
+
+(define (rev-jmp-name op)
+  (case op
+    [(<)  "jg"]
+    [(<=) "jge"]
+    [(=) "je"]))
+;evaluate number compariation in compiling time
+(define (eval-compare x1 op x2)
   (case op
     [(<) (< x1 x2)]
     [(<=)(<= x1 x2)]
     [(=) (= x1 x2)]))
+;define low bit name for register
+(define (lbit-name reg)
+  (case reg
+    [(eax) "%al"]
+    [(ecx) "%cl"]
+    [(edx) "%dl"]
+    [(ebx) "%bl"]))
 
-(define (normal_jmp_a op l1 l2)
+(define (eval-op-name op)
   (case op
-    [(<)  (string-append "jl " l1 "\njmp " l2)]
-    [(<=) (string-append "jle " l1 "\njmp " l2)]
-    [(=) (string-append "je " l1 "\njmp " l2)]))
+    [(<) "setl"]
+    [(<=)"setle"]
+    [(=) "sete"]))
 
-(define (rev_jmp_a op l1 l2)
+(define (eval-negop-name op)
   (case op
-    [(<) (string-append "jg " l1 "\njmp " l2)]
-    [(<=) (string-append "jge " l1 "\njmp " l2)]
-    [(=) (string-append "je " l1 "\njmp " l2)]))
+    [(<) "setg"]
+    [(<=) "setge"]
+    [(=) "sete"]))
 
-(define (evaluate-op op)
-  (case op
-    [(<) (string-append "setl ")]
-    [(<=) (string-append "setle ")]
-    [(=) (string-append "sete ")]))
-
-(define (evaluate-negop op)
-  (case op
-    [(<) (string-append "setg ")]
-    [(<=) (string-append "setge ")]
-    [(=) (string-append "sete ")]))
-
-(define (lbits reg)
-  (string-append "%" (substring reg 2 3) "l"))
+;; now we add actual "compile" functions 
+(define (compile-i L1-inst)
+  (type-case L1_i L1-inst
+    (L1_assign (lhs rhs);switch position
+               (let ([new_lhs (add-prefix rhs)]
+                     [new_rhs (add-prefix lhs)])
+                 (format "movl ~a, ~a" new_lhs new_rhs)))
+    ;compile memory access and update
+    (L1_rmem (lhs rhs); read memory
+             (let ([new_lhs (add-prefix lhs)]
+                   [new_x (add-prefix (second rhs))]
+                   [new_n4 (number->string (third rhs))])
+               (format "movl ~a(~a), ~a" new_n4 new_x new_lhs)))
+    (L1_umem (lhs rhs); write memory
+             (let ([new_rhs (add-prefix lhs)]
+                   [new_x (add-prefix (second rhs))]
+                   [new_n4 (number->string (third rhs))])
+               (format "movl ~a, ~a(~a)" new_rhs new_n4 new_x)))
+    ;compile aop
+    (L1_aop (x op t)
+            (let ([op_name (aop-name op)]
+                  [new_l (add-prefix t)]
+                  [new_r (add-prefix x)])
+              (format "~a ~a, ~a" op_name new_l new_r)))
+    ;compile sop 
+    (L1_sop (x op sx)
+            (let ([op_name (sop-name op)]
+                  [new_l "%cl"];use small register
+                  [new_r (add-prefix x)])
+              (format "~a ~a, ~a" op_name new_l new_r)))
+    (L1_sop2 (x op num)
+             (let ([op_name (sop-name op)]
+                   [new_l (add-prefix num)];use small register
+                   [new_r (add-prefix x)])
+               (format "~a ~a, ~a" op_name new_l new_r)))
+    ;compile cmp
+    (L1_cmp (cx t1 op t2)
+            (let ([new-cx-l (lbit-name cx)]
+                  [new-cx (add-prefix cx)]
+                  [new-l (add-prefix t2)]
+                  [new-r (add-prefix t1)])
+              (cond
+                [(and (number? t1) (number? t2))
+                 (if (eval-compare t1 op t2)
+                     (format "movl $1, ~a" (add-prefix cx))
+                     (format "movl $0, ~a" (add-prefix cx)))]
+                [(and (number? t1) (L1_x? t2))
+                 (format "cmpl ~a, ~a\n~a ~a\nmovzbl ~a ~a" new-r new-l 
+                         (eval-negop-name op) new-cx-l new-cx-l new-cx)]
+                [else
+                 (format "cmpl ~a, ~a\n~a ~a\nmovzbl ~a ~a" new-l new-r 
+                         (eval-op-name op) new-cx-l new-cx-l new-cx)])))
+    ;handle label goto, cjmp etc
+    (L1_label (label) (string-append "$" (symbol->string label)))
+    (L1_goto (label)
+             (let ([new_label (jmp-label-name label)])
+               (format "jmp ~a" new_label)))
+    (L1_cjmp (t1 op t2 label1 label2)
+             (let ([new_tl (add-prefix t2)]
+                   [new_tr (add-prefix t1)]
+                   [new_label1 (jmp-label-name label1)]
+                   [new_label2 (jmp-label-name label2)])
+               (cond
+                 [(and (number? t1) (number? t2));;situation 1, two numbers, jump
+                  (if (eval-compare t1 op t2)
+                      (format "jmp ~a" new_label1)
+                      (format "jmp ~a" new_label2))]
+                 [(and (number? t1) (L1_x? t2));;switch l and r
+                  (format "cmpl ~a, ~a\n~a ~a\njmp ~a" new_tr new_tl (rev-jmp-name op) new_label1 new_label2)]
+                 [else
+                  (format "cmpl ~a, ~a\n~a ~a\njmp ~a" new_tl new_tr (jmp-name op) new_label1 new_label2)])))
+    ;compile call and tail-call
+    ;reference lec3.txt
+    (L1_call (u) 
+             (let ([label (string-append "new_lab_" (substring (symbol->string u) 1))]
+                   [new-u (add-prefix u)])
+               (if (L1_x? u)
+                   (format "pushl $~a\npushl %ebp\nmovl %esp, %ebp\njmp *~a\n~a:" label new-u label)
+                   (format "pushl $~a\npushl %ebp\nmovl %esp, %ebp\njmp ~a\n~a:" label new-u label))))
+    (L1_tcall (u)
+              (if (L1_x? u)
+                  (format "movl %ebp, %esp\njmp *~a" (add-prefix u))
+                  (format "movl %ebp, %esp\njmp ~a" (add-prefix u))))
+    
+    ;compile print
+    (L1_print (t) (format "pushl ~a\ncall print\naddl $4, %esp" (add-prefix t)))
+    ;compile alloc and array error
+    (L1_alloc (t1 t2) (format "pushl ~a\npushl ~a\ncall allocate\naddl $8, %esp" (add-prefix t2) (add-prefix t1)))
+    (L1_aerr (t1 t2) (format "pushl ~a\npushl ~a\ncall print_error\naddl $8, %esp" (add-prefix t2) (add-prefix t1)))
+    (L1_return () "movl %ebp, %esp\npopl %ebp\nret")))
 
 ;; Symbolic expressions(L1) to assemble language(x86) 
-(define (parse sexp)
-  (cond
-    [(number? sexp) (imm_a sexp)]
-    [(pair? sexp)
-     (cond
-       [(and (eq? 5 (length sexp))
-             (or (symbol=? '< (fourth sexp))
-                 (symbol=? '<= (fourth sexp))
-                 (symbol=? '= (fourth sexp))))
-        (cmp_a (parse (first sexp))
-               (parse (third sexp))
-               (fourth sexp)
-               (parse (fifth sexp)))]
-       [(eq? 3 (length sexp))
-        ; when the line contains three elements
-        (cond
-          [(list? (first sexp));(mem x n4) <- s
-           (wmem_a (parse (third sexp));from
-                   (parse (second (first sexp)));to
-                   (parse (third (first sexp))))]
-          [(list? (third sexp))
-           (case (first (third sexp))
-             [(mem);s -> (mem x n4)
-              (rmem_a (parse (second (third sexp)))
-                      (parse (first sexp))
-                      (parse (third (third sexp))))]
-             [(print);x <- (print t)
-              (print_a (parse (second (third sexp))))]
-             [(allocate) ; x <- (allocate t t)
-              (alloc_a (parse (second (third sexp)))
-                       (parse (third (third sexp))))]
-             [(array-error)
-              (aerr_a (parse (second (third sexp)))
-                      (parse (third (third sexp))))])]
-          [else
-           (case (second sexp)
-             [(+=)
-              (add_a (parse (first sexp))
-                     (parse (third sexp)))]
-             [(-=)
-              (sub_a (parse (first sexp))
-                     (parse (third sexp)))]
-             [(&=)
-              (and_a (parse (first sexp))
-                     (parse (third sexp)))]
-             [(*=)
-              (mul_a (parse (first sexp))
-                     (parse (third sexp)))]
-             [(<-); simple move, e.g: edi <- eax
-              (mov_a  (parse (first sexp))
-                      (parse (third sexp)))]
-             [(<<=)
-              (ls_a  (parse (first sexp))
-                     (parse (third sexp)))]
-             [(>>=)
-              (rs_a (parse (first sexp))
-                    (parse (third sexp)))])])]
-          ; now handle all the other situations     
-    [(symbol=? 'cjump (first sexp))
-     (cjmp_a (parse (second sexp))
-             (third sexp)
-             (parse (fourth sexp))
-             (parse (fifth sexp))
-             (parse (sixth sexp)))]
-    [(symbol=? 'goto (first sexp))
-     (goto_a (parse (second sexp)))]
-    [(symbol=? 'call (first sexp))
-     (call_a (parse (second sexp)))]
-    [(symbol=? 'tail-call (first sexp))
-     (tcall_a (parse (second sexp)))]
-    [(symbol=? 'return (first sexp))
-     (return_a)])]
-    [else 
-     (if (eq? #\: (string-ref (symbol->string sexp) 0))
-         (lab_a sexp)
-         (reg_a sexp))]))
+(define (L1-parse sexp)
+  (if (label? sexp) 
+      (L1_label sexp)
+      (match sexp
+        [`(,(? L1_x? x) <- ,(? L1_s? s)) (L1_assign x s)]
+        [`(,(? L1_x? x1) <- ,(? mem_op? mem)) (L1_rmem x1 mem)]
+        [`(,(? mem_op? mem) <- ,(? L1_x? x1)) (L1_umem mem x1)]
+        [`(,x ,(? aop? op) ,t) (L1_aop x op t)]
+        [`(,x ,(? sop? op) ecx) (L1_sop x op 'ecx)]
+        [`(,x ,(? sop? op) ,(? number? num)) (L1_sop2 x op num)]
+        [`(,(? L1_cx? cx) <- ,t1 ,(? cmp? op) ,t2) (L1_cmp cx t1 op t2)]
+        [`(goto ,(? label? l)) (L1_goto l)]
+        [`(cjump ,t1 ,cmp ,t2 ,l1 ,l2) (L1_cjmp t1 cmp t2 l1 l2)]
+        [`(call ,u) (L1_call u)]
+        [`(tail-call ,u) (L1_tcall u)]
+        [`(return) (L1_return)]
+        [`(eax <- (print ,t)) (L1_print t)]
+        [`(eax <- (allocate ,t1 ,t2)) (L1_alloc t1 t2)]
+        [`(eax <- (array-error ,t1 ,t2)) (L1_aerr t1 t2)])))
+
 
 
 (define header "\t.text\n\t.globl go\n\t.type  go, @function\ngo:\n")
 (define footer "\t.size  go, .-go\n\t.section\t.note.GNU-stack,\"\",@progbits\n")
 
 (define (main)
-  (begin (when (file-exists? "prog.s")
-           (delete-file "prog.s"))
-         (with-output-to-file "prog.s" #:exists 'append
-                             (lambda () (printf header)))
-         (map (lambda (code_page) ;the whole page
-                (begin 
-                  (map (lambda (code_line);now map line by line
-                         (let ([x86 (compile (parse code_line))])
-                           (with-output-to-file "prog.s" #:exists 'append
-                             (lambda () 
-                               (begin 
-                                 (when (eq? #\_ (string-ref x86 0))
-                                   (set! x86 (string-append x86 ":")))
-                                 (display (string-append x86 "\n")))))))
-                  code_page)
-                (when (eq? code_page (first L1-exp))
-                           (with-output-to-file "prog.s" #:exists 'append
-                             (lambda () (display "ret\n"))))))
-              L1-exp)
-         (with-output-to-file "prog.s" #:exists 'append
-                             (lambda () (printf footer)))))
-
+  (begin
+    (display header)
+    (for ([L1_p L1_exp])
+      (map (λ (L1_i);now map line by line
+             (displayln (compile-i (L1-parse L1_i))))
+           L1_p))
+    (display footer)))
 (main)
