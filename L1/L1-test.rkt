@@ -29,7 +29,7 @@
   (test (eval-compare 12 '<= 13) #t)
   (test (eval-compare 10 '< 9) #f)
   ;;test i compiler
-  (test (compile-i (L1_label ':what)) "$:what")
+  (test (compile-i (L1_label ':what)) "_what")
   (test (compile-i (L1_return)) "movl %ebp, %esp\npopl %ebp\nret")
   (test (compile-i (L1_aop 'ecx '+= 11)) "addl $11, %ecx")
   (test (compile-i (L1_sop 'ebx '<<= 'ecx)) "sall %cl, %ebx")
@@ -42,7 +42,7 @@
   (test (compile-i (L1_cmp 'eax 11 '< 12)) "movl $1, %eax")
   (test (compile-i (L1_cmp 'eax 11 '< 'ebx)) "cmpl $11, %ebx\nsetg %al\nmovzbl %al %eax")
   (test (compile-i (L1_cmp 'eax 'ecx '< 'ebx)) "cmpl %ebx, %ecx\nsetl %al\nmovzbl %al %eax")
-  (test (compile-i (L1_call ':me)) "pushl $new_lab_me\npushl %ebp\nmovl %esp, %ebp\njmp $:me\nnew_lab_me:")
+  (test (compile-i (L1_call ':me)) "pushl $new_lab_me\npushl %ebp\nmovl %esp, %ebp\njmp _me\nnew_lab_me:")
   (test (compile-i (L1_call 'eax)) "pushl $new_lab_ax\npushl %ebp\nmovl %esp, %ebp\njmp *%eax\nnew_lab_ax:")
   (test (compile-i (L1_tcall 'eax)) "movl %ebp, %esp\njmp *%eax")
   (test (compile-i (L1_print 3)) "pushl $3\ncall print\naddl $4, %esp")

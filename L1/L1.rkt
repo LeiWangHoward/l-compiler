@@ -2,7 +2,8 @@
 (require racket/string)
 (require "L1-type.rkt")
 ;read L1 code into the system
-(define filename "../322-interps/tests/robby/1-test/0.L1")
+(define filename "../322-interps/tests/17/1-test/17.L1")
+;(define filename "../322-interps/tests/robby/1-test/83.L1")
 ;(define filename (command-line #:args (filename) filename))
 (define L1_exp (call-with-input-file filename read))
 ;;define data type and operations
@@ -18,6 +19,14 @@
 
 (define (jmp-label-name label)
   (string-append "_" (substring (symbol->string label) 1)))
+
+;; define temp, label count and name
+(define var_count -1)
+
+(define (count-one)
+  (begin
+    (set! var_count (add1 var_count))
+    var_count))
 
 (define (aop-name op)
   (case op
@@ -82,9 +91,9 @@
                    [new_n4 (number->string (third rhs))])
                (format "movl ~a(~a), ~a" new_n4 new_x new_lhs)))
     (L1_umem (lhs rhs); write memory
-             (let ([new_rhs (add-prefix lhs)]
-                   [new_x (add-prefix (second rhs))]
-                   [new_n4 (number->string (third rhs))])
+             (let ([new_rhs (add-prefix rhs)]
+                   [new_x (add-prefix (second lhs))]
+                   [new_n4 (number->string (third lhs))])
                (format "movl ~a, ~a(~a)" new_rhs new_n4 new_x)))
     ;compile aop
     (L1_aop (x op t)
@@ -121,7 +130,7 @@
                  (format "cmpl ~a, ~a\n~a ~a\nmovzbl ~a ~a" new-l new-r 
                          (eval-op-name op) new-cx-l new-cx-l new-cx)])))
     ;handle label goto, cjmp etc
-    (L1_label (label) (string-append "$" (symbol->string label)))
+    (L1_label (label) (string-append "_" (substring (symbol->string label) 1) ":"))
     (L1_goto (label)
              (let ([new_label (jmp-label-name label)])
                (format "jmp ~a" new_label)))
@@ -142,21 +151,21 @@
     ;compile call and tail-call
     ;reference lec3.txt
     (L1_call (u) 
-             (let ([label (string-append "new_lab_" (substring (symbol->string u) 1))]
-                   [new-u (add-prefix u)])
-               (if (L1_x? u)
-                   (format "pushl $~a\npushl %ebp\nmovl %esp, %ebp\njmp *~a\n~a:" label new-u label)
-                   (format "pushl $~a\npushl %ebp\nmovl %esp, %ebp\njmp ~a\n~a:" label new-u label))))
+             (let ([label (string-append "_new_lab_" (number->string (count-one)))])
+               (if (label? u)
+                   (format "pushl $~a\npushl %ebp\nmovl %esp, %ebp\njmp ~a\n~a:" label (jmp-label-name u) label)
+                   (format "pushl $~a\npushl %ebp\nmovl %esp, %ebp\njmp *~a\n~a:" label (add-prefix u) label))))
+    
     (L1_tcall (u)
-              (if (L1_x? u)
-                  (format "movl %ebp, %esp\njmp *~a" (add-prefix u))
-                  (format "movl %ebp, %esp\njmp ~a" (add-prefix u))))
+              (if (label? u)
+                  (format "movl %ebp, %esp\njmp ~a" (jmp-label-name u))
+                  (format "movl %ebp, %esp\njmp *~a" (add-prefix u))))
     
     ;compile print
-    (L1_print (t) (format "pushl ~a\ncall print\naddl $4, %esp" (add-prefix t)))
+    (L1_print (t) (format "pushl ~a\ncall print\naddl $4,%esp" (add-prefix t)))
     ;compile alloc and array error
-    (L1_alloc (t1 t2) (format "pushl ~a\npushl ~a\ncall allocate\naddl $8, %esp" (add-prefix t2) (add-prefix t1)))
-    (L1_aerr (t1 t2) (format "pushl ~a\npushl ~a\ncall print_error\naddl $8, %esp" (add-prefix t2) (add-prefix t1)))
+    (L1_alloc (t1 t2) (format "pushl ~a\npushl ~a\ncall allocate\naddl $8,%esp" (add-prefix t2) (add-prefix t1)))
+    (L1_aerr (t1 t2) (format "pushl ~a\npushl ~a\ncall print_error\naddl $8,%esp" (add-prefix t2) (add-prefix t1)))
     (L1_return () "movl %ebp, %esp\npopl %ebp\nret")))
 
 ;; Symbolic expressions(L1) to assemble language(x86) 
@@ -166,7 +175,7 @@
       (match sexp
         [`(,(? L1_x? x) <- ,(? L1_s? s)) (L1_assign x s)]
         [`(,(? L1_x? x1) <- ,(? mem_op? mem)) (L1_rmem x1 mem)]
-        [`(,(? mem_op? mem) <- ,(? L1_x? x1)) (L1_umem mem x1)]
+        [`(,(? mem_op? mem) <- ,(? L1_s? s)) (L1_umem mem s)]
         [`(,x ,(? aop? op) ,t) (L1_aop x op t)]
         [`(,x ,(? sop? op) ecx) (L1_sop x op 'ecx)]
         [`(,x ,(? sop? op) ,(? number? num)) (L1_sop2 x op num)]
@@ -180,17 +189,21 @@
         [`(eax <- (allocate ,t1 ,t2)) (L1_alloc t1 t2)]
         [`(eax <- (array-error ,t1 ,t2)) (L1_aerr t1 t2)])))
 
-
-
 (define header "\t.text\n\t.globl go\n\t.type  go, @function\ngo:\n")
 (define footer "\t.size  go, .-go\n\t.section\t.note.GNU-stack,\"\",@progbits\n")
-
+(define main_prefix "pushl %ebp\nmovl %esp, %ebp\npushl %ebx\npushl %esi\npushl %edi\npushl %ebp\nmovl %esp, %ebp\n")
+(define main_suffix "popl %ebp\npopl %edi\npopl %esi\npopl %ebx\nleave\nret\n")
 (define (main)
   (begin
     (display header)
+    (display main_prefix)
+    (define check_main #t)
     (for ([L1_p L1_exp])
       (map (λ (L1_i);now map line by line
              (displayln (compile-i (L1-parse L1_i))))
-           L1_p))
+           L1_p)
+      (when (equal? check_main #t)
+        (display main_suffix)
+        (set! check_main #f)))
     (display footer)))
 (main)

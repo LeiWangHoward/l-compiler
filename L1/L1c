@@ -1,11 +1,11 @@
 #!/bin/sh
 # first compile runtime
 gcc -m32 -c -O2 -o runtime.o runtime.c
-racket L1.rkt "$@"
+racket L1.rkt "$@" > prog.s
 as --32 -o prog.o prog.s
 gcc -m32 -o a.out prog.o runtime.o
 # output
 #./a.out
 #clean up
-#rm *.o
+rm prog.s
 #rm a.out
