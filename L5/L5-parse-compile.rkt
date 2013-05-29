@@ -17,13 +17,19 @@
 
 ;;create new procedure
 (define (new-procedure label x_lst var_lst exp)
-  `(,label ,(cons 'vars-tup x_lst)
-           ,(let ([new_let exp])
-              (for/fold ([new_let new_let]) 
-                ([var (in-list var_lst)]
-                 [num (in-list (range (length var_lst)))])
-                `(let ([,var (aref vars-tup ,num)]) ,new_let)))))
+  (if (> (length x_lst) 2)
+      `(,label (vars-tup args-tup)
+               ,(let ([new_exp (new-let x_lst exp 'args-tup)])
+                  (new-let var_lst new_exp 'vars-tup)))
+      `(,label ,(cons 'vars-tup x_lst)
+               ,(new-let var_lst exp 'vars-tup))))
 
+(define (new-let var_lst exp vars-tup)
+  (let ([new_let exp])
+    (for/fold ([new_let new_let]) 
+      ([var (in-list var_lst)]
+       [num (in-list (range (length var_lst)))])
+      `(let ([,var (aref ,vars-tup ,num)]) ,new_let))))
 ;;create new lambda. e.g (f +) -> (f (lambda (x y) (+ x y))
 (define (new-lambda e)
   (let ([prim_op (L5-compile e)]
@@ -46,7 +52,15 @@
 (module+ test
   (test (new-procedure ':f1 '(x) '(y) '(- (+ x y) x)) '(:f1 (vars-tup x) 
                                                             (let ((y (aref vars-tup 0))) 
-                                                              (- (+ x y) x)))))
+                                                              (- (+ x y) x))))
+  (test (new-let '(y) '(- (+ x y) x) 'vars-tup)  '(let ((y (aref vars-tup 0))) 
+                                                    (- (+ x y) x)))
+  (test (new-procedure ':f1 '(x y z) '(p) '(- (+ (- (+ x y) x) z) p)) '(:f1 (vars-tup args-tup) 
+                                                                            (let ((p (aref vars-tup 0))) 
+                                                                              (let ((z (aref args-tup 2))) 
+                                                                                (let ((y (aref args-tup 1))) 
+                                                                                  (let ((x (aref args-tup 0))) 
+                                                                                    (- (+ (- (+ x y) x) z) p)))))))) 
 ;(test (new-lambda (L5_prim 'print)) ""))
 (define (L5-parse L5-e)
   (match L5-e
