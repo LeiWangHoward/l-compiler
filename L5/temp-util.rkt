@@ -7,11 +7,14 @@
     (set! var_count (add1 var_count))
     var_count))
 
+(define (back-one)
+  (set! var_count (sub1 var_count)))
+
 (define var-pre "var_")
 (define app-pre "new_app")
 
 (define (fresh-app)
- (string->symbol
+  (string->symbol
    (format "~a~a" app-pre (count-one)))) 
 (define (fresh-var var)
   (string->symbol
@@ -25,4 +28,3 @@
   (test (fresh-var 'x) 'var_x0)
   (test (label-it 'a) ':a)
   (test (fresh-app) 'new_app1))
-        

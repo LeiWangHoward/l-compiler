@@ -47,5 +47,11 @@
   ;biop pred
   (L5_prim (prim prim?)))
 
+#|(define (check-prim args)
+  (for ([arg args]
+       #:break (L5_prim? arg))
+    (L5_prim? arg)))
+|#
+      
 (module+ test
   (test (L5-e? (L5_new-tuple `(,(L5_num 4) ,(L5_x 'a) ,(L5_x 'd) ,(L5_x 'e)))) #t))
