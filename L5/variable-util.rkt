@@ -34,6 +34,12 @@
         [else #f])
       #f))
 
+
+(define (pred? a)
+  (if (symbol? a)
+      (or (equal? a 'number?)
+          (equal? a 'a?))
+      #f))
 ;;test 
 (module+ test
   (test (var? 'aa) #t)
@@ -44,12 +50,37 @@
   (test (prim? 'print) #t)
   (test (prim? 'number?) #t))
 
-(define (pred? a)
-  (if (symbol? a)
-      (or (equal? a 'number?)
-          (equal? a 'a?))
-      #f))
+;;to replace *free* var in e1(&e2) of the letrec
+(define (replace-free letrec_e x)
+  (match letrec_e
+    [`(let ((,var ,e1)) ,e2) 
+     `(let ((,var ,(replace-free e1 x))) ,(replace-free e2 x))]
+    [`(if ,cond ,then ,else)
+     `(if ,(replace-free cond x)
+          ,(replace-free then x)
+          ,(replace-free else x))]
+    [`(begin ,e1 ,e2)
+     `(begin ,(replace-free e1 x)
+             ,(replace-free e2 x))]
+    [`(make-closure ,(? label?) (new-tuple ,args ...))
+     letrec_e]
+    [`(new-tuple ,args ...)
+     letrec_e]
+    [(? number? num)
+     num]
+    [(? symbol? x1)
+     (if (equal? x x1)
+         `(aref ,x1 0)
+         x1)]
+    [`(,args ...)
+     (map (λ (arg)
+            (replace-free arg x))
+          args)]))
 
+(module+ test 
+  (test (replace-free '(+ a b) 'a) '(+ (aref a 0) b))
+  (test (replace-free '(make-closure :f (new-tuple a b c)) 'b) 
+        '(make-closure :f (new-tuple a b c))))
 ;; new name replace function e.g x -> s0 
 (define (replace sexp tar_var s_var)
   (cond
