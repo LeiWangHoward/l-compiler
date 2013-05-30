@@ -5,15 +5,7 @@
 (require data/queue)
 ;function to find free variables
 (define func-que (make-queue))
-;;find free variable
-(define (find-free-var x_lst e)
-  (let* ([flat_e (flatten e)]
-         [e_args (remove* x_lst flat_e)])
-    (flatten (for/list
-                 ([arg e_args])
-               (if (var? arg)
-                   arg
-                   '())))))
+(define env (list))
 
 ;;create new procedure
 (define (new-procedure label x_lst var_lst exp)
@@ -48,16 +40,6 @@
              (back-one)
              (back-one)
              (L5-compile (L5_lambda `(,x) (L5-parse `(,prim_op ,x)))))])))
-
-#|(define (new-lambda e)
-  (let ([prim_op (L5-compile e)]
-        [x (fresh-var 'lam_x)]
-        [y (fresh-var 'lam_y)])
-    (if (biop? prim_op) 
-        (L5-compile (L5_lambda `(,x ,y) (L5-parse `(,prim_op ,x ,y))))
-        (begin (back-one)
-               (back-one)
-               (L5-compile e)))))|#
 
 (module+ test
   (test (new-procedure ':f1 '(x) '(y) '(- (+ x y) x)) '(:f1 (vars-tup x) 
@@ -117,8 +99,10 @@
   (test (L5-parse `(lambda (x y z) (+ x y))) (L5_lambda '(x y z) (L5_app (list (L5_prim '+) (L5_x 'x) (L5_x 'y)))))
   (test (L5-parse `(letrec ((x 5)) (+ x 2))) (L5_let 'x (L5_new-tuple (list (L5_num 0)))
                                                      (L5_begin 
-                                                      (L5_app (list (L5_prim 'aset) (L5_x 'x) (L5_num 0) (L5_num 5)))
-                                                      (L5_app (list (L5_prim '+) (L5_app (list (L5_prim 'aref) (L5_x 'x) (L5_num 0))) (L5_num 2))))))
+                                                      (L5_app (list (L5_prim 'aset) (L5_x 'x_1) (L5_num 0) (L5_num 5)))
+                                                      (L5_app (list (L5_prim '+) 
+                                                                    (L5_app (list (L5_prim 'aref) 
+                                                                                  (L5_x 'x_1) (L5_num 0))) (L5_num 2))))))
   (test (L5-parse `(if (< 1 2) (print 1) (print 2))) (L5_if (L5_app (list (L5_prim '<) (L5_num 1) (L5_num 2))) 
                                                             (L5_app (list (L5_prim 'print) (L5_num 1)))
                                                             (L5_app (list (L5_prim 'print) (L5_num 2)))))
@@ -132,10 +116,12 @@
     (L5_lambda (x_lst e)
                (let* ([new_lab (label-it (fresh-app))]
                       [e_compiled (L5-compile e)]
-                      [free_var (find-free-var x_lst e_compiled)])
+                      [free_var (find-free-var e x_lst)]
+                      [clean_free_var (remove-duplicates (flatten free_var))])
                  (begin
-                   (enqueue! func-que (new-procedure new_lab x_lst free_var e_compiled)) 
-                   `(make-closure ,new_lab ,(cons 'new-tuple free_var)))))
+                   (enqueue! func-que (new-procedure new_lab x_lst clean_free_var e_compiled)) 
+                   `(make-closure ,new_lab ,(cons 'new-tuple clean_free_var)))))
+    ;(set! env (remove-duplicates (append x_lst env))))))
     (L5_num (num)
             num)
     (L5_prim (prim)
@@ -150,12 +136,14 @@
                            `(let ([,x (make-closure ,new_lab ,(cons 'new-tuple free_var))])
                               ,(L5-compile e2)
                               ,(replace (L5-compile e2) x new_lab))))|#
-            `(let ([,x ,(L5-compile e1)])
-               ,(L5-compile e2)))
-    (L5_letrec (x e1 e2) 
-               `(let ((,x (new-tuple 0)))
-                  (begin (aset ,x 0 ,(replace (L5-compile e1) x `(aref ,x 0)))
-                         ,(replace (L5-compile e2) x `(aref ,x 0)))))
+            (begin ;(set! env (remove-duplicates (cons x env)))
+              `(let ([,x ,(L5-compile e1)])
+                 ,(L5-compile e2))))
+    (L5_letrec (x e1 e2)
+               (begin ;(set! env (remove-duplicates (cons x env)))
+                 `(let ((,x (new-tuple 0)))
+                    (begin (aset ,x 0 ,(replace (L5-compile e1) x `(aref ,x 0)))
+                           ,(replace (L5-compile e2) x `(aref ,x 0))))))
     (L5_if (e1 e2 e3)
            `(if ,(L5-compile e1)
                 ,(L5-compile e2)
@@ -192,7 +180,6 @@
                                                                                     (L5-compile ele)))
                                                                               args))))))))))
     ))
-;(else L5-parsed)))
 (module+ test 
   (test (L5-compile (L5-parse 'f)) 'f)
   (test (L5-parse 'f) (L5_x 'f))
@@ -210,4 +197,33 @@
   (test (L5-compile (L5-parse `(let ([f (lambda (y) (+ x y))])
                                  (f 1))))  '(let ((f_1 (make-closure :new_app1 (new-tuple x))))
                                               (let ((new_app2 f_1)) 
-                                                ((closure-proc new_app2) (closure-vars new_app2) 1))))) 
+                                                ((closure-proc new_app2) (closure-vars new_app2) 1)))))
+(define (find-free-var exp arg_lst)
+  (type-case L5-e exp
+    (L5_lambda (x_lst e)
+               (find-free-var e (flatten (cons x_lst arg_lst))))
+    (L5_x (x)
+          (if (not (member x arg_lst))
+              x
+              '()))
+    (L5_let (x e1 e2)
+            (cons (find-free-var e2 (flatten (cons arg_lst x)))
+                  (find-free-var e1 arg_lst)))
+    (L5_letrec (x e1 e2)
+               (cons (find-free-var e2 (flatten (cons arg_lst x)))
+                     (find-free-var e1 (flatten (cons arg_lst x)))))
+    (L5_if (e1 e2 e3)
+           (append (find-free-var e1 arg_lst)
+                   (find-free-var e2 arg_lst)
+                   (find-free-var e3 arg_lst)))
+    (L5_new-tuple (e)
+                  (for/list ([e_single e]) 
+                    (find-free-var e_single arg_lst)))
+    
+    (L5_begin (e1 e2)
+              (cons (find-free-var e1 arg_lst)
+                    (find-free-var e2 arg_lst)))
+    (L5_app (e_lst)
+            (for/list ([e_single e_lst]) 
+              (find-free-var e_single arg_lst)))
+    (else '())))
