@@ -1,1 +1,1 @@
-((if 1 (print 0) (print 1)))
+((let ((x (new-array 10 0))) (let ((y (alen x))) (print y))))

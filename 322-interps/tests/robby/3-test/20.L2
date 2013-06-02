@@ -1,10 +1,8 @@
-(((call :L_1))
- (:L_1
-  (x <- 1)
-  (y <- x)
-  (y &= 1)
-  (y <<= 1)
-  (y += 1)
-  (eax <- (print y))
+(((call :L_3))
+ (:L_3
+  (a <- -1)
+  (x_1 <- a)
+  (x_1 += 10)
+  (eax <- (print x_1))
   (eax <- eax)
   (return)))

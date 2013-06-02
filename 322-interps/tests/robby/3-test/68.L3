@@ -1,1 +1,1 @@
-((let ((__1 (print 1))) (let ((x_2 (* -2 3))) (print x_2))))
+((if 0 (if 0 (print 1) (print 2)) (if 0 (print 3) (print 4))))

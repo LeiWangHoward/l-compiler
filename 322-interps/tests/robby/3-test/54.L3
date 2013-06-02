@@ -1,4 +1,1 @@
-((:f 21)
- (:f (x) (let ((x (:g x x))) (+ x 1)))
- (:g (x y) (let ((y (:h x y y))) (+ y 1)))
- (:h (x y z) (let ((d1 (print x))) (let ((d2 (print y))) (print z)))))
+((let ((y (<= 2 1))) (if y (print y) (print 1234))))

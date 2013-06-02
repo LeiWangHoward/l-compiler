@@ -1,30 +1,5 @@
 #lang plai
-(require "variable-util.rkt")
-
-;;e for L5
-#|(define (L5-e? exp)
-  (match exp
-    [(or `(lambda (,(? var?) ...) ,(? L5-e?))
-        (? number?)
-        (? var?)
-        `(let ((,(? var?) ,(? L5-e?))) ,(? L5-e?))
-        `(letrec ((,(? var?) ,(? L5-e?))) ,(? L5-e?))
-        `(if ,(? L5-e?) ,(? L5-e?) ,(? L5-e?))
-        `(new-tuple ,(? L5-e?) ...)
-        `(begin ,(? L5-e?) ,(? L5-e?))
-        `(,(? L5-e?) ...)
-        (? prim?))
-     #t]
-    [_ #f]))
-(module+ test
-  (test (var? 'print) #f)
-  (test (L5-e? 1) #t)
-  (test (L5-e? `(+ 1 2)) #t)
-  (test (L5-e? `(let ((1 2)) 2)) #f)
-  (test (L5-e? `(lambda (x y z) x)) #t)
-  (test (L5-e? `(lambda (1 print) 1)) #f)
-  (test (L5-e? `(let let let)) #f))
-|#        
+(require "variable-util.rkt")     
 
 (define-type L5-e
   (L5_lambda (x_lst (listof var?))
@@ -46,12 +21,3 @@
   (L5_app (e_lst (listof L5-e?)))
   ;biop pred
   (L5_prim (prim prim?)))
-
-#|(define (check-prim args)
-  (for ([arg args]
-       #:break (L5_prim? arg))
-    (L5_prim? arg)))
-|#
-      
-(module+ test
-  (test (L5-e? (L5_new-tuple `(,(L5_num 4) ,(L5_x 'a) ,(L5_x 'd) ,(L5_x 'e)))) #t))

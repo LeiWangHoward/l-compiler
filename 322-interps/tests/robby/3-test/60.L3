@@ -1,1 +1,1 @@
-((let ((x 1073741822)) (let ((y 1)) (let ((z (+ x y))) (print z)))))
+((let ((x (+ 1 2))) (let ((y (* x x))) (let ((z (+ x y))) (print z)))))

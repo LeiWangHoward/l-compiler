@@ -1,1 +1,1 @@
-((let ((x 1)) (if x (print 1) (print 2))))
+((let ((a -1)) (let ((b -2)) (let ((a (+ a b))) (print a)))))

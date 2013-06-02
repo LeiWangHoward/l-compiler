@@ -1,1 +1,1 @@
-((let ((y (= 1 1))) (if y (print y) (print 1234))))
+((let ((arr (new-tuple 1))) (let ((x (aset arr 0 2))) (print x))))

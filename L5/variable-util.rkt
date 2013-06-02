@@ -40,15 +40,6 @@
       (or (equal? a 'number?)
           (equal? a 'a?))
       #f))
-;;test 
-(module+ test
-  (test (var? 'aa) #t)
-  (test (var? 'sdsd?) #f)
-  (test (var? '+) #f)
-  (test (var? 'print) #f)
-  (test (prim? '+) #t)
-  (test (prim? 'print) #t)
-  (test (prim? 'number?) #t))
 
 ;;to replace *free* var in e1(&e2) of the letrec
 (define (replace-free letrec_e x)
@@ -76,11 +67,6 @@
      (map (λ (arg)
             (replace-free arg x))
           args)]))
-
-(module+ test 
-  (test (replace-free '(+ a b) 'a) '(+ (aref a 0) b))
-  (test (replace-free '(make-closure :f (new-tuple a b c)) 'b) 
-        '(make-closure :f (new-tuple a b c))))
 ;; new name replace function e.g x -> s0 
 (define (replace sexp tar_var s_var)
   (cond
@@ -88,6 +74,3 @@
     [(pair? sexp) (cons (replace (car sexp) tar_var s_var)
                         (replace (cdr sexp) tar_var s_var))]
     [else sexp]))
-
-(module+ test 
-  (test (replace '(+ 1 (+ 2 x)) 'x '(aref x 0)) '(+ 1 (+ 2 (aref x 0))))) 
