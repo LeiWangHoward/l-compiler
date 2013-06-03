@@ -1,0 +1,3 @@
+#!/bin/sh
+# first compile runtime
+racket L3.rkt "$@"

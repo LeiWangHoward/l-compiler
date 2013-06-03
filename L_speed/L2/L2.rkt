@@ -9,9 +9,6 @@
 (require "graph.rkt")
 (require "coloring.rkt")
 ; file input output
-;(define filename (command-line #:args (filename) filename))
-(define filename "../../322-interps/tests/robby/2-test/42.L2")
-(define L2_exp (call-with-input-file filename read))
 (define L1_inst (make-queue))
 
 ; replace the l2 expression to l1(var->registers)
@@ -70,9 +67,7 @@
                            (set! inst_local (esp-adjust inst_local stack_num)))))))))
          inst_in)
     (if (equal? cannot_allocate #t)
-        (displayln "shit!");error_message
-        (display (queue->list L1_inst)))))
-
-(compile-L2 L2_exp)
+        error_message
+        (queue->list L1_inst))))
 ;; number for stack pointer, will always be decrease by 4
 ;;define/contract

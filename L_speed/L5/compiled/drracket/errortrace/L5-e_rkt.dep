@@ -1,0 +1,1 @@
+("5.3.3" ("fbfa705bf0e291f08639bf221857a6b3967524e7" . "9e687501c7c43b1da5b1ee3f52d33fa20c029355") (collects #"errortrace" #"errortrace-key.rkt") (collects #"plai" #"main.rkt") #"/Users/leiwang/Documents/courses/cs322-compiler/L_compiler/L_speed/L5/variable-util.rkt" (collects #"syntax" #"parse" #"private" #"runtime-report.rkt") (collects #"plai" #"lang" #"reader.rkt"))
