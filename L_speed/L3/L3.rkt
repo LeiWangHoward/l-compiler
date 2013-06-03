@@ -1,6 +1,8 @@
 #lang plai
 (require "tools.rkt")
 (require "L3-compile.rkt")
+;(define filename (command-line #:args (filename) filename))
+;(define exp (call-with-input-file filename read))
 ;compile p of L3
 (define (compile-L3-p L3_p)
   (match L3_p
@@ -23,3 +25,5 @@
              (if (equal? x 0) ;main function
                  (cons ':_main_func L2_sub)
                  L2_sub)))))
+
+;(displayln (compile-L3 exp))

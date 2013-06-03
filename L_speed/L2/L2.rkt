@@ -71,3 +71,7 @@
         (queue->list L1_inst))))
 ;; number for stack pointer, will always be decrease by 4
 ;;define/contract
+#|
+(define filename (command-line #:args (filename) filename))
+(define exp (call-with-input-file filename read))
+(displayln (compile-L2 exp))|#
