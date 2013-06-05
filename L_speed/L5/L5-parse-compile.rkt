@@ -43,6 +43,22 @@
              (back-one)
              (L5-compile (L5_lambda `(,x) (L5-parse `(,prim_op ,x)))))])))
 
+;; compile letrec L5_letrec -> (let ...) func
+(define (compile-letrec x e1 e2)
+  (let* ([pre_func_len (queue-length func-que)]  
+         [e1_compiled (L5-compile e1)]
+         [e2_compiled (L5-compile e2)]
+         [post_func_len (queue-length func-que)]
+         [refactor_func (- post_func_len pre_func_len)])
+    (begin
+      (for ([count (in-range refactor_func)])
+        (let* ([func (dequeue! func-que)]
+               [new_fun (replace-free func x)])
+          (enqueue! func-que new_fun)))
+      ;(begin ;(set! env (remove-duplicates (cons x env)))
+      `(let ((,x (new-tuple 0)))
+         (begin (aset ,x 0 ,(replace-free e1_compiled x))
+                ,(replace-free e2_compiled x))))))
 ;;parse L5-e
 (define (L5-parse L5-e)
   (match L5-e
@@ -62,7 +78,21 @@
      (let* ([level_x (level-var x)]
             [new_e1 (replace e1 x level_x)]
             [new_e2 (replace e2 x level_x)])
-       (L5_letrec level_x (L5-parse new_e1) (L5-parse new_e2)))]
+       ;;optimization
+       (let ([e1_parsed (L5-parse new_e1)]
+             [e2_parsed (L5-parse new_e2)])
+         (if (and (L5_lambda? e1_parsed) (L5_app? e2_parsed)
+                  (var? (first new_e2)))
+             (let ([e1_var_set (find-free-var e1_parsed (set level_x))]
+                   [e2_var_set (find-free-var e2_parsed (set level_x))])
+               (if (and (set-empty? e1_var_set)
+                        (set-empty? e2_var_set))
+                   (let* ([fun_label (label-it level_x)]
+                          [compiled_fun (L5-compile (L5-parse (third new_e1)))])
+                     (begin (enqueue! func-que `(,fun_label ,(second new_e1) ,(replace compiled_fun level_x fun_label)))
+                            (L5-parse (replace new_e2 level_x fun_label))))
+                   (L5_letrec level_x e1_parsed e2_parsed)))
+             (L5_letrec level_x e1_parsed e2_parsed))))];(L5-parse new_e1) (L5-parse new_e2)))))]
     [`(if ,cond ,then ,else)
      (L5_if (L5-parse cond)
             (L5-parse then)
@@ -80,6 +110,9 @@
      (L5_prim prim)]
     [(? var? x)
      (L5_x x)]
+    ;;optimization
+    [(? label? x)
+     (L4_label x)]
     [`(,args ...)
      (L5_app (map (λ (arg)
                     (L5-parse arg))
@@ -93,6 +126,7 @@
                       [e_compiled (L5-compile e)]
                       [free_var (find-free-var e (list->set x_lst))]
                       [free_var_lst (set->list free_var)])
+                 ;(if (set-empty? free_var)   
                  (begin
                    (enqueue-front! func-que (new-procedure new_lab x_lst free_var_lst e_compiled))
                    `(make-closure ,new_lab ,(cons 'new-tuple free_var_lst)))))
@@ -103,6 +137,8 @@
              prim)
     (L5_x (x)
           x)
+    (L4_label (l)
+              l)
     (L5_let (x e1 e2)
             (if (L5_prim? e1)
                 `(let ([,x ,(new-lambda e1)])
@@ -119,20 +155,7 @@
                      ,(L5-compile e2)))))
     ;bug: double letrec
     (L5_letrec (x e1 e2)
-               (let* ([pre_func_len (queue-length func-que)]  
-                      [e1_compiled (L5-compile e1)]
-                      [e2_compiled (L5-compile e2)]
-                      [post_func_len (queue-length func-que)]
-                      [refactor_func (- post_func_len pre_func_len)])
-                 (begin
-                   (for ([count (in-range refactor_func)])
-                     (let* ([func (dequeue! func-que)]
-                            [new_fun (replace-free func x)])
-                       (enqueue! func-que new_fun)))
-                   ;(begin ;(set! env (remove-duplicates (cons x env)))
-                   `(let ((,x (new-tuple 0)))
-                      (begin (aset ,x 0 ,(replace-free e1_compiled x))
-                             ,(replace-free e2_compiled x))))))
+               (compile-letrec x e1 e2))
     (L5_if (e1 e2 e3)
            `(if ,(L5-compile e1)
                 ,(L5-compile e2)
@@ -146,7 +169,8 @@
                       ,(L5-compile e2)))
     (L5_app (e_lst)
             (let ([fun_e0 (first e_lst)])
-              (if (L5_prim? fun_e0);predefined function such as print, + etc, just left it as it is 
+              (if (or (L5_prim? fun_e0)
+                      (L4_label? fun_e0));predefined function such as print, + etc, just left it as it is 
                   (map (λ (e)
                          (L5-compile e))
                        e_lst)
@@ -199,7 +223,7 @@
               (set-union (find-free-var e1 arg_set)
                          (find-free-var e2 arg_set)))
     (L5_app (e_lst)
-             (for/fold ([full_set (set)])
-                    ([e_single e_lst])
-                    (set-union full_set (find-free-var e_single arg_set))))
+            (for/fold ([full_set (set)])
+              ([e_single e_lst])
+              (set-union full_set (find-free-var e_single arg_set))))
     (else (set))))

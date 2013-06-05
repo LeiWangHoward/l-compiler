@@ -64,7 +64,7 @@
   (test (L5-parse `(let ([f (lambda (y) (+ x y))])
                      (f 1))) 
         (L5_let 'f_1 (L5_lambda '(y_1) 
-                              (L5_app (list (L5_prim '+) (L5_x 'x) (L5_x 'y_1))))
+                                (L5_app (list (L5_prim '+) (L5_x 'x) (L5_x 'y_1))))
                 (L5_app (list (L5_x 'f_1) (L5_num 1))))))
 
 ;;compile L5
@@ -85,4 +85,19 @@
 
 ;;test find-free-var
 (module+ test
-  (test (find-free-var (L5-parse '(lambda (x y z) (- x q))) (set 'x 'y 'z)) (set 'q)))
+  (test (find-free-var (L5-parse '(lambda (x y z) (- x q))) (set 'x 'y 'z)) (set 'q))
+  (test (find-free-var (L5-parse '(lambda (n)
+                                    (if (< n 2)
+                                        1
+                                        (+ (fib (- n 1))
+                                           (fib (- n 2)))))) (set 'n)) (set 'fib)))
+
+;;test optimization
+(require "L5.rkt")
+(module+ test
+  (test (L5-compile (L5-parse '(letrec ([fib (lambda (n)
+                                               (if (< n 2)
+                                                   1
+                                                   (+ (fib (- n 1))
+                                                      (fib (- n 2)))))])
+                                 (fib 30)))) '(:fib_1 30)))
