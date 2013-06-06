@@ -13,7 +13,8 @@
   (test (fresh-var 'x) 'var_x0)
   (test (label-it 'a) ':a)
   (test (level-var 'me) 'me_1)
-  (test (fresh-app) 'new_app1))
+  (test (fresh-app) 'new_app1)
+  (test (line-filter 'n-of-p) 'n_of_p))
 ;;for determine var 
 (module+ test
   (test (var? 'aa) #t)

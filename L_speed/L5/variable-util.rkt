@@ -46,6 +46,8 @@
   (match letrec_e
     [`(let ((,var ,e1)) ,e2) 
      `(let ((,var ,(replace-free e1 x))) ,(replace-free e2 x))]
+    [`(letrec ((,var ,e1)) ,e2) 
+     `(letrec ((,var ,(replace-free e1 x))) ,(replace-free e2 x))]
     [`(if ,cond ,then ,else)
      `(if ,(replace-free cond x)
           ,(replace-free then x)
@@ -53,9 +55,12 @@
     [`(begin ,e1 ,e2)
      `(begin ,(replace-free e1 x)
              ,(replace-free e2 x))]
-    [`(make-closure ,(? label?) (new-tuple ,args ...))
-     letrec_e]
+    [`(make-closure ,(? label?) ,tup)
+     letrec_e];`(make-closure ,l ,(replace-free tup x))];
     [`(new-tuple ,args ...)
+     ;`(new-tuple ,@(map (λ (arg)
+     ;                     (replace-free arg x))
+     ;                   args))]
      letrec_e]
     [(? number? num)
      num]
@@ -67,6 +72,7 @@
      (map (λ (arg)
             (replace-free arg x))
           args)]))
+
 ;; new name replace function e.g x -> s0 
 (define (replace sexp tar_var s_var)
   (cond

@@ -7,7 +7,41 @@
 ;function to find free variables
 (define func-que (make-queue))
 ;(define env (list))
-
+;;optimization
+;;replace func name to label in expression
+(define (replace-free-lab exp name)
+  (match exp
+    [`(let ((,var ,e1)) ,e2)
+     (let* ([new_var (level-var var)]
+            [new_e1 (replace e1 var new_var)]
+            [new_e2 (replace e2 var new_var)])
+       `(let ((,new_var ,(replace-free-lab new_e1 name))) ,(replace-free-lab new_e2 name)))]
+    [`(letrec ((,var ,e1)) ,e2)
+     (let* ([new_var (level-var var)]
+            [new_e1 (replace e1 var new_var)]
+            [new_e2 (replace e2 var new_var)])
+       `(letrec ((,new_var ,(replace-free-lab new_e1 name))) ,(replace-free-lab new_e2 name)))]
+    [`(if ,cond ,then ,else)
+     `(if ,(replace-free-lab cond name)
+          ,(replace-free-lab then name)
+          ,(replace-free-lab else name))]
+    [`(begin ,e1 ,e2)
+     `(begin ,(replace-free-lab e1 name)
+             ,(replace-free-lab e2 name))]
+    [`(make-closure ,(? label?) (new-tuple ,args ...))
+     exp]
+    [`(new-tuple ,args ...)
+     exp]
+    [(? number? num)
+     num]
+    [(? symbol? x1)
+     (if (equal? name x1)
+         (label-it x1)
+         x1)]
+    [`(,args ...)
+     (map (λ (arg)
+            (replace-free-lab arg name))
+          args)]))
 ;;create new procedure
 (define (new-procedure label x_lst var_lst exp)
   (if (> (length x_lst) 2)
@@ -64,32 +98,33 @@
   (match L5-e
     [`(lambda ,args ,e)
      (let* ([new_args (map (λ (arg)
-                             (level-var arg)) args)]
+                             (level-var (line-filter arg))) args)]
             [new_e (for/fold ([e e])
                      ([var (in-list new_args)]
                       [arg (in-list args)])
                      (replace e arg var))])
        (L5_lambda new_args (L5-parse new_e)))]
     [`(let ((,var ,e1)) ,e2)
-     (let* ([level_var (level-var var)]
+     (let* ([level_var (level-var (line-filter var))]
             [new_e2 (replace e2 var level_var)])
        (L5_let level_var (L5-parse e1) (L5-parse new_e2)))]
     [`(letrec ((,x ,e1)) ,e2)
-     (let* ([level_x (level-var x)]
+     (let* ([level_x (level-var (line-filter x))]
             [new_e1 (replace e1 x level_x)]
             [new_e2 (replace e2 x level_x)])
        ;;optimization
        (let ([e1_parsed (L5-parse new_e1)]
              [e2_parsed (L5-parse new_e2)])
          (if (and (L5_lambda? e1_parsed) (L5_app? e2_parsed)
-                  (var? (first new_e2)))
+                  (< (length (second new_e1)) 3);;make sure it has 2 or less element
+                  (equal? (first new_e2) level_x))
              (let ([e1_var_set (find-free-var e1_parsed (set level_x))]
                    [e2_var_set (find-free-var e2_parsed (set level_x))])
                (if (and (set-empty? e1_var_set)
                         (set-empty? e2_var_set))
                    (let* ([fun_label (label-it level_x)]
-                          [compiled_fun (L5-compile (L5-parse (third new_e1)))])
-                     (begin (enqueue! func-que `(,fun_label ,(second new_e1) ,(replace compiled_fun level_x fun_label)))
+                          [new_fun (replace-free-lab (third new_e1) level_x)])
+                     (begin (enqueue! func-que `(,fun_label ,(second new_e1) ,(L5-compile (L5-parse new_fun))))
                             (L5-parse (replace new_e2 level_x fun_label))))
                    (L5_letrec level_x e1_parsed e2_parsed)))
              (L5_letrec level_x e1_parsed e2_parsed))))];(L5-parse new_e1) (L5-parse new_e2)))))]
@@ -158,8 +193,12 @@
                (compile-letrec x e1 e2))
     (L5_if (e1 e2 e3)
            `(if ,(L5-compile e1)
-                ,(L5-compile e2)
-                ,(L5-compile e3))) 
+                ,(if (L5_prim? e2)
+                     (new-lambda e2)
+                     (L5-compile e2))
+                ,(if (L5_prim? e3)
+                     (new-lambda e3)
+                     (L5-compile e3)))) 
     (L5_new-tuple (e)
                   (cons 'new-tuple (map (λ (e_single)
                                           (L5-compile e_single))
