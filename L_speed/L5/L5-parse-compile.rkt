@@ -195,19 +195,9 @@
             (if (L5_prim? e1)
                 `(let ([,x ,(new-lambda e1)])
                    ,(L5-compile e2))
-                ;[(and (L5_app? e1)
-                ;     (L5_begin? e2))]
-                #|(type-case L5-e e1
-              (L5_lambda (x_lst e);if e1 is a lambda
-                         (let ([new_lab (label-it x)]
-                               [free_var (find-free-var x_lst e)])
-                           `(let ([,x (make-closure ,new_lab ,(cons 'new-tuple free_var))])
-                              ,(L5-compile e2)
-                              ,(replace (L5-compile e2) x new_lab))))|#
                 (begin ;(set! env (remove-duplicates (cons x env)))
                   `(let ([,x ,(L5-compile e1)])
                      ,(L5-compile e2)))))
-    ;bug: double letrec
     (L5_letrec (x e1 e2)
                (compile-letrec x e1 e2))
     (L5_if (e1 e2 e3)
@@ -285,3 +275,51 @@
               ([e_single e_lst])
               (set-union full_set (find-free-var e_single arg_set))))
     (else (set))))
+
+;;to replace *free* var in e1(&e2) of the letrec L5->L5 transformation
+; also use for label
+(define (replace-free letrec_e x)
+  (match letrec_e
+    [`(let ((,var ,e1)) ,e2)
+     (if (equal? var x)
+         (let* ([new_var (level-var var)]
+                [new_e2 (replace e2 var new_var)])
+           `(let ((,new_var ,(replace-free e1 x))) ,(replace-free new_e2 x)))
+         `(let ((,var ,(replace-free e1 x))) ,(replace-free e2 x)))]
+    [`(letrec ((,var ,e1)) ,e2)
+     (if (equal? var x)
+         (let* ([new_var (level-var var)]
+                [new_e1 (replace e1 var new_var)]
+                [new_e2 (replace e2 var new_var)])
+           `(letrec ((,new_var ,(replace-free new_e1 x))) ,(replace-free new_e2 x)))
+         `(letrec ((,var ,(replace-free e1 x))) ,(replace-free e2 x)))]
+    [`(if ,cond ,then ,else)
+     `(if ,(replace-free cond x)
+          ,(replace-free then x)
+          ,(replace-free else x))]
+    [`(begin ,e1 ,e2)
+     `(begin ,(replace-free e1 x)
+             ,(replace-free e2 x))]
+    [`(new-tuple ,args ...)
+     `(new-tuple ,@(map (λ (arg)
+                          (replace-free arg x))
+                        args))]
+    [`(lambda ,(? list? args) ,e)
+     (if (member x args)
+         (let* ([new_args (map (λ (arg)
+                                 (if (equal? arg x)
+                                     (level-var arg)
+                                     arg)) args)]
+                [new_e (replace e x (level-var x))])
+           `(lambda ,new_args ,(replace-free new_e x)))
+         `(lambda ,args ,(replace-free e x)))]
+    [(? number? num)
+     num]
+    [(? symbol? x1)
+     (if (equal? x x1)
+         `(aref ,x1 0)
+         x1)]
+    [`(,args ...)
+     (map (λ (arg)
+            (replace-free arg x))
+          args)]))
