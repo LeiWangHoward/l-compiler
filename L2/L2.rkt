@@ -10,7 +10,7 @@
 (require "coloring.rkt")
 ; file input output
 ;(define filename (command-line #:args (filename) filename))
-(define filename "../../322-interps/tests/robby/2-test/42.L2")
+(define filename "../test1.L2")
 (define L2_exp (call-with-input-file filename read))
 (define L1_inst (make-queue))
 

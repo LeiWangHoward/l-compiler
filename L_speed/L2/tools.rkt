@@ -25,7 +25,7 @@
 ;; define error message
 (define (error-message inst)
   (if (symbol? (first inst))
-      (string-append "could not register allocate " (symbol->string (first inst)))
+      (format "could not register allocate ~a"(first inst))
       "could not register allocate main"))
 ;;sort a list of instructions
 (define (sort-by-length lst)

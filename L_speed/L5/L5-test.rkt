@@ -27,9 +27,20 @@
 
 ;;test replace "free" x with (aref x 0) in letrec
 (module+ test 
+  (test (replace '(a b c (s (a b (b (a (a b)))))) 'a 'aa) '(aa b c (s (aa b (b (aa (aa b)))))))
   (test (replace-free '(+ a b) 'a) '(+ (aref a 0) b))
   (test (replace-free '(make-closure :f (new-tuple a b c)) 'b) 
-        '(make-closure :f (new-tuple a b c)))
+        '(make-closure :f (new-tuple a (aref b 0) c)))
+  (test (replace-free '(lambda (f2 x)
+                                (if (< x 2)
+                                        1
+                                        (+ (f f2 (- x 1))
+                                           (f2 (- x 2))))) 'f)
+        '(lambda (f2_1 x_1)
+                                (if (< x_1 2)
+                                        1
+                                        (+ ((aref f 0) f2_1 (- x_1 1))
+                                           (f2_1 (- x_1 2))))))
   ;;x -> s0
   (test (replace '(+ 1 (+ 2 x)) 'x '(aref x 0)) '(+ 1 (+ 2 (aref x 0)))))
 
@@ -94,11 +105,11 @@
                                            (fib (- n 2)))))) (set 'n)) (set 'fib)))
 
 ;;test optimization
-(require "L5.rkt")
+#|(require "L5.rkt")
 (module+ test
   (test (L5-compile (L5-parse '(letrec ([fib (lambda (n)
                                                (if (< n 2)
                                                    1
                                                    (+ (fib (- n 1))
                                                       (fib (- n 2)))))])
-                                 (fib 30)))) '(:fib_1 30)))
+                                 (fib 30)))) '(:fib_1 30)))|#
