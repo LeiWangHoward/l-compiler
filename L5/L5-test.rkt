@@ -13,7 +13,8 @@
   (test (fresh-var 'x) 'var_x0)
   (test (label-it 'a) ':a)
   (test (level-var 'me) 'me_1)
-  (test (fresh-app) 'new_app1))
+  (test (fresh-app) 'new_app1)
+  (test (line-filter 'n-of-p) 'n_of_p))
 ;;for determine var 
 (module+ test
   (test (var? 'aa) #t)
@@ -26,9 +27,20 @@
 
 ;;test replace "free" x with (aref x 0) in letrec
 (module+ test 
+  (test (replace '(a b c (s (a b (b (a (a b)))))) 'a 'aa) '(aa b c (s (aa b (b (aa (aa b)))))))
   (test (replace-free '(+ a b) 'a) '(+ (aref a 0) b))
   (test (replace-free '(make-closure :f (new-tuple a b c)) 'b) 
-        '(make-closure :f (new-tuple a b c)))
+        '(make-closure :f (new-tuple a (aref b 0) c)))
+  (test (replace-free '(lambda (f2 x)
+                                (if (< x 2)
+                                        1
+                                        (+ (f f2 (- x 1))
+                                           (f2 (- x 2))))) 'f)
+        '(lambda (f2_1 x_1)
+                                (if (< x_1 2)
+                                        1
+                                        (+ ((aref f 0) f2_1 (- x_1 1))
+                                           (f2_1 (- x_1 2))))))
   ;;x -> s0
   (test (replace '(+ 1 (+ 2 x)) 'x '(aref x 0)) '(+ 1 (+ 2 (aref x 0)))))
 
@@ -64,7 +76,7 @@
   (test (L5-parse `(let ([f (lambda (y) (+ x y))])
                      (f 1))) 
         (L5_let 'f_1 (L5_lambda '(y_1) 
-                              (L5_app (list (L5_prim '+) (L5_x 'x) (L5_x 'y_1))))
+                                (L5_app (list (L5_prim '+) (L5_x 'x) (L5_x 'y_1))))
                 (L5_app (list (L5_x 'f_1) (L5_num 1))))))
 
 ;;compile L5
@@ -85,4 +97,19 @@
 
 ;;test find-free-var
 (module+ test
-  (test (find-free-var (L5-parse '(lambda (x y z) (- x q))) (set 'x 'y 'z)) (set 'q)))
+  (test (find-free-var (L5-parse '(lambda (x y z) (- x q))) (set 'x 'y 'z)) (set 'q))
+  (test (find-free-var (L5-parse '(lambda (n)
+                                    (if (< n 2)
+                                        1
+                                        (+ (fib (- n 1))
+                                           (fib (- n 2)))))) (set 'n)) (set 'fib)))
+
+;;test optimization
+#|(require "L5.rkt")
+(module+ test
+  (test (L5-compile (L5-parse '(letrec ([fib (lambda (n)
+                                               (if (< n 2)
+                                                   1
+                                                   (+ (fib (- n 1))
+                                                      (fib (- n 2)))))])
+                                 (fib 30)))) '(:fib_1 30)))|#

@@ -20,4 +20,5 @@
             (e2 L5-e?))
   (L5_app (e_lst (listof L5-e?)))
   ;biop pred
-  (L5_prim (prim prim?)))
+  (L5_prim (prim prim?))
+  (L4_label (l label?)))

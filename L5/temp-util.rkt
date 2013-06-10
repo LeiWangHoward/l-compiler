@@ -27,6 +27,9 @@
   (string->symbol
    (format "~a~a~a" var-pre var (count-one))))
 
+(define (line-filter str)
+  (string->symbol
+   (string-replace (symbol->string str) "-" "_")))
 ;;used for "postfix" new variables in let and passing variables in λ 
 (define (level-var var)
   (string->symbol
