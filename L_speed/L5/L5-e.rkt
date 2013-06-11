@@ -9,9 +9,10 @@
   (L5_let (x var?)
           (e1 L5-e?)
           (e2 L5-e?))
-  (L5_letrec (x var?)
-             (e1 L5-e?)
-             (e2 L5-e?))
+  ;;eliminated when parse L5
+  ;(L5_letrec (x var?)
+  ;           (e1 L5-e?)
+  ;           (e2 L5-e?))
   (L5_if (e1 L5-e?)
          (e2 L5-e?)
          (e3 L5-e?))

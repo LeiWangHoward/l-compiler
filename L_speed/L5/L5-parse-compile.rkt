@@ -77,28 +77,6 @@
              (back-one)
              (L5-compile (L5_lambda `(,x) (L5-parse `(,prim_op ,x)))))])))
 
-;; compile letrec L5_letrec -> (let ...) func
-(define (compile-letrec x e1 e2)
-  (let* ([pre_func_len (queue-length func-que)]
-         ;[e1_free_set (find-free-var (set x))]
-         [e1_compiled (L5-compile e1)]
-         ;[e2_free_set (find-free-var (set x))]
-         [e2_compiled (L5-compile e2)]
-         [post_func_len (queue-length func-que)]
-         [refactor_func (- post_func_len pre_func_len)])
-    (begin
-      (for ([count (in-range refactor_func)]);(queue-length func-que))]);
-        (let* ([func (dequeue! func-que)]
-               [new_fun (replace-free func x)])
-          (enqueue! func-que new_fun)))
-      ;(begin ;(set! env (remove-duplicates (cons x env)))
-      `(let ((,x (new-tuple 0)))
-         (begin (aset ,x 0 ,(if (L5_lambda? e1)
-                                e1_compiled
-                                (replace-free e1_compiled x)))
-                ,(if (L5_lambda? e2)
-                     e2_compiled
-                     (replace-free e2_compiled x)))))))
 ;;parse L5-e
 (define (L5-parse L5-e)
   (match L5-e
@@ -198,8 +176,6 @@
                 (begin ;(set! env (remove-duplicates (cons x env)))
                   `(let ([,x ,(L5-compile e1)])
                      ,(L5-compile e2)))))
-    (L5_letrec (x e1 e2)
-               (compile-letrec x e1 e2))
     (L5_if (e1 e2 e3)
            `(if ,(L5-compile e1)
                 ,(if (L5_prim? e2)
@@ -241,7 +217,7 @@
                                                                                (L5-compile ele)))
                                                                          args))))))))))
     ))
-;;find free variables
+;;find free variables for parsed instructions
 (define (find-free-var exp arg_set)
   (type-case L5-e exp
     (L5_lambda (x_lst e)
@@ -255,9 +231,9 @@
             (set-union (find-free-var e2 (set-add arg_set x))
                        (find-free-var e1 arg_set)))
     
-    (L5_letrec (x e1 e2)
-               (set-union (find-free-var e2 (set-add arg_set x))
-                          (find-free-var e1 (set-add arg_set x))))
+    ;(L5_letrec (x e1 e2)
+    ;           (set-union (find-free-var e2 (set-add arg_set x))
+    ;                      (find-free-var e1 (set-add arg_set x))))
     (L5_if (e1 e2 e3)
            (set-union (find-free-var e1 arg_set)
                       (find-free-var e2 arg_set)
