@@ -8,40 +8,7 @@
 (define func-que (make-queue))
 (define env (set))
 ;;optimization
-;;replace func name to label in expression
-(define (replace-free-lab exp name)
-  (match exp
-    [`(let ((,var ,e1)) ,e2)
-     (let* ([new_var (level-var var)]
-            [new_e1 (replace e1 var new_var)]
-            [new_e2 (replace e2 var new_var)])
-       `(let ((,new_var ,(replace-free-lab new_e1 name))) ,(replace-free-lab new_e2 name)))]
-    [`(letrec ((,var ,e1)) ,e2)
-     (let* ([new_var (level-var var)]
-            [new_e1 (replace e1 var new_var)]
-            [new_e2 (replace e2 var new_var)])
-       `(letrec ((,new_var ,(replace-free-lab new_e1 name))) ,(replace-free-lab new_e2 name)))]
-    [`(if ,cond ,then ,else)
-     `(if ,(replace-free-lab cond name)
-          ,(replace-free-lab then name)
-          ,(replace-free-lab else name))]
-    [`(begin ,e1 ,e2)
-     `(begin ,(replace-free-lab e1 name)
-             ,(replace-free-lab e2 name))]
-    [`(make-closure ,(? label?) (new-tuple ,args ...))
-     exp]
-    [`(new-tuple ,args ...)
-     exp]
-    [(? number? num)
-     num]
-    [(? symbol? x1)
-     (if (equal? name x1)
-         (label-it x1)
-         x1)]
-    [`(,args ...)
-     (map (λ (arg)
-            (replace-free-lab arg name))
-          args)]))
+
 ;;create new procedure
 (define (new-procedure label x_lst var_lst exp)
   (if (> (length x_lst) 2)
@@ -96,33 +63,27 @@
      (let* ([level_x (level-var (line-filter x))]
             [flt_e1 (replace e1 x level_x)]
             [flt_e2 (replace e2 x level_x)]
-            [new_e1 (replace-free flt_e1 level_x)]
-            [new_e2 (replace-free flt_e2 level_x)])
-       (L5_let level_x (L5-parse '(new-tuple 0)) (L5-parse `(begin (aset ,level_x 0 ,new_e1) ,new_e2))))]
-    ;;optimization
-    #|(let ([e1_parsed (L5-parse new_e1)]
-             [e2_parsed (L5-parse new_e2)])
-         (if (and (L5_lambda? e1_parsed) (L5_app? e2_parsed)
-                  (< (length (second new_e1)) 3) 
-                  (equal? (first new_e2) level_x))
-             (let ([e1_var_set (find-free-var e1_parsed (set level_x))]
-                   [e2_var_set (find-free-var e2_parsed (set level_x))])
-               (if (and (set-empty? e1_var_set)
-                        (set-empty? e2_var_set))
-                   (let* ([fun_label (label-it level_x)]
-                          [new_fun (replace-free-lab (third new_e1) level_x)]
-                          [compiled_fun (L5-compile (L5-parse new_fun))]
-                          [x_lst (second new_e1)])
-                     (begin ;(if (> (length x_lst) 2)
-                       ;(enqueue! func-que `(,fun_label (vars-tup) ,(new-let x_lst compiled_fun 'vars-tup)))
-                       (enqueue! func-que `(,fun_label ,x_lst ,compiled_fun));)
-                       (L5-parse (replace new_e2 level_x fun_label))))
-                   (L5_letrec level_x e1_parsed e2_parsed)))
-             (L5_letrec level_x e1_parsed e2_parsed))))]|#
-    ;(L5_let x (L5-parse `(new-tuple 0)) (L5-parse `(begin (aset ,x 0 ,e1_parsed)
-    ;,e2_parsed)))))
-    ;(L5_let x (L5-parse `(new-tuple 0)) (L5-parse `(begin (aset ,x 0 ,e1_parsed)
-    ;                                                     ,e2_parsed))))))];(L5-parse new_e1) (L5-parse new_e2)))))]
+            [new_e1 (replace-free flt_e1 level_x `(aref ,level_x 0))]
+            [new_e2 (replace-free flt_e2 level_x `(aref ,level_x 0))]
+            ;optimize
+            [e1_parsed (L5-parse new_e1)]
+            [e2_parsed (L5-parse new_e2)]
+            [e1_var_set (find-free-var e1_parsed (set level_x))]
+            [e2_var_set (find-free-var e2_parsed (set level_x))])
+       #|(if (and (L5_lambda? e1_parsed) 
+                (set-empty? e1_var_set)
+                (set-empty? e2_var_set))
+           (let* ([fun_label (label-it level_x)]
+                  [new_fun (replace-free new_e1 level_x fun_label)]
+                  [compiled_fun (L5-compile (L5-parse new_fun))]
+                  [x_lst (second new_e1)]) 
+             (if (> (length x_lst) 2)
+                 (L5_let level_x (L5-parse '(new-tuple 0)) (L5-parse `(begin (aset ,level_x 0 ,new_e1) ,new_e2)))
+                 ;(enqueue! func-que `(,fun_label (vars-tup) ,(new-let x_lst compiled_fun 'vars-tup)))
+                 (begin (enqueue! func-que `(,fun_label ,x_lst ,compiled_fun))
+                        (L5-parse (replace-free new_e2 level_x fun_label)))))|#
+           ;;ver 1.0 without optimization
+           (L5_let level_x (L5-parse '(new-tuple 0)) (L5-parse `(begin (aset ,level_x 0 ,new_e1) ,new_e2))))]
     [`(if ,cond ,then ,else)
      (L5_if (L5-parse cond)
             (L5-parse then)
@@ -254,31 +215,31 @@
 
 ;;to replace *free* var in e1(&e2) of the letrec L5->L5 transformation
 ; also use for label
-(define (replace-free letrec_e x)
+(define (replace-free letrec_e x new_x)
   (match letrec_e
     [`(let ((,var ,e1)) ,e2)
      (if (equal? var x)
          (let* ([new_var (level-var var)]
                 [new_e2 (replace e2 var new_var)])
-           `(let ((,new_var ,(replace-free e1 x))) ,(replace-free new_e2 x)))
-         `(let ((,var ,(replace-free e1 x))) ,(replace-free e2 x)))]
+           `(let ((,new_var ,(replace-free e1 x new_x))) ,(replace-free new_e2 x new_x)))
+         `(let ((,var ,(replace-free e1 x new_x))) ,(replace-free e2 x new_x)))]
     [`(letrec ((,var ,e1)) ,e2)
      (if (equal? var x)
          (let* ([new_var (level-var var)]
                 [new_e1 (replace e1 var new_var)]
                 [new_e2 (replace e2 var new_var)])
-           `(letrec ((,new_var ,(replace-free new_e1 x))) ,(replace-free new_e2 x)))
-         `(letrec ((,var ,(replace-free e1 x))) ,(replace-free e2 x)))]
+           `(letrec ((,new_var ,(replace-free new_e1 x new_x))) ,(replace-free new_e2 x new_x)))
+         `(letrec ((,var ,(replace-free e1 x new_x))) ,(replace-free e2 x new_x)))]
     [`(if ,cond ,then ,else)
-     `(if ,(replace-free cond x)
-          ,(replace-free then x)
-          ,(replace-free else x))]
+     `(if ,(replace-free cond x new_x)
+          ,(replace-free then x new_x)
+          ,(replace-free else x new_x))]
     [`(begin ,e1 ,e2)
-     `(begin ,(replace-free e1 x)
-             ,(replace-free e2 x))]
+     `(begin ,(replace-free e1 x new_x)
+             ,(replace-free e2 x new_x))]
     [`(new-tuple ,args ...)
      `(new-tuple ,@(map (λ (arg)
-                          (replace-free arg x))
+                          (replace-free arg x new_x))
                         args))]
     [`(lambda ,(? list? args) ,e)
      (if (member x args)
@@ -287,15 +248,15 @@
                                      (level-var arg)
                                      arg)) args)]
                 [new_e (replace e x (level-var x))])
-           `(lambda ,new_args ,(replace-free new_e x)))
-         `(lambda ,args ,(replace-free e x)))]
+           `(lambda ,new_args ,(replace-free new_e x new_x)))
+         `(lambda ,args ,(replace-free e x new_x)))]
     [(? number? num)
      num]
     [(? symbol? x1)
      (if (equal? x x1)
-         `(aref ,x1 0)
+         new_x;`(aref ,x1 0)
          x1)]
     [`(,args ...)
      (map (λ (arg)
-            (replace-free arg x))
+            (replace-free arg x new_x))
           args)]))

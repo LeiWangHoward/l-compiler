@@ -28,14 +28,14 @@
 ;;test replace "free" x with (aref x 0) in letrec
 (module+ test 
   (test (replace '(a b c (s (a b (b (a (a b)))))) 'a 'aa) '(aa b c (s (aa b (b (aa (aa b)))))))
-  (test (replace-free '(+ a b) 'a) '(+ (aref a 0) b))
-  (test (replace-free '(make-closure :f (new-tuple a b c)) 'b) 
+  (test (replace-free '(+ a b) 'a '(aref a 0)) '(+ (aref a 0) b))
+  (test (replace-free '(make-closure :f (new-tuple a b c)) 'b '(aref b 0)) 
         '(make-closure :f (new-tuple a (aref b 0) c)))
   (test (replace-free '(lambda (f2 x)
                                 (if (< x 2)
                                         1
                                         (+ (f f2 (- x 1))
-                                           (f2 (- x 2))))) 'f)
+                                           (f2 (- x 2))))) 'f '(aref f 0))
         '(lambda (f2_1 x_1)
                                 (if (< x_1 2)
                                         1
@@ -64,7 +64,7 @@
   (test (L5-parse `(new-tuple 1 2 3 4)) (L5_new-tuple (list (L5_num 1) (L5_num 2) (L5_num 3) (L5_num 4))))
   (test (L5-parse `(me 1 2 3 4)) (L5_app (list (L5_x 'me) (L5_num 1) (L5_num 2) (L5_num 3) (L5_num 4))))
   (test (L5-parse `(lambda (x y z) (+ x y))) (L5_lambda '(x_1 y_1 z_1) (L5_app (list (L5_prim '+) (L5_x 'x_1) (L5_x 'y_1)))))
-  (test (L5-parse `(letrec ((x 5)) (+ x 2))) (L5_letrec 'x_1 (L5_num 5) (L5_app (list (L5_prim '+) (L5_x 'x_1) (L5_num 2)))))
+  ;(test (L5-parse `(letrec ((x 5)) (+ x 2))) (L5_letrec 'x_1 (L5_num 5) (L5_app (list (L5_prim '+) (L5_x 'x_1) (L5_num 2)))))
   (test (L5-parse `(if (< 1 2) (print 1) (print 2))) (L5_if (L5_app (list (L5_prim '<) (L5_num 1) (L5_num 2))) 
                                                             (L5_app (list (L5_prim 'print) (L5_num 1)))
                                                             (L5_app (list (L5_prim 'print) (L5_num 2)))))
